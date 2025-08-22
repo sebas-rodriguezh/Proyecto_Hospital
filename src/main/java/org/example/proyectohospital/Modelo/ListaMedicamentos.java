@@ -1,25 +1,27 @@
 package org.example.proyectohospital.Modelo;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.util.List;
 import java.util.ArrayList;
 
 public class ListaMedicamentos {
-    private List<Medicamento> medicamentos;
+    private ObservableList<Medicamento> medicamentos;
 
     public ListaMedicamentos(List<Medicamento> medicamentos) {
-        this.medicamentos = medicamentos;
+        this.medicamentos = FXCollections.observableArrayList(medicamentos);
     }
 
     public ListaMedicamentos() {
-        this.medicamentos = new ArrayList<>();
+        this.medicamentos = FXCollections.observableArrayList();
     }
 
-    public List<Medicamento> getMedicamentos() {
+    public ObservableList<Medicamento> getMedicamentos() {
         return medicamentos;
     }
 
     public void setMedicamentos(List<Medicamento> medicamentos) {
-        this.medicamentos = medicamentos;
+        this.medicamentos = FXCollections.observableArrayList(medicamentos);
     }
 
     public Boolean insertarMedicamento(Medicamento medicamento) {

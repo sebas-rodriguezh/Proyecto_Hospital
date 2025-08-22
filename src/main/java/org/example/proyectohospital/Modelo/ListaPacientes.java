@@ -1,24 +1,27 @@
 package org.example.proyectohospital.Modelo;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListaPacientes {
-    private List<Paciente> pacientes;
+    private ObservableList<Paciente> pacientes;
 
     public ListaPacientes(List<Paciente> pacientes) {
-        this.pacientes = pacientes;
-    }
-    public ListaPacientes() {
-        this.pacientes = new ArrayList<>();
+        this.pacientes = FXCollections.observableArrayList(pacientes);
     }
 
-    public List<Paciente> getPacientes() {
+    public ListaPacientes() {
+        this.pacientes = FXCollections.observableArrayList();
+    }
+
+    public ObservableList<Paciente> getPacientes() {
         return pacientes;
     }
 
     public void setPacientes(List<Paciente> pacientes) {
-        this.pacientes = pacientes;
+        this.pacientes = FXCollections.observableArrayList(pacientes);
     }
 
     public Boolean insertarPaciente(Paciente paciente, Boolean respuestaListaPersonal) {

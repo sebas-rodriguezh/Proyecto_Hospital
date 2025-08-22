@@ -1,25 +1,27 @@
 package org.example.proyectohospital.Modelo;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.util.List;
 import java.util.ArrayList;
 
 public class ListaRecetas {
-    private List<Receta> recetas;
+    private ObservableList<Receta> recetas;
 
     public ListaRecetas(List<Receta> recetas) {
-        this.recetas = recetas;
+        this.recetas = FXCollections.observableArrayList(recetas);
     }
 
     public ListaRecetas() {
-        this.recetas = new ArrayList<>();
+        this.recetas = FXCollections.observableArrayList();
     }
 
-    public List<Receta> getRecetas() {
+    public ObservableList<Receta> getRecetas() {
         return recetas;
     }
 
     public void setRecetas(List<Receta> recetas) {
-        this.recetas = recetas;
+        this.recetas = FXCollections.observableArrayList(recetas);
     }
 
     public Boolean insertarReceta(Receta receta) {
@@ -73,8 +75,8 @@ public class ListaRecetas {
         return null;
     }
 
-    public List<Receta> obtenerRecetasPorPaciente(String idPaciente) {
-        List<Receta> resultado = new ArrayList<>();
+    public ObservableList<Receta> obtenerRecetasPorPaciente(String idPaciente) {
+        ObservableList<Receta> resultado = FXCollections.observableArrayList();
         for (Receta receta : recetas) {
             if (receta.getPaciente().getId().equals(idPaciente)) {
                 resultado.add(receta);
@@ -83,8 +85,8 @@ public class ListaRecetas {
         return resultado;
     }
 
-    public List<Receta> obtenerRecetasPorMedico(String idMedico) {
-        List<Receta> resultado = new ArrayList<>();
+    public ObservableList<Receta> obtenerRecetasPorMedico(String idMedico) {
+        ObservableList<Receta> resultado = FXCollections.observableArrayList();
         for (Receta receta : recetas) {
             if (receta.getPersonal().getId().equals(idMedico)) {
                 resultado.add(receta);
@@ -93,8 +95,8 @@ public class ListaRecetas {
         return resultado;
     }
 
-    public List<Receta> obtenerRecetasPorEstado(int estado) {
-        List<Receta> resultado = new ArrayList<>();
+    public ObservableList<Receta> obtenerRecetasPorEstado(int estado) {
+        ObservableList<Receta> resultado = FXCollections.observableArrayList();
         for (Receta receta : recetas) {
             if (receta.getEstado() == estado) {
                 resultado.add(receta);
@@ -151,7 +153,7 @@ public class ListaRecetas {
     }
 
     public String mostrarRecetasPorPaciente(String idPaciente) {
-        List<Receta> recetasPaciente = obtenerRecetasPorPaciente(idPaciente);
+        ObservableList<Receta> recetasPaciente = obtenerRecetasPorPaciente(idPaciente);
 
         if (recetasPaciente.isEmpty()) {
             return "No hay recetas para el paciente con ID: " + idPaciente;
@@ -171,7 +173,7 @@ public class ListaRecetas {
     }
 
     public String mostrarRecetasPorEstado(int estado) {
-        List<Receta> recetasEstado = obtenerRecetasPorEstado(estado);
+        ObservableList<Receta> recetasEstado = obtenerRecetasPorEstado(estado);
 
         if (recetasEstado.isEmpty()) {
             return "No hay recetas con ese estado: ";
@@ -208,8 +210,8 @@ public class ListaRecetas {
         return false;
     }
 
-    public List<Receta> obtenerRecetasPorRangoFechas(java.time.LocalDate fechaInicio, java.time.LocalDate fechaFin) {
-        List<Receta> resultado = new ArrayList<>();
+    public ObservableList<Receta> obtenerRecetasPorRangoFechas(java.time.LocalDate fechaInicio, java.time.LocalDate fechaFin) {
+        ObservableList<Receta> resultado = FXCollections.observableArrayList();
         for (Receta receta : recetas) {
             if (!receta.getFechaPrescripcion().isBefore(fechaInicio) &&
                     !receta.getFechaPrescripcion().isAfter(fechaFin)) {

@@ -1,25 +1,27 @@
 package org.example.proyectohospital.Modelo;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.util.List;
 import java.util.ArrayList;
 
 public class ListaPersonal {
-    private List<Personal> personal;
+    private ObservableList<Personal> personal;
 
     public ListaPersonal(List<Personal> personal) {
-        this.personal = personal;
+        this.personal = FXCollections.observableArrayList(personal);
     }
 
     public ListaPersonal() {
-        this.personal = new ArrayList<>();
+        this.personal = FXCollections.observableArrayList();
     }
 
-    public List<Personal> getPersonal() {
+    public ObservableList<Personal> getPersonal() {
         return personal;
     }
 
     public void setPersonal(List<Personal> personal) {
-        this.personal = personal;
+        this.personal = FXCollections.observableArrayList(personal);
     }
 
     public Boolean insertarPersonal(Personal persona, Boolean respuestaListaPacientes) {
@@ -138,8 +140,8 @@ public class ListaPersonal {
         return null;
     }
 
-    public List<Personal> obtenerPersonalPorTipo(String tipo) {
-        List<Personal> resultado = new ArrayList<>();
+    public ObservableList<Personal> obtenerPersonalPorTipo(String tipo) {
+        ObservableList<Personal> resultado = FXCollections.observableArrayList();
         for (Personal persona : personal) {
             if (persona.tipo().equalsIgnoreCase(tipo)) //Para comparar Strings la mejor opción.
             {
@@ -150,7 +152,7 @@ public class ListaPersonal {
     }
 
     public String mostrarPersonalPorTipo(String tipo) {
-        List<Personal> personalFiltrado = obtenerPersonalPorTipo(tipo);
+        ObservableList<Personal> personalFiltrado = obtenerPersonalPorTipo(tipo);
 
         if (personalFiltrado.isEmpty()) {
             return "No hay personal del tipo: " + tipo;
