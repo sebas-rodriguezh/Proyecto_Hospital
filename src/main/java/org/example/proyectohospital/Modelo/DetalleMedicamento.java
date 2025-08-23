@@ -70,12 +70,12 @@ public class DetalleMedicamento {
 
     @Override
     public String toString() {
-        return "DetalleMedicamento{" +
+        return "DetalleMedicamento{" + '\n' +
                 "medicamento=" + medicamento.toString() + '\n' +
                 ", idDetalle='" + idDetalle + '\'' +
-                ", cantidad=" + cantidad +
-                ", duracion=" + duracion +
-                ", indicacion='" + indicacion + '\'' +
+                ", cantidad=" + cantidad + '\n' +
+                ", duracion=" + duracion + '\n' +
+                ", indicacion='" + indicacion + '\'' + '\n' +
                 '}';
     }
 }
