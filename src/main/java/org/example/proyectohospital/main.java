@@ -4,6 +4,7 @@ import org.example.proyectohospital.Modelo.ListaPacientes;
 import org.example.proyectohospital.Modelo.ListaPersonal;
 import org.example.proyectohospital.Modelo.Medico;
 import org.example.proyectohospital.Modelo.Paciente;
+import org.w3c.dom.ls.LSOutput;
 
 import java.time.LocalDate;
 
@@ -39,5 +40,7 @@ class Main {
         } else {
             System.out.println("NO se logró insertar PERSONAL");
         }
+        System.out.println("ggs");
     }
+
 }
