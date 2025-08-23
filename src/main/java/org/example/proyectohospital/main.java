@@ -41,6 +41,7 @@ class Main {
             System.out.println("NO se logró insertar PERSONAL");
         }
         System.out.println("ggs");
+        System.out.println("hola cambios");
     }
 
 }
