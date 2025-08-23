@@ -211,6 +211,20 @@ public class Receta {
         }
     }
 
+    @Override
+    public String toString() {
+        String estadoStr = obtenerNombreEstado(1);
+        return "Receta {" +
+                "id='" + id + '\'' +
+                ", personal=" + personal.toString() +
+                ", paciente=" + paciente.toString() +
+                ", fechaPrescripcion=" + fechaPrescripcion +
+                ", fechaRetiro=" + fechaRetiro +
+                ", estado=" + estadoStr +
+                ", detalleMedicamentos=" + this.mostrarTodosLosDetalles() +
+                '}';
+    }
+
 
 
 
