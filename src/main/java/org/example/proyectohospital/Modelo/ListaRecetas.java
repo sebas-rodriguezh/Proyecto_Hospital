@@ -118,6 +118,7 @@ public class ListaRecetas {
                     .append(" | Médico: ").append(receta.getPersonal().getNombre())
                     .append(" | Fecha: ").append(receta.getFechaPrescripcion())
                     .append(" | Estado: ").append(receta.obtenerNombreEstado(receta.getEstado())) // Cambiado aquí
+                    .append(" | Detalles de medicamentos: ").append(receta.mostrarTodosLosDetalles())
                     .append("\n");
         }
         return sb.toString();
