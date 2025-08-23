@@ -40,21 +40,22 @@ class Main {
         listaRecetas.insertarReceta(receta3);
 
         ListaPacientes listaPacientes = new ListaPacientes();
-        listaPacientes.insertarPaciente(paciente,false);
-        listaPacientes.insertarPaciente(paciente2,false);
-        listaPacientes.insertarPaciente(paciente3,false);
+        ListaPersonal listaPersonales=new ListaPersonal();
+
+        listaPacientes.insertarPaciente(paciente,listaPersonales.existePersonalConEseID(paciente.getId()));
+        listaPacientes.insertarPaciente(paciente2,listaPersonales.existePersonalConEseID(paciente2.getId()));
+        listaPacientes.insertarPaciente(paciente3,listaPersonales.existePersonalConEseID(paciente3.getId()));
 
         ListaMedicamentos listaMedicamentos=new ListaMedicamentos();
         listaMedicamentos.insertarMedicamento(medicamento);
         listaMedicamentos.insertarMedicamento(medicamento1);
 
-        ListaPersonal listaPersonales=new ListaPersonal();
-        listaPersonales.insertarPersonal(medico,false);
-        listaPersonales.insertarPersonal(medico2,false);
-        listaPersonales.insertarPersonal(medico3,false);
-        listaPersonales.insertarPersonal(admin1,false);
-        listaPersonales.insertarPersonal(farmaceuta,false);
 
+        listaPersonales.insertarPersonal(medico, listaPacientes.existeAlguienConEseID(medico.getId()));
+        listaPersonales.insertarPersonal(medico2,listaPacientes.existeAlguienConEseID(medico2.getId()));
+        listaPersonales.insertarPersonal(medico3,listaPacientes.existeAlguienConEseID(medico3.getId()));
+        listaPersonales.insertarPersonal(admin1,listaPacientes.existeAlguienConEseID(admin1.getId()));
+        listaPersonales.insertarPersonal(farmaceuta,listaPacientes.existeAlguienConEseID(farmaceuta.getId()));
 
         Hospital hospi=Hospital.getInstance();
         hospi.setMedicamentos(listaMedicamentos);
