@@ -1,4 +1,7 @@
 package org.example.proyectohospital.Modelo;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +12,17 @@ public class Receta {
     private LocalDate fechaPrescripcion;
     private LocalDate fechaRetiro;
     private int estado;// 1: Procesada - 2: Confeccionada - 3: Lista - 4: Entregada
-    private List<DetalleMedicamento> detalleMedicamentos;
+    private ObservableList<DetalleMedicamento> detalleMedicamentos;
     private String id;
 
-    public Receta(String id, Personal personal, Paciente paciente, LocalDate fechaPrescripcion, LocalDate fechaRetiro, int estado, List<DetalleMedicamento> detalleMedicamentos) {
+    public Receta(String id, Personal personal, Paciente paciente, LocalDate fechaPrescripcion, LocalDate fechaRetiro, int estado) {
         this.id = id;
         this.personal = personal;
         this.paciente = paciente;
         this.fechaPrescripcion = fechaPrescripcion;
         this.fechaRetiro = fechaRetiro;
         this.estado = estado;
-        this.detalleMedicamentos = detalleMedicamentos;
+        this.detalleMedicamentos = FXCollections.observableArrayList();
     }
 
     public Receta(String id, LocalDate fechaPrescripcion, LocalDate fechaRetiro, int estado) {
@@ -29,7 +32,7 @@ public class Receta {
         this.estado = estado;
         personal = new Medico();
         paciente = new Paciente();
-        detalleMedicamentos = new ArrayList<>();
+        detalleMedicamentos = FXCollections.observableArrayList();
     }
 
     public Receta(String id, String idPaciente, String idMedico, LocalDate fechaPrescripcion, LocalDate fechaRetiro, int estado) {
@@ -39,14 +42,14 @@ public class Receta {
         this.estado = estado;
         personal = new Medico(); //Acá se referenciaría con el hotel el medico con el idMedico.
         paciente = new Paciente(); //Acá se referenciaría con el hotel el medico con el idPaciente.
-        detalleMedicamentos = new ArrayList<>();
+        detalleMedicamentos = FXCollections.observableArrayList();
     }
 
     public Receta() {
         //Inicializar referencias.
         personal = new Medico();
         paciente = new Paciente();
-        detalleMedicamentos = new ArrayList<>();
+        detalleMedicamentos = FXCollections.observableArrayList();
     }
 
 
@@ -90,7 +93,7 @@ public class Receta {
         this.estado = estado;
     }
 
-    public List<DetalleMedicamento> getDetalleMedicamentos() {
+    public ObservableList<DetalleMedicamento> getDetalleMedicamentos() {
         return detalleMedicamentos;
     }
 
@@ -103,7 +106,7 @@ public class Receta {
     }
 
     public void setDetalleMedicamentos(List<DetalleMedicamento> detalleMedicamentos) {
-        this.detalleMedicamentos = detalleMedicamentos;
+        this.detalleMedicamentos = FXCollections.observableArrayList(detalleMedicamentos);
     }
 
     public boolean insertarDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
