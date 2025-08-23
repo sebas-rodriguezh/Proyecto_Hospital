@@ -75,5 +75,24 @@ public class ListaPacientes {
         return null;
     }
 
+    public String mostrarTodosLosPacientes() {
+        if (pacientes.isEmpty()) {
+            return "No hay pacientes registrados en el sistema.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== LISTA DE TODOS LOS PACIENTES ===\n");
+        sb.append("Total de pacientes: ").append(pacientes.size()).append("\n\n");
+
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente paciente = pacientes.get(i);
+            sb.append("Paciente #").append(i + 1).append(":\n");
+            sb.append(paciente.toString()).append("\n");
+            sb.append("---------------------------------\n");
+        }
+
+        return sb.toString();
+    }
+
 
 }
