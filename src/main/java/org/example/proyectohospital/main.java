@@ -67,6 +67,7 @@ class Main {
         System.out.println(hospi.getMedicamentos().mostrarTodosLosMedicamentos());
         System.out.println(hospi.getPacientes().mostrarTodosLosPacientes());
         System.out.println(hospi.getPersonal().mostrarTodoElPersonal());
+        System.out.println("Hola");
     }
 
 }
