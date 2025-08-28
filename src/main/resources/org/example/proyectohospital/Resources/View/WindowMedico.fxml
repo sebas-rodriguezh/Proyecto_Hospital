@@ -1,48 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="506.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.WindowMedico">
+<AnchorPane prefHeight="599.0" prefWidth="927.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.WindowMedico">
     <children>
-        <TabPane prefHeight="506.0" prefWidth="769.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane prefHeight="599.0" prefWidth="927.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab id="tabPrescribir" fx:id="tabPrescribir" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Prescribir">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="698.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="553.0" prefWidth="948.0">
                             <children>
-                        <Pane layoutX="385.0" layoutY="25.0" prefHeight="230.0" prefWidth="350.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                        <Pane layoutX="26.0" layoutY="14.0" prefHeight="272.0" prefWidth="888.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                            <children>
-                              <Pane layoutX="29.0" layoutY="23.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                              <Pane layoutX="42.0" layoutY="21.0" prefHeight="230.0" prefWidth="350.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                  <children>
-                                    <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="8.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                                    <Pane layoutX="29.0" layoutY="23.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                       <children>
+                                          <Label layoutX="115.0" layoutY="14.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Fecha de prescripción" />
+                                          <DatePicker id="dtpFechaPrescripcion" fx:id="dtpFechaPrescripcion" layoutX="109.0" layoutY="45.0" />
+                                          <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="14.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Assets/Images/calendarioLogo12.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutX="29.0" layoutY="125.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                       <children>
+                                          <Label layoutX="138.0" layoutY="11.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Fecha de retiro" />
+                                          <DatePicker id="dtpFechaRetiro" fx:id="dtpFechaRetiro" layoutX="108.0" layoutY="36.0" />
+                                          <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="14.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Assets/Images/calendarioLogo28.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="483.0" layoutY="21.0" prefHeight="230.0" prefWidth="350.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                 <children>
+                                    <Pane layoutX="29.0" layoutY="23.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                       <children>
+                                          <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="8.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Assets/Images/paciente.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Button id="btnSeleccionarPaciente" fx:id="btnSeleccionarPaciente" alignment="CENTER" layoutX="84.0" layoutY="25.0" mnemonicParsing="false" onAction="#seleccionarPaciente" prefHeight="30.0" prefWidth="198.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Seleccionar Paciente">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutX="29.0" layoutY="125.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                       <children>
+                                          <Button id="btnSeleccionarMedicamento" fx:id="btnSeleccionarMedicamento" alignment="CENTER" layoutX="79.0" layoutY="26.0" mnemonicParsing="false" onAction="#seleccionarMedicamento" prefHeight="30.0" prefWidth="199.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Seleccionar Medicamento">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Button>
+                                          <ImageView fitHeight="73.0" fitWidth="82.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../Assets/Images/pildora.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="26.0" layoutY="294.0" prefHeight="259.0" prefWidth="658.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                           <children>
+                              <Pane layoutX="14.0" layoutY="10.0" prefHeight="112.0" prefWidth="628.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                 <children>
+                                    <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="4.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Assets/Images/paciente.png" />
+                                          <Image url="@../Assets/Images/pacienteLogoDos.png" />
                                        </image>
                                     </ImageView>
-                                    <Button id="btnSeleccionarPaciente" fx:id="btnSeleccionarPaciente" alignment="CENTER" layoutX="84.0" layoutY="25.0" mnemonicParsing="false" onAction="#seleccionarCliente" prefHeight="30.0" prefWidth="198.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Seleccionar Paciente">
+                                    <TableView id="tbvResultadoBusquedaPaciente" fx:id="tbvResultadoBusquedaPaciente" layoutX="83.0" layoutY="42.0" prefHeight="52.0" prefWidth="531.0">
+                                       <columns>
+                                          <TableColumn id="colIDPaciente" fx:id="colIDPaciente" prefWidth="83.0" text="ID" />
+                                          <TableColumn id="colNombrePaciente" fx:id="colNombrePaciente" minWidth="7.0" prefWidth="150.0" text="Nombre" />
+                                          <TableColumn id="colFechaNacimientoPaciente" fx:id="colFechaNacimientoPaciente" prefWidth="160.0" text="Fecha de Nacimeinto" />
+                                          <TableColumn id="colTelefonoPaciente" fx:id="colTelefonoPaciente" minWidth="0.0" prefWidth="137.0" text="Teléfono" />
+                                       </columns>
+                                    </TableView>
+                                    <Label layoutX="220.0" layoutY="10.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Información del paciente" />
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="15.0" layoutY="135.0" prefHeight="112.0" prefWidth="628.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                 <children>
+                                    <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="5.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../Assets/Images/pildoraF3.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <TableView id="tbvResultadoBusquedaMedicamento" fx:id="tbvResultadoBusquedaMedicamento" layoutX="83.0" layoutY="42.0" prefHeight="52.0" prefWidth="538.0">
+                                       <columns>
+                                          <TableColumn id="colNombreMedicamento" fx:id="colNombreMedicamento" prefWidth="113.0" text="Medicamento" />
+                                          <TableColumn id="colPresentacionMedicamento" fx:id="colPresentacionMedicamento" minWidth="7.0" prefWidth="107.0" text="Presentación" />
+                                          <TableColumn id="colCantidadMedicamento" fx:id="colCantidadMedicamento" prefWidth="98.0" text="Cantidad" />
+                                          <TableColumn id="colIndicacionesMedicamento" fx:id="colIndicacionesMedicamento" minWidth="0.0" prefWidth="145.0" text="Indicaciones" />
+                                          <TableColumn id="colDuracionMedicamento" fx:id="colDuracionMedicamento" minWidth="0.0" prefWidth="73.0" text="Duración" />
+                                       </columns>
+                                    </TableView>
+                                    <Label layoutX="220.0" layoutY="10.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Información del medicamento" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="704.0" layoutY="294.0" prefHeight="259.0" prefWidth="210.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                           <children>
+                              <Pane layoutX="13.0" layoutY="11.0" prefHeight="49.0" prefWidth="187.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                 <children>
+                                    <Button id="btnGuardarReceta" fx:id="btnGuardarReceta" alignment="CENTER" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#guardarReceta" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../Assets/Images/Icono-guardar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="9.0" layoutY="200.0" prefHeight="49.0" prefWidth="192.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                 <children>
+                                    <Button id="btnDescartarMedicamento" fx:id="btnDescartarMedicamento" alignment="CENTER" layoutX="8.0" layoutY="10.0" mnemonicParsing="false" onAction="#descartarMedicamentoDeReceta" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Descartar medicamento">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
                                  </children>
                               </Pane>
-                              <Pane layoutX="29.0" layoutY="125.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                              <Pane layoutX="11.0" layoutY="75.0" prefHeight="49.0" prefWidth="191.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                  <children>
-                                    <Button id="btnSeleccionar" fx:id="btnSeleccionar1" alignment="CENTER" layoutX="79.0" layoutY="26.0" mnemonicParsing="false" onAction="#seleccionarCliente" prefHeight="30.0" prefWidth="199.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Seleccionar Medicamento">
+                                    <Button id="btnLimpiarCampos" fx:id="btnLimpiarCampos" alignment="CENTER" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#limpiarCamposReceta" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Limpiar">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
-                                    <ImageView fitHeight="73.0" fitWidth="82.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../Assets/Images/pildora.png" />
+                                          <Image url="@../Assets/Images/limpiarCampos.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="10.0" layoutY="139.0" prefHeight="49.0" prefWidth="191.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                 <children>
+                                    <Button id="btnDetallesReceta" fx:id="btnDetallesReceta" alignment="CENTER" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#mostrarDetallesReceta" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Detalles">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <ImageView fitHeight="47.0" fitWidth="50.0" layoutX="11.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../Assets/Images/detalles.jpg" />
                                        </image>
                                     </ImageView>
                                  </children>
