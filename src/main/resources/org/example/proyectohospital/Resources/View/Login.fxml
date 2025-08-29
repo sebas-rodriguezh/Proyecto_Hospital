@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,7 +15,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.LoginController">
    <children>
-      <VBox layoutX="65.0" layoutY="23.0" prefHeight="250.0" prefWidth="455.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+      <VBox layoutX="50.0" layoutY="45.0" prefHeight="213.0" prefWidth="501.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
          <children>
             <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="40.0" prefWidth="595.0" style="-fx-font-size: 23px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Inicio Sesión" />
             <GridPane>
@@ -36,20 +38,30 @@
             </GridPane>
          </children>
       </VBox>
-      <Button id="btnIngresar" fx:id="btnIngresar" alignment="CENTER" layoutX="195.0" layoutY="295.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="39.0" prefWidth="202.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Ingresar">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <Button id="btnVolver" fx:id="btnVolver" alignment="CENTER" layoutX="196.0" layoutY="345.0" mnemonicParsing="false" onAction="#volverAlMenu" prefHeight="19.0" prefWidth="96.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver">
+      <Button id="btnSalir" fx:id="btnSalir" alignment="CENTER" layoutX="452.0" layoutY="307.0" mnemonicParsing="false" onAction="#salirDelaApp" prefHeight="19.0" prefWidth="96.0" style="-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold;" text="Salir">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button id="btnSalir" fx:id="btnSalir" alignment="CENTER" layoutX="301.0" layoutY="345.0" mnemonicParsing="false" onAction="#salirDelaApp" prefHeight="19.0" prefWidth="96.0" style="-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold;" text="Salir">
+      <Button id="btnVolver" fx:id="btnVolver" alignment="CENTER" layoutX="339.0" layoutY="307.0" mnemonicParsing="false" onAction="#volverAlMenu" prefHeight="19.0" prefWidth="96.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
+      <Button id="btnCambiarPassword" fx:id="btnCambiarPassword" alignment="CENTER" layoutX="166.0" layoutY="307.0" mnemonicParsing="false" onAction="#cambiarPassword" prefHeight="30.0" prefWidth="157.0" style="-fx-background-color: #00BFFF; -fx-text-fill: white; -fx-font-weight: bold;" text="Cambiar contraseña">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button id="btnIngresar" fx:id="btnIngresar" alignment="CENTER" layoutX="47.0" layoutY="307.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="25.0" prefWidth="104.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Ingresar">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="34.0" fitWidth="51.0" layoutX="284.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Assets/Images/login.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
