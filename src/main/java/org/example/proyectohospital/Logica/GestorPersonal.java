@@ -1,27 +1,30 @@
-package org.example.proyectohospital.Modelo;
+package org.example.proyectohospital.Logica;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import java.util.List;
+import org.example.proyectohospital.Modelo.Administrador;
+import org.example.proyectohospital.Modelo.Farmaceuta;
+import org.example.proyectohospital.Modelo.Medico;
+import org.example.proyectohospital.Modelo.Personal;
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class ListaPersonal {
-    private ObservableList<Personal> personal;
+public class GestorPersonal {
+    private List<Personal> personal;
 
-    public ListaPersonal(List<Personal> personal) {
-        this.personal = FXCollections.observableArrayList(personal);
+    public GestorPersonal(List<Personal> personal) {
+        this.personal = new ArrayList<>(personal);
     }
 
-    public ListaPersonal() {
-        this.personal = FXCollections.observableArrayList();
+    public GestorPersonal() {
+        this.personal = new ArrayList<>();
     }
 
-    public ObservableList<Personal> getPersonal() {
+    public List<Personal> getPersonal() {
         return personal;
     }
 
     public void setPersonal(List<Personal> personal) {
-        this.personal = FXCollections.observableArrayList(personal);
+        this.personal = new ArrayList<>(personal);
     }
 
     public Boolean insertarPersonal(Personal persona, Boolean respuestaListaPacientes) {
@@ -97,7 +100,6 @@ public class ListaPersonal {
                     .append(" | Nombre: ").append(persona.getNombre())
                     .append(" | Tipo: ").append(persona.tipo());
 
-            // Información adicional para Médicos
             if (persona instanceof Medico) {
                 Medico medico = (Medico) persona;
                 sb.append(" | Especialidad: ").append(medico.getEspecialidad());
@@ -140,11 +142,10 @@ public class ListaPersonal {
         return null;
     }
 
-    public ObservableList<Personal> obtenerPersonalPorTipo(String tipo) {
-        ObservableList<Personal> resultado = FXCollections.observableArrayList();
+    public List<Personal> obtenerPersonalPorTipo(String tipo) {
+        List<Personal> resultado = new ArrayList<>();
         for (Personal persona : personal) {
-            if (persona.tipo().equalsIgnoreCase(tipo)) //Para comparar Strings la mejor opción.
-            {
+            if (persona.tipo().equalsIgnoreCase(tipo)) {
                 resultado.add(persona);
             }
         }
@@ -152,7 +153,7 @@ public class ListaPersonal {
     }
 
     public String mostrarPersonalPorTipo(String tipo) {
-        ObservableList<Personal> personalFiltrado = obtenerPersonalPorTipo(tipo);
+        List<Personal> personalFiltrado = obtenerPersonalPorTipo(tipo);
 
         if (personalFiltrado.isEmpty()) {
             return "No hay personal del tipo: " + tipo;

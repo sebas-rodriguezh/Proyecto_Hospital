@@ -1,30 +1,30 @@
-package org.example.proyectohospital.Modelo;
+package org.example.proyectohospital.Logica;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import java.util.List;
+import org.example.proyectohospital.Modelo.Medicamento;
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class ListaMedicamentos {
-    private ObservableList<Medicamento> medicamentos;
+public class GestorMedicamentos {
+    private List<Medicamento> medicamentos;
 
-    public ListaMedicamentos(List<Medicamento> medicamentos) {
-        this.medicamentos = FXCollections.observableArrayList(medicamentos);
+    public GestorMedicamentos(List<Medicamento> medicamentos) {
+        this.medicamentos = new ArrayList<>(medicamentos);
     }
 
-    public ListaMedicamentos() {
-        this.medicamentos = FXCollections.observableArrayList();
+    public GestorMedicamentos() {
+        this.medicamentos = new ArrayList<>();
     }
 
-    public ObservableList<Medicamento> getMedicamentos() {
+    public List<Medicamento> getMedicamentos() {
         return medicamentos;
     }
 
     public void setMedicamentos(List<Medicamento> medicamentos) {
-        this.medicamentos = FXCollections.observableArrayList(medicamentos);
+        this.medicamentos = new ArrayList<>(medicamentos);
     }
 
-    public Boolean insertarMedicamento(Medicamento medicamento) {
+    public boolean insertarMedicamento(Medicamento medicamento) {
         try {
             if (medicamento == null) {
                 throw new IllegalArgumentException("El medicamento no puede ser nulo");
@@ -43,46 +43,28 @@ public class ListaMedicamentos {
         }
     }
 
-    public Boolean eliminar(String codigoMedicamento) {
-        if (!existeMedicamentoConEseCodigo(codigoMedicamento)) {
-            return false;
-        }
-
-        for (Medicamento medicamento : medicamentos) {
-            if (medicamento.getCodigo().equals(codigoMedicamento)) {
-                medicamentos.remove(medicamento);
-                return true;
-            }
-        }
-        return false;
+    public boolean eliminar(String codigoMedicamento) {
+        return medicamentos.removeIf(m -> m.getCodigo().equals(codigoMedicamento));
     }
 
-    public Boolean existeMedicamentoConEseCodigo(String codigoMedicamento) {
-        for (Medicamento medicamento : medicamentos) {
-            if (medicamento.getCodigo().equals(codigoMedicamento)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean existeMedicamentoConEseCodigo(String codigoMedicamento) {
+        return medicamentos.stream().anyMatch(m -> m.getCodigo().equals(codigoMedicamento));
     }
 
     public Medicamento getMedicamento(String codigoMedicamento) {
-        for (Medicamento medicamento : medicamentos) {
-            if (medicamento.getCodigo().equals(codigoMedicamento)) {
-                return medicamento;
-            }
-        }
-        return null;
+        return medicamentos.stream()
+                .filter(m -> m.getCodigo().equals(codigoMedicamento))
+                .findFirst()
+                .orElse(null);
     }
 
     public Medicamento buscarMedicamentoPorNombre(String nombreMedicamento) {
-        for (Medicamento medicamento : medicamentos) {
-            if (medicamento.getNombre().equalsIgnoreCase(nombreMedicamento)) {
-                return medicamento;
-            }
-        }
-        return null;
+        return medicamentos.stream()
+                .filter(m -> m.getNombre().equalsIgnoreCase(nombreMedicamento))
+                .findFirst()
+                .orElse(null);
     }
+
     public String mostrarTodosLosMedicamentos() {
         if (medicamentos.isEmpty()) {
             return "No hay medicamentos registrados.";
@@ -112,5 +94,4 @@ public class ListaMedicamentos {
                 "Nombre: " + medicamento.getNombre() + "\n" +
                 "Presentación: " + medicamento.getPresentacion();
     }
-
 }

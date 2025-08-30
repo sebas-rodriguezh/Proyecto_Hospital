@@ -1,0 +1,3 @@
+//Acá va todo lo relacionado con los controladores para CADA vista. los controllers forman parte de la capa presentación (MVC).
+//El controller se comunica directamente con servicios. A su vez, los servicios se pueden comunicar con las capas de logica y de persistencia.
+//Por lo que los controllers NUNCA deben de hablar con los gestores o el hospital (Logica) ni con el Modelo. Todo se maneja por servicios.

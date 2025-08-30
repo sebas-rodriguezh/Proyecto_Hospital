@@ -1,27 +1,27 @@
-package org.example.proyectohospital.Modelo;
+package org.example.proyectohospital.Logica;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import org.example.proyectohospital.Modelo.Paciente;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaPacientes {
-    private ObservableList<Paciente> pacientes;
+public class GestorPacientes {
+    private List<Paciente> pacientes;
 
-    public ListaPacientes(List<Paciente> pacientes) {
-        this.pacientes = FXCollections.observableArrayList(pacientes);
+    public GestorPacientes(List<Paciente> pacientes) {
+        this.pacientes = new ArrayList<>(pacientes);
     }
 
-    public ListaPacientes() {
-        this.pacientes = FXCollections.observableArrayList();
+    public GestorPacientes() {
+        this.pacientes = new ArrayList<>();
     }
 
-    public ObservableList<Paciente> getPacientes() {
+    public List<Paciente> getPacientes() {
         return pacientes;
     }
 
     public void setPacientes(List<Paciente> pacientes) {
-        this.pacientes = FXCollections.observableArrayList(pacientes);
+        this.pacientes = new ArrayList<>(pacientes);
     }
 
     public Boolean insertarPaciente(Paciente paciente, Boolean respuestaListaPersonal) {
@@ -43,7 +43,7 @@ public class ListaPacientes {
         }
     }
 
-    public Boolean eliminar (String idPaciente) {
+    public Boolean eliminar(String idPaciente) {
         if (!existeAlguienConEseID(idPaciente)) {
             return false;
         }
@@ -57,7 +57,7 @@ public class ListaPacientes {
         return false;
     }
 
-    public Boolean existeAlguienConEseID (String idPaciente) {
+    public Boolean existeAlguienConEseID(String idPaciente) {
         for (Paciente paciente : pacientes) {
             if (paciente.getId().equals(idPaciente)) {
                 return true;
@@ -93,6 +93,4 @@ public class ListaPacientes {
 
         return sb.toString();
     }
-
-
 }
