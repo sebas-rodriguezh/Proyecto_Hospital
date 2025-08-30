@@ -107,7 +107,6 @@ public class Receta {
         this.detalleMedicamentos = detalleMedicamentos;
     }
 
-
 //    public String mostrarTodosLosDetalles() {
 //        StringBuilder sb = new StringBuilder();
 //        for (DetalleMedicamento detalle : detalleMedicamentos) {
@@ -139,5 +138,6 @@ public class Receta {
 //                ", detalleMedicamentos=" + this.mostrarTodosLosDetalles() + '\n' +
 //                '}';
 //    }
+
 
 }
