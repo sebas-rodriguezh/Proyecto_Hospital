@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="715.0" prefWidth="1100" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.WindowHistorico">
+
+    <VBox layoutX="20" layoutY="20" prefWidth="1060" spacing="20">
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Histórico de Recetas" />
+
+        <HBox spacing="15">
+            <Label text="Buscar por paciente o ID:" />
+            <TextField fx:id="txtBuscarHistorico" prefWidth="300" promptText="Ej. PAC-001 o Juan Pérez" />
+            <Label text="Filtrar por estado:" />
+            <ComboBox fx:id="comboEstadoHistorico" prefWidth="200">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Confeccionada" />
+                        <String fx:value="Proceso" />
+                        <String fx:value="Lista" />
+                        <String fx:value="Entregada" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <Button fx:id="btnBuscarHistorico" text="Buscar" />
+        </HBox>
+
+        <TableView fx:id="tableHistoricoRecetas" prefHeight="320">
+            <columns>
+                <TableColumn fx:id="colIdHistorico" prefWidth="100" text="ID Receta" />
+                <TableColumn fx:id="colPacienteHistorico" prefWidth="200" text="Paciente" />
+            <TableColumn fx:id="colPacienteHistorico1" prefWidth="200" text="Fecha Nacimiento" />
+                <TableColumn fx:id="colFechaConfeccionHistorico" prefWidth="150" text="Fecha Confección" />
+                <TableColumn fx:id="colFechaRetiroHistorico" prefWidth="150" text="Fecha Retiro" />
+                <TableColumn fx:id="colEstadoHistorico" prefWidth="120" text="Estado" />
+            </columns>
+        </TableView>
+
+        <Button fx:id="btnVerDetallesHistorico" text="Ver Detalles" />
+
+        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Medicamentos de la receta seleccionada" />
+        <TableView fx:id="tableDetallesHistorico" prefHeight="138.0" prefWidth="1060.0">
+            <columns>
+                <TableColumn fx:id="colMedicamento" prefWidth="200" text="Medicamento" />
+                <TableColumn fx:id="colPresentacion" prefWidth="150" text="Presentación" />
+                <TableColumn fx:id="colCantidad" prefWidth="100" text="Cantidad" />
+                <TableColumn fx:id="colIndicaciones" prefWidth="300" text="Indicaciones" />
+                <TableColumn fx:id="colDuracion" prefWidth="120" text="Duración (días)" />
+            </columns>
+        </TableView>
+    </VBox>
+</AnchorPane>
