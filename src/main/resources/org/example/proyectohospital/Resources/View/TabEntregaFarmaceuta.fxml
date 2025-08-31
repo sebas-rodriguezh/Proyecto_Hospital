@@ -20,7 +20,7 @@
          <children>
             <ImageView fitHeight="30.0" fitWidth="28.0" layoutX="330.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Assets/Images/search.png" />
+                  <Image url="@../Assets/Images/search.png" />
                </image>
             </ImageView>
             <TextField id="txtIdNombreEntregaFarmaceuta" fx:id="txtIdNombreEntregaFarmaceuta" layoutX="14.0" layoutY="8.0" onAction="#txtIdNombreEntregaFarmaceuta" prefWidth="300" promptText="ID o nombre del paciente" />
