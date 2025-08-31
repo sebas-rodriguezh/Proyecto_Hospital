@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="558.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+   <children>
+      <AnchorPane layoutX="9.0" layoutY="9.0" prefHeight="537.0" prefWidth="931.0" style="-fx-background-color: white;">
+         <children>
+            <Pane layoutX="7.0" layoutY="99.0" prefHeight="399.0" prefWidth="913.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+               <children>
+                  <Pane layoutX="7.0" layoutY="8.0" prefHeight="387.0" prefWidth="894.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" />
+                  <TableView fx:id="tableRecetasAlistado" layoutX="17.0" layoutY="18.0" prefHeight="370.0" prefWidth="877.0">
+                     <columns>
+                        <TableColumn fx:id="colIdAlistado" text="ID Receta" />
+                        <TableColumn fx:id="colPacienteAlistado" text="Paciente" />
+                        <TableColumn fx:id="colFechaRetiroAlistado" text="Fecha Retiro" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+            <HBox layoutX="7.0" layoutY="59.0" prefHeight="33.0" prefWidth="655.0">
+               <children>
+                  <HBox spacing="10">
+                     <children>
+                        <TextField fx:id="txtBuscarPacienteSolicitud" prefHeight="33.0" prefWidth="159.0" promptText="ID o nombre del paciente" />
+                        <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Assets/Images/search.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="btnBuscarSolicitud" prefHeight="31.0" prefWidth="114.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <Label layoutX="7.0" layoutY="14.0" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Alistado de medicamentos" />
+            <Button fx:id="btnPonerEnLista" layoutX="7.0" layoutY="508.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Alistar Medicamentos">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="64.0" fitWidth="115.0" layoutX="819.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Assets/Images/pildoraF3.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
