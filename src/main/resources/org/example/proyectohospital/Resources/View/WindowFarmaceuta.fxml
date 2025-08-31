@@ -2,110 +2,39 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<TabPane prefHeight="800" prefWidth="1200" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.WindowFarmaceuta">
+<AnchorPane prefHeight="572.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.WindowFarmaceuta">
+    <children>
+        <TabPane prefHeight="566.0" prefWidth="757.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                     <!-- Tab 1: Solicitud -->
+                 <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Solicitud">
+                     <content>
+                         <fx:include source="TabSolicitudFarmaceuta.fxml" />
+                    </content>
+                </Tab>
 
-    <!-- Tab 1: Solicitud -->
-    <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Solicitud">
-        <AnchorPane>
-            <VBox layoutX="12.0" layoutY="17.0" prefHeight="638.0" prefWidth="1168.0" spacing="20">
-                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Recepción de paciente en ventanilla" />
-                <HBox spacing="10">
-                    <TextField fx:id="txtBuscarPacienteSolicitud" promptText="ID o nombre del paciente" />
-                    <DatePicker fx:id="dateRetiroSolicitud" promptText="Fecha de retiro" />
-                    <Button fx:id="btnBuscarSolicitud" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
-                  <font>
-                     <Font size="14.0" />
-                  </font></Button>
-                </HBox>
+                    <!-- Tab 2: Alistado -->
+                 <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Alistado">
+                      <content>
+                        <fx:include source="TabAlistadoFarmaceuta.fxml" />
+                        </content>
+                 </Tab>
 
-                <TableView fx:id="tableRecetasSolicitud" prefHeight="300">
-                    <columns>
-                        <TableColumn fx:id="colIdSolicitud" text="ID Receta" />
-                        <TableColumn fx:id="colPacienteSolicitud" text="Paciente" />
-                        <TableColumn fx:id="colFechaRetiroSolicitud" text="Fecha Retiro" />
-                        <TableColumn fx:id="colEstadoSolicitud" text="Estado" />
-                    </columns>
-                </TableView>
+                    <!-- Tab 3: Entrega -->
+                <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Entrega">
+                     <content>
+                     <fx:include source="TabEntregaFarmaceuta.fxml" />
+                     </content>
+                 </Tab>
 
-                <Label style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 16;" text="Detalles de la receta seleccionada" />
-                <TextArea fx:id="txtDetallesSolicitud" editable="false" prefHeight="100" wrapText="true" />
-
-                <Button fx:id="btnPonerEnProceso" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Poner en Proceso">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-                <Label fx:id="lblEstadoSolicitud" style="-fx-text-fill: green;" text="" />
-            </VBox>
-        </AnchorPane>
-    </Tab>
-
-    <!-- Tab 2: Alistado -->
-    <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Alistado">
-        <AnchorPane>
-            <VBox layoutX="20" layoutY="20" prefWidth="1160" spacing="20">
-                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Alistado de medicamentos" />
-                <HBox spacing="10">
-                    <TextField fx:id="txtBuscarPacienteAlistado" prefHeight="34.0" prefWidth="196.0" promptText="ID o nombre del paciente o receta" />
-                    <Button fx:id="btnBuscarAlistado" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta">
-                  <font>
-                     <Font size="14.0" />
-                  </font></Button>
-                </HBox>
-
-                <TableView fx:id="tableRecetasAlistado" prefHeight="300" prefWidth="1160.0">
-                    <columns>
-                        <TableColumn fx:id="colIdAlistado" text="ID Receta" />
-                        <TableColumn fx:id="colPacienteAlistado" text="Paciente" />
-                        <TableColumn fx:id="colFechaRetiroAlistado" text="Fecha Retiro" />
-                    </columns>
-                </TableView>
-
-                <Label style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;">
-               <font>
-                  <Font size="17.0" />
-               </font></Label>
-
-                <Button fx:id="btnPonerEnLista" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Alistar Medicamentos">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-                <Label fx:id="lblEstadoAlistado" style="-fx-text-fill: green;" text="" />
-            </VBox>
-        </AnchorPane>
-    </Tab>
-
-    <!-- Tab 3: Entrega -->
-    <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Entrega">
-        <AnchorPane>
-            <VBox layoutX="20" layoutY="20" prefWidth="1160" spacing="20">
-                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Entrega de medicamentos al paciente" />
-                <HBox spacing="10">
-                    <TextField fx:id="txtBuscarPacienteEntrega" prefHeight="36.0" prefWidth="203.0" promptText="ID o nombre del paciente o receta" />
-                    <Button fx:id="btnBuscarEntrega" prefHeight="34.0" prefWidth="109.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta">
-                  <font>
-                     <Font size="14.0" />
-                  </font></Button>
-                </HBox>
-
-                <TableView fx:id="tableRecetasEntrega" prefHeight="300">
-                    <columns>
-                        <TableColumn fx:id="colIdEntrega" text="ID Receta" />
-                        <TableColumn fx:id="colPacienteEntrega" text="Paciente" />
-                        <TableColumn fx:id="colFechaRetiroEntrega" text="Fecha Retiro" />
-                    </columns>
-                </TableView>
-
-                <Label style="-fx-font-weight: bold;" text="Resumen de receta para entrega" />
-                <TextArea fx:id="txtDetallesEntrega" editable="false" prefHeight="100" wrapText="true" />
-
-                <Button fx:id="btnEntregarReceta" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Entregar Receta">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-                <Label fx:id="lblEstadoEntrega" style="-fx-text-fill: green;" text="" />
-            </VBox>
-        </AnchorPane>
-    </Tab>
-</TabPane>
+                <!--Tab 4: Historial Recetas-->
+                <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Histórico Recetas">
+                    <content>
+                        <fx:include source="TabHistoricoRecetas.fxml" />
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

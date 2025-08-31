@@ -13,31 +13,30 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="657.0" prefWidth="1212.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane prefHeight="544.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
    <children>
-      <AnchorPane layoutX="4.0" layoutY="8.0" prefHeight="639.0" prefWidth="1199.0">
+      <AnchorPane layoutX="4.0" layoutY="8.0" prefHeight="520.0" prefWidth="738.0">
          <children>
-            <Pane layoutX="6.0" layoutY="87.0" prefHeight="501.0" prefWidth="1193.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+            <Pane layoutX="6.0" layoutY="87.0" prefHeight="393.0" prefWidth="738.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                <children>
-                  <Pane layoutX="6.0" layoutY="12.0" prefHeight="478.0" prefWidth="1175.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" />
-                  <TableView fx:id="tableRecetasSolicitud" layoutX="17.0" layoutY="25.0" prefHeight="448.0" prefWidth="1152.0">
+                  <Pane layoutX="4.0" layoutY="7.0" prefHeight="377.0" prefWidth="723.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" />
+                  <TableView fx:id="tableRecetasSolicitud" layoutX="12.0" layoutY="16.0" prefHeight="360.0" prefWidth="708.0">
                      <columns>
-                        <TableColumn fx:id="colIdSolicitud" text="ID Receta" />
-                        <TableColumn fx:id="colPacienteSolicitud" text="Paciente" />
-                        <TableColumn fx:id="colFechaRetiroSolicitud" text="Fecha Retiro" />
-                        <TableColumn fx:id="colEstadoSolicitud" text="Estado" />
+                        <TableColumn fx:id="colIdSolicitud" prefWidth="156.66672325134277" text="ID Receta" />
+                        <TableColumn fx:id="colPacienteSolicitud" prefWidth="175.9999237060547" text="Paciente" />
+                        <TableColumn fx:id="colFechaRetiroSolicitud" prefWidth="189.33334350585938" text="Fecha Retiro" />
+                        <TableColumn fx:id="colEstadoSolicitud" prefWidth="187.33331298828125" text="Estado" />
                      </columns>
                   </TableView>
                </children>
             </Pane>
-            <HBox layoutX="8.0" layoutY="48.0" prefHeight="27.0" prefWidth="647.0">
+            <HBox layoutX="8.0" layoutY="41.0" prefHeight="29.0" prefWidth="580.0">
                <children>
                   <HBox spacing="10">
                      <children>
-                        <TextField fx:id="txtBuscarPacienteSolicitud" prefHeight="25.0" prefWidth="151.0" promptText="ID o nombre del paciente" />
-                        <DatePicker fx:id="dateRetiroSolicitud" promptText="Fecha de retiro" />
-                        <Button fx:id="btnBuscarSolicitud" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
+                        <TextField fx:id="txtBuscarPacienteSolicitud" prefHeight="25.0" prefWidth="195.0" promptText="ID o nombre del paciente" />
+                        <DatePicker fx:id="dateRetiroSolicitud" prefHeight="25.0" prefWidth="208.0" promptText="Fecha de retiro" />
+                        <Button fx:id="btnBuscarSolicitud" prefHeight="29.0" prefWidth="117.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -46,13 +45,13 @@
                   </HBox>
                </children>
             </HBox>
-            <Label layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="289.0" style="-fx-font-size: 17; -fx-text-fill: #2c3e50; -fx-font-weight: bold;" text="Recepción de paciente en ventanilla" />
-            <Button fx:id="btnPonerEnProceso" layoutX="6.0" layoutY="594.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Poner en Proceso">
+            <Label layoutX="8.0" layoutY="4.0" prefHeight="27.0" prefWidth="321.0" style="-fx-font-size: 18; -fx-text-fill: #2c3e50; -fx-font-weight: bold;" text="Recepción de paciente en ventanilla" />
+            <Button fx:id="btnPonerEnProceso" layoutX="6.0" layoutY="491.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Poner en Proceso">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <ImageView fitHeight="74.0" fitWidth="107.0" layoutX="1101.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="74.0" fitWidth="107.0" layoutX="670.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Assets/Images/pacienteLogoDos.png" />
                </image>
