@@ -17,7 +17,7 @@
 
 <!--Para tener su propio controlador y no tenerlo sobrecargado en admin.-->
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.MedicoEnAdminView">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.MedicoEnAdminViewController">
 
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="545.0" prefWidth="757.0" style="-fx-background-color: 16px; -fx-font-weight: bold;">
             <children>
@@ -49,7 +49,7 @@
                                         </GridPane>
                                         <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="194.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@../Assets/Images/doctorFormaDos.png" />
+                                                <Image url="@../Resources/Assets/Images/doctorFormaDos.png" />
                                             </image>
                                         </ImageView>
                                     </children>
@@ -67,7 +67,7 @@
                                         </Button>
                                         <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@../Assets/Images/Icono-guardar.png" />
+                                                <Image url="@../Resources/Assets/Images/Icono-guardar.png" />
                                             </image>
                                         </ImageView>
                                     </children>
@@ -81,7 +81,7 @@
                                         </Button>
                                         <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@../Assets/Images/limpiarCampos.png" />
+                                                <Image url="@../Resources/Assets/Images/limpiarCampos.png" />
                                             </image>
                                         </ImageView>
                                     </children>
@@ -95,7 +95,7 @@
                                         </Button>
                                         <ImageView fitHeight="37.0" fitWidth="39.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@../Assets/Images/deleteDos.png" />
+                                                <Image url="@../Resources/Assets/Images/deleteDos.png" />
                                             </image>
                                         </ImageView>
                                     </children>
@@ -110,7 +110,7 @@
                             <children>
                                 <ImageView fitHeight="73.0" fitWidth="82.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../Assets/Images/doctorFormaDos.png" />
+                                        <Image url="@../Resources/Assets/Images/doctorFormaDos.png" />
                                     </image>
                                 </ImageView>
                                 <TableView id="tbvResultadoBusquedaMedico" fx:id="tbvResultadoBusquedaMedico" layoutX="72.0" layoutY="37.0" prefHeight="134.0" prefWidth="491.0">
@@ -135,7 +135,7 @@
                         </Button>
                         <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="333.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../Assets/Images/search.png" />
+                                <Image url="@../Resources/Assets/Images/search.png" />
                             </image>
                         </ImageView>
                         <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Nombre / ID" />

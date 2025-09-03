@@ -23,7 +23,7 @@
          <children>
             <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="626.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Assets/Images/search.png" />
+                  <Image url="@../Resources/Assets/Images/search.png" />
                </image>
             </ImageView>
             <Label id="lblBuscarPorPacienteOIdHistoricoRecetas" fx:id="lblBuscarPorPacienteOIdHistoricoRecetas" alignment="CENTER" layoutX="3.0" layoutY="9.0" prefHeight="19.0" prefWidth="187.0" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Buscar por paciente o ID:" />

@@ -30,7 +30,7 @@
                                             <Label alignment="CENTER" layoutX="115.0" layoutY="16.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Medicamentos" />
                                             <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="242.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                                                 <image>
-                                                    <Image url="@../Assets/Images/pildoraF3.jpg" />
+                                                    <Image url="@../Resources/Assets/Images/pildoraF3.jpg" />
                                                 </image>
                                             </ImageView>
                                             <GridPane layoutX="21.0" layoutY="45.0" prefHeight="121.0" prefWidth="312.0">

@@ -52,7 +52,7 @@
                                             </GridPane>
                                             <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="237.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                                                 <image>
-                                                    <Image url="@../Assets/Images/pacienteLogoDos.png" />
+                                                    <Image url="@../Resources/Assets/Images/pacienteLogoDos.png" />
                                                 </image>
                                             </ImageView>
                                         </children>
@@ -70,7 +70,7 @@
                                             </Button>
                                             <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                                 <image>
-                                                    <Image url="@../Assets/Images/Icono-guardar.png" />
+                                                    <Image url="@../Resources/Assets/Images/Icono-guardar.png" />
                                                 </image>
                                             </ImageView>
                                         </children>
@@ -84,7 +84,7 @@
                                             </Button>
                                             <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                                 <image>
-                                                    <Image url="@../Assets/Images/limpiarCampos.png" />
+                                                    <Image url="@../Resources/Assets/Images/limpiarCampos.png" />
                                                 </image>
                                             </ImageView>
                                         </children>
@@ -98,7 +98,7 @@
                                             </Button>
                                             <ImageView fitHeight="37.0" fitWidth="39.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                                                 <image>
-                                                    <Image url="@../Assets/Images/deleteDos.png" />
+                                                    <Image url="@../Resources/Assets/Images/deleteDos.png" />
                                                 </image>
                                             </ImageView>
                                         </children>
@@ -113,7 +113,7 @@
                                 <children>
                                     <ImageView fitHeight="61.0" fitWidth="54.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
                                         <image>
-                                            <Image url="@../Assets/Images/paciente.png" />
+                                            <Image url="@../Resources/Assets/Images/paciente.png" />
                                         </image>
                                     </ImageView>
                                     <Label layoutX="232.0" layoutY="7.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Listado de Pacientes" />
@@ -139,7 +139,7 @@
                             </Button>
                             <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="333.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
-                                    <Image url="@../Assets/Images/search.png" />
+                                    <Image url="@../Resources/Assets/Images/search.png" />
                                 </image>
                             </ImageView>
                             <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Nombre / ID" />
