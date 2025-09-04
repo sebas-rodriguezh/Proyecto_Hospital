@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="564.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.Controllers.TabEntregaFarmaceuta">
+<AnchorPane prefHeight="564.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.TabEntregaFarmaceutaController">
    <children>
       <Label id="lblTabEntregaFarmaceuta" fx:id="lblTabEntregaFarmaceuta" layoutX="14.0" layoutY="6.0" prefHeight="25.0" prefWidth="440.0" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Entrega de medicamentos al paciente" />
       <Pane layoutX="13.0" layoutY="33.0" prefHeight="40.0" prefWidth="494.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
@@ -22,8 +22,8 @@
                   <Image url="@../Resources/Assets/Images/search.png" />
                </image>
             </ImageView>
-            <TextField id="txtIdNombreEntregaFarmaceuta" fx:id="txtIdNombreEntregaFarmaceuta" layoutX="6.0" layoutY="4.0" onAction="#txtIdNombreEntregaFarmaceuta" prefHeight="27.0" prefWidth="312.0" promptText="ID o nombre del paciente" />
-            <Button id="btnBuscarTabEntregaFarmaceuta" fx:id="btnBuscarTabEntregaFarmaceuta" layoutX="375.0" layoutY="4.0" onAction="#btnBuscarTabEntregaFarmaceuta" prefHeight="28.0" prefWidth="104.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta">
+            <TextField id="txtIdNombreEntregaFarmaceuta" fx:id="txtIdNombreEntregaFarmaceuta" layoutX="6.0" layoutY="4.0" prefHeight="27.0" prefWidth="312.0" promptText="ID o nombre del paciente" />
+            <Button id="btnBuscarTabEntregaFarmaceuta" fx:id="btnBuscarTabEntregaFarmaceuta" layoutX="375.0" layoutY="4.0" onAction="#buscarRecetaParaEntrega" prefHeight="28.0" prefWidth="104.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta">
                <font>
                   <Font size="13.0" />
                </font>
@@ -46,7 +46,7 @@
          </children>
       </Pane>
       <Label id="lblTabEntregaFarmaceutaResumen" fx:id="lblTabEntregaFarmaceutaResumen" layoutX="13.0" layoutY="334.0" prefHeight="28.0" prefWidth="427.0" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Resumen de la receta para entrega:" />
-      <Button id="btnEntregarRecetaFarmaceuta" fx:id="btnEntregarRecetaFarmaceuta" layoutX="14.0" layoutY="503.0" onAction="#btnEntregarRecetaFarmaceuta" prefHeight="27.0" prefWidth="139.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Entregar receta">
+      <Button id="btnEntregarRecetaFarmaceuta" fx:id="btnEntregarRecetaFarmaceuta" layoutX="14.0" layoutY="503.0" onAction="#entregarReceta" prefHeight="27.0" prefWidth="139.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Entregar receta">
          <font>
             <Font size="14.0" />
          </font>

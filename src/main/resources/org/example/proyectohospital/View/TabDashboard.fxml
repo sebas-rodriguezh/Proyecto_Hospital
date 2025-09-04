@@ -17,7 +17,7 @@
 
 <!--Para tener su propio controlador y no tenerlo sobrecargado en admin.-->
 
-<AnchorPane prefHeight="547.0" prefWidth="846.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.TabDashboard">
+<AnchorPane prefHeight="547.0" prefWidth="846.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.TabDashboardController">
 
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="547.0" prefWidth="846.0">
                 <children>

@@ -1,5 +1,6 @@
 package org.example.proyectohospital.Controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,8 +39,9 @@ public class AgregarMedicamentoRecetaController implements Initializable {
 
         // Simulación: cargar medicamentos desde la lógica
         // todosLosMedicamentos = gestorMedicamentos.obtenerTodos(); // return repo.obtenerTodos();
+        //tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(todosLosMedicamentos));
 
-        tbvResultadoBPaciente.getItems().setAll(todosLosMedicamentos);
+        tbvResultadoBPaciente.getItems().setAll(todosLosMedicamentos); //Este se cambia por la linea de arriba.
 
         // Escuchar cambios en el campo de texto
         txtValorBuscado.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -49,7 +51,8 @@ public class AgregarMedicamentoRecetaController implements Initializable {
 
     private void filtrarMedicamentos(String texto) {
         if (texto == null || texto.isBlank()) {
-            tbvResultadoBPaciente.getItems().setAll(todosLosMedicamentos);
+            tbvResultadoBPaciente.getItems().setAll(todosLosMedicamentos); //Se cambia con la linea de abajo.
+            //tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(todosLosMedicamentos));
             return;
         }
 
@@ -72,6 +75,9 @@ public class AgregarMedicamentoRecetaController implements Initializable {
 
     @FXML
     private void seleccionarMedicamento(ActionEvent actionEvent){
-
+        Medicamento seleccionado = tbvResultadoBPaciente.getSelectionModel().getSelectedItem();
+        if (seleccionado != null) {
+            // Aquí puedes pasar el medicamento a otra vista o crear un DetalleMedicamento
+        }
     }
 }

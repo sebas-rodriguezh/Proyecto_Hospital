@@ -38,7 +38,7 @@
                               <Image url="@../Resources/Assets/Images/search.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="btnBuscarSolicitud" onAction="#buscarReceta" prefHeight="31.0" prefWidth="114.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
+                        <Button fx:id="btnBuscarSolicitud" onAction="#buscarReceta" prefHeight="31.0" prefWidth="149.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
                            <font>
                               <Font size="14.0" />
                            </font>
