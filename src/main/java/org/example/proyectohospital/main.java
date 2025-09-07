@@ -1,69 +1,220 @@
 package org.example.proyectohospital;
 
+import org.example.proyectohospital.Datos.*;
 import org.example.proyectohospital.Logica.*;
 import org.example.proyectohospital.Modelo.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import java.time.LocalDate;
 
 class Main {
     public static void main(String[] args) {
-        Hospital hospi=Hospital.getInstance();
-       Paciente paciente = new Paciente(70599270, java.time.LocalDate.of(2005,11,17),"Alejandro","119510334");
-       Paciente paciente2 = new Paciente(88276784, java.time.LocalDate.of(2006,1,15),"Isa","7465443");
-       Paciente paciente3 = new Paciente(70599270, java.time.LocalDate.of(2012,4,7),"gabriel","486543");
+        System.out.println("=== INICIANDO PRUEBA DE CAPA DE DATOS ===\n");
 
-       Medico medico = new Medico("Sebas","11951444","132456","Cirujano");
-       Medico medico2 = new Medico("Amparo","15454313","22222","X");
-       Medico medico3 = new Medico("Fabiola","151444","33333","Y");
-       Administrador admin1= new Administrador("Roberto","159951","4444");
-       Farmaceuta farmaceuta= new Farmaceuta("Sofia","147258","1236547899");
+        // === CREAR INSTANCIAS DE DATOS ===
+        PacienteDatos pacienteDatos = new PacienteDatos("data/pacientes.xml");
+        PersonalDatos personalDatos = new PersonalDatos("data/personal.xml");
+        MedicamentoDatos medicamentoDatos = new MedicamentoDatos("data/medicamentos.xml");
+        RecetaDatos recetaDatos = new RecetaDatos("data/recetas.xml");
 
-       Receta receta= new Receta("1",medico,paciente,LocalDate.now(),LocalDate.of(2026,10,8),1);
-       Receta receta2= new Receta("2",medico2,paciente2,LocalDate.now(),LocalDate.of(2027,4,2),2);
-       Receta receta3= new Receta("3",medico3,paciente3,LocalDate.now(),LocalDate.of(2028,3,20),3);
-       Medicamento medicamento= new Medicamento("aspirina","100mg","123");
-       Medicamento medicamento1= new Medicamento("Gravol","Frasco liqyuido","321");
-       DetalleMedicamento detalleMedicamento2= new DetalleMedicamento(medicamento1,"654321",4,1,"Tomar solamente cuando hay mareos");
-       DetalleMedicamento detalleMedicamento= new DetalleMedicamento(medicamento,"123456",8,4,"Tomar por 4 dias cada noche");
+        // === CREAR DATOS DE PRUEBA ===
+        System.out.println("1. Creando datos de prueba...");
 
-       Hospital.getInstance().getRecetas().insertarReceta(receta);
-       Hospital.getInstance().getRecetas().insertarReceta(receta2);
-       Hospital.getInstance().getRecetas().insertarReceta(receta3);
+        // Pacientes
+        Paciente paciente1 = new Paciente(70599270, LocalDate.of(2005,11,17), "Alejandro", "119510334");
+        Paciente paciente2 = new Paciente(88276784, LocalDate.of(2006,1,15), "Isa", "7465443");
+        Paciente paciente3 = new Paciente(70599270, LocalDate.of(2012,4,7), "Gabriel", "486543");
 
+        // Personal
+        Medico medico1 = new Medico("Sebas", "11951444", "132456", "Cirujano");
+        Medico medico2 = new Medico("Amparo", "15454313", "22222", "Cardiología");
+        Medico medico3 = new Medico("Fabiola", "151444", "33333", "Pediatría");
+        Administrador admin1 = new Administrador("Roberto", "159951", "4444");
+        Farmaceuta farmaceuta1 = new Farmaceuta("Sofia", "147258", "1236547899");
 
-       Hospital.getInstance().getRecetas().agregarDetalle("1",detalleMedicamento);
-       Hospital.getInstance().getRecetas().agregarDetalle("1",detalleMedicamento2);
-       Hospital.getInstance().getRecetas().agregarDetalle("2",detalleMedicamento2);
-       Hospital.getInstance().getRecetas().agregarDetalle("3",detalleMedicamento);
+        // Medicamentos
+        Medicamento medicamento1 = new Medicamento("Aspirina", "100mg", "MED001");
+        Medicamento medicamento2 = new Medicamento("Gravol", "Frasco líquido", "MED002");
+        Medicamento medicamento3 = new Medicamento("Ibuprofeno", "Cápsulas 400mg", "MED003");
 
-        GestorPacientes GestorPacientes = new GestorPacientes();
-        GestorPersonal GestorPersonales=new GestorPersonal();
+        // === CONFIGURAR HOSPITAL CON GESTORES ===
+        GestorPacientes gestorPacientes = new GestorPacientes();
+        GestorPersonal gestorPersonal = new GestorPersonal();
+        GestorMedicamentos gestorMedicamentos = new GestorMedicamentos();
+        GestorRecetas gestorRecetas = new GestorRecetas();
 
-        GestorPacientes.insertarPaciente(paciente,GestorPersonales.existePersonalConEseID(paciente.getId()));
-        GestorPacientes.insertarPaciente(paciente2,GestorPersonales.existePersonalConEseID(paciente2.getId()));
-        GestorPacientes.insertarPaciente(paciente3,GestorPersonales.existePersonalConEseID(paciente3.getId()));
+        // Insertar datos en gestores
+        gestorPacientes.insertarPaciente(paciente1, gestorPersonal.existePersonalConEseID(paciente1.getId()));
+        gestorPacientes.insertarPaciente(paciente2, gestorPersonal.existePersonalConEseID(paciente2.getId()));
+        gestorPacientes.insertarPaciente(paciente3, gestorPersonal.existePersonalConEseID(paciente3.getId()));
 
-        GestorMedicamentos GestorMedicamentos=new GestorMedicamentos();
-        GestorMedicamentos.insertarMedicamento(medicamento);
-        GestorMedicamentos.insertarMedicamento(medicamento1);
+        gestorPersonal.insertarPersonal(medico1, gestorPacientes.existeAlguienConEseID(medico1.getId()));
+        gestorPersonal.insertarPersonal(medico2, gestorPacientes.existeAlguienConEseID(medico2.getId()));
+        gestorPersonal.insertarPersonal(medico3, gestorPacientes.existeAlguienConEseID(medico3.getId()));
+        gestorPersonal.insertarPersonal(admin1, gestorPacientes.existeAlguienConEseID(admin1.getId()));
+        gestorPersonal.insertarPersonal(farmaceuta1, gestorPacientes.existeAlguienConEseID(farmaceuta1.getId()));
 
+        gestorMedicamentos.insertarMedicamento(medicamento1);
+        gestorMedicamentos.insertarMedicamento(medicamento2);
+        gestorMedicamentos.insertarMedicamento(medicamento3);
 
-        GestorPersonales.insertarPersonal(medico, GestorPacientes.existeAlguienConEseID(medico.getId()));
-        GestorPersonales.insertarPersonal(medico2,GestorPacientes.existeAlguienConEseID(medico2.getId()));
-        GestorPersonales.insertarPersonal(medico3,GestorPacientes.existeAlguienConEseID(medico3.getId()));
-        GestorPersonales.insertarPersonal(admin1,GestorPacientes.existeAlguienConEseID(admin1.getId()));
-        GestorPersonales.insertarPersonal(farmaceuta,GestorPacientes.existeAlguienConEseID(farmaceuta.getId()));
+        // Configurar Hospital Singleton
+        Hospital hospital = Hospital.getInstance();
+        hospital.setPacientes(gestorPacientes);
+        hospital.setPersonal(gestorPersonal);
+        hospital.setMedicamentos(gestorMedicamentos);
+        hospital.setRecetas(gestorRecetas);
 
+        // Crear recetas con detalles
+        Receta receta1 = new Receta("REC001", medico1, paciente1, LocalDate.now(), LocalDate.now().plusDays(7), 1);
+        Receta receta2 = new Receta("REC002", medico2, paciente2, LocalDate.now(), LocalDate.now().plusDays(5), 2);
+        Receta receta3 = new Receta("REC003", medico3, paciente3, LocalDate.now(), LocalDate.now().plusDays(10), 3);
 
-        hospi.setMedicamentos(GestorMedicamentos);
-        hospi.setPacientes(GestorPacientes);
-        hospi.setPersonal(GestorPersonales);
+        // Crear detalles de medicamentos
+        DetalleMedicamento detalle1 = new DetalleMedicamento(medicamento1, "DET001", 30, 7, "Tomar 1 cada 8 horas");
+        DetalleMedicamento detalle2 = new DetalleMedicamento(medicamento2, "DET002", 15, 5, "Tomar cuando hay mareos");
+        DetalleMedicamento detalle3 = new DetalleMedicamento(medicamento3, "DET003", 20, 3, "Tomar cada 12 horas");
 
-        System.out.println(hospi.getRecetas().mostrarTodasLasRecetas());
-        System.out.println(hospi.getMedicamentos().mostrarTodosLosMedicamentos());
-        System.out.println(hospi.getPacientes().mostrarTodosLosPacientes());
-        System.out.println(hospi.getPersonal().mostrarTodoElPersonal());
-        System.out.println("Hola");
+        // Agregar detalles a recetas
+        receta1.getDetalleMedicamentos().add(detalle1);
+        receta1.getDetalleMedicamentos().add(detalle2);
+        receta2.getDetalleMedicamentos().add(detalle2);
+        receta3.getDetalleMedicamentos().add(detalle3);
+
+        gestorRecetas.insertarReceta(receta1);
+        gestorRecetas.insertarReceta(receta2);
+        gestorRecetas.insertarReceta(receta3);
+
+        System.out.println("✓ Datos de prueba creados\n");
+
+        // === GUARDAR EN XML ===
+        System.out.println("2. Guardando datos en XML...");
+
+        try {
+            // Convertir y guardar pacientes
+            PacienteConector pacienteConector = new PacienteConector();
+            List<PacienteEntity> pacientesEntity = new ArrayList<>();
+            for (Paciente p : gestorPacientes.getPacientes()) {
+                pacientesEntity.add(PacienteMapper.toXML(p));
+            }
+            pacienteConector.setPacientes(pacientesEntity);
+            pacienteDatos.save(pacienteConector);
+            System.out.println("✓ Pacientes guardados en: " + pacienteDatos.getXmlPath());
+
+            // Convertir y guardar personal
+            PersonalConector personalConector = new PersonalConector();
+            List<PersonalEntity> personalEntity = new ArrayList<>();
+            for (Personal p : gestorPersonal.getPersonal()) {
+                personalEntity.add(PersonalMapper.toXML(p));
+            }
+            personalConector.setPersonal(personalEntity);
+            personalDatos.save(personalConector);
+            System.out.println("✓ Personal guardado en: " + personalDatos.getXmlPath());
+
+            // Convertir y guardar medicamentos
+            MedicamentoConector medicamentoConector = new MedicamentoConector();
+            List<MedicamentoEntity> medicamentosEntity = new ArrayList<>();
+            for (Medicamento m : gestorMedicamentos.getMedicamentos()) {
+                medicamentosEntity.add(MedicamentoMapper.toXML(m));
+            }
+            medicamentoConector.setMedicamentos(medicamentosEntity);
+            medicamentoDatos.save(medicamentoConector);
+            System.out.println("✓ Medicamentos guardados en: " + medicamentoDatos.getXmlPath());
+
+            // Convertir y guardar recetas
+            RecetaConector recetaConector = new RecetaConector();
+            List<RecetaEntity> recetasEntity = new ArrayList<>();
+            for (Receta r : gestorRecetas.getRecetas()) {
+                recetasEntity.add(RecetaMapper.toXML(r));
+            }
+            recetaConector.setRecetas(recetasEntity);
+            recetaDatos.save(recetaConector);
+            System.out.println("✓ Recetas guardadas en: " + recetaDatos.getXmlPath());
+
+        } catch (Exception e) {
+            System.err.println("❌ Error guardando datos: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("\n3. Archivos XML creados exitosamente!\n");
+
+        // === LIMPIAR HOSPITAL PARA PROBAR CARGA ===
+        System.out.println("4. Limpiando datos en memoria para probar carga...");
+        Hospital.getInstance().setPacientes(new GestorPacientes());
+        Hospital.getInstance().setPersonal(new GestorPersonal());
+        Hospital.getInstance().setMedicamentos(new GestorMedicamentos());
+        Hospital.getInstance().setRecetas(new GestorRecetas());
+        System.out.println("✓ Datos limpiados\n");
+
+        // === CARGAR DESDE XML ===
+        System.out.println("5. Cargando datos desde XML...");
+
+        try {
+            // Cargar pacientes
+            PacienteConector pacientesCargados = pacienteDatos.load();
+            GestorPacientes nuevoGestorPacientes = new GestorPacientes();
+            for (PacienteEntity pe : pacientesCargados.getPacientes()) {
+                nuevoGestorPacientes.insertarPaciente(PacienteMapper.toModel(pe), false);
+            }
+            Hospital.getInstance().setPacientes(nuevoGestorPacientes);
+            System.out.println("✓ Pacientes cargados: " + nuevoGestorPacientes.getPacientes().size());
+
+            // Cargar personal
+            PersonalConector personalCargado = personalDatos.load();
+            GestorPersonal nuevoGestorPersonal = new GestorPersonal();
+            for (PersonalEntity pe : personalCargado.getPersonal()) {
+                nuevoGestorPersonal.insertarPersonal(PersonalMapper.toModel(pe), false);
+            }
+            Hospital.getInstance().setPersonal(nuevoGestorPersonal);
+            System.out.println("✓ Personal cargado: " + nuevoGestorPersonal.getPersonal().size());
+
+            // Cargar medicamentos
+            MedicamentoConector medicamentosCargados = medicamentoDatos.load();
+            GestorMedicamentos nuevoGestorMedicamentos = new GestorMedicamentos();
+            for (MedicamentoEntity me : medicamentosCargados.getMedicamentos()) {
+                nuevoGestorMedicamentos.insertarMedicamento(MedicamentoMapper.toModel(me));
+            }
+            Hospital.getInstance().setMedicamentos(nuevoGestorMedicamentos);
+            System.out.println("✓ Medicamentos cargados: " + nuevoGestorMedicamentos.getMedicamentos().size());
+
+            // Cargar recetas (IMPORTANTE: cargar después de tener pacientes, personal y medicamentos)
+            RecetaConector recetasCargadas = recetaDatos.load();
+            GestorRecetas nuevoGestorRecetas = new GestorRecetas();
+            for (RecetaEntity re : recetasCargadas.getRecetas()) {
+                nuevoGestorRecetas.insertarReceta(RecetaMapper.toModel(re));
+            }
+            Hospital.getInstance().setRecetas(nuevoGestorRecetas);
+            System.out.println("✓ Recetas cargadas: " + nuevoGestorRecetas.getRecetas().size());
+
+        } catch (Exception e) {
+            System.err.println("❌ Error cargando datos: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("\n6. Datos cargados exitosamente desde XML!\n");
+
+        // === MOSTRAR RESULTADOS ===
+        System.out.println("=== DATOS CARGADOS DESDE XML ===\n");
+
+        System.out.println("PACIENTES:");
+        System.out.println(Hospital.getInstance().getPacientes().mostrarTodosLosPacientes());
+        System.out.println("\n" + "=".repeat(50) + "\n");
+
+        System.out.println("PERSONAL:");
+        System.out.println(Hospital.getInstance().getPersonal().mostrarTodoElPersonal());
+        System.out.println("\n" + "=".repeat(50) + "\n");
+
+        System.out.println("MEDICAMENTOS:");
+        System.out.println(Hospital.getInstance().getMedicamentos().mostrarTodosLosMedicamentos());
+        System.out.println("\n" + "=".repeat(50) + "\n");
+
+        System.out.println("RECETAS:");
+        System.out.println(Hospital.getInstance().getRecetas().mostrarTodasLasRecetas());
+
+        System.out.println("\n=== PRUEBA COMPLETADA EXITOSAMENTE ===");
     }
 
 }

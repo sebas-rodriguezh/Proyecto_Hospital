@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<medicamentosData>
+    <medicamentos>
+        <Medicamento>
+            <codigo>MED001</codigo>
+            <nombre>Aspirina</nombre>
+            <presentacion>100mg</presentacion>
+        </Medicamento>
+        <Medicamento>
+            <codigo>MED002</codigo>
+            <nombre>Gravol</nombre>
+            <presentacion>Frasco líquido</presentacion>
+        </Medicamento>
+        <Medicamento>
+            <codigo>MED003</codigo>
+            <nombre>Ibuprofeno</nombre>
+            <presentacion>Cápsulas 400mg</presentacion>
+        </Medicamento>
+    </medicamentos>
+</medicamentosData>
