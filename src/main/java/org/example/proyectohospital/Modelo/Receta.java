@@ -67,6 +67,8 @@ public class Receta {
         this.paciente = paciente;
     }
 
+    public String getNombrePaciente() {return (paciente != null) ? paciente.getNombre() : "" ;}
+
     public LocalDate getFechaPrescripcion() {
         return fechaPrescripcion;
     }

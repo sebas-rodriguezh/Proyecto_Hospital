@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="544.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane prefHeight="544.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.TabSolicitudFarmaceutaController">
    <children>
       <AnchorPane layoutX="4.0" layoutY="8.0" prefHeight="520.0" prefWidth="738.0">
          <children>
@@ -36,7 +36,7 @@
                      <children>
                         <TextField fx:id="txtBuscarPacienteSolicitud" prefHeight="25.0" prefWidth="195.0" promptText="ID o nombre del paciente" />
                         <DatePicker fx:id="dateRetiroSolicitud" prefHeight="25.0" prefWidth="208.0" promptText="Fecha de retiro" />
-                        <Button fx:id="btnBuscarSolicitud" prefHeight="29.0" prefWidth="117.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
+                        <Button fx:id="btnBuscarSolicitud" onAction="#buscarReceta" prefHeight="29.0" prefWidth="117.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -46,7 +46,7 @@
                </children>
             </HBox>
             <Label layoutX="8.0" layoutY="4.0" prefHeight="27.0" prefWidth="321.0" style="-fx-font-size: 18; -fx-text-fill: #2c3e50; -fx-font-weight: bold;" text="Recepción de paciente en ventanilla" />
-            <Button fx:id="btnPonerEnProceso" layoutX="6.0" layoutY="491.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Poner en Proceso">
+            <Button fx:id="btnPonerEnProceso" layoutX="6.0" layoutY="491.0" onAction="#ponerEnProceso" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Poner en Proceso">
                <font>
                   <Font size="14.0" />
                </font>
