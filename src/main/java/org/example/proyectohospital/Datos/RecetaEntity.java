@@ -9,13 +9,15 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RecetaEntity {
     private String id;
-    private String idPersonal; // Solo el ID del personal
-    private String idPaciente; // Solo el ID del paciente
+
+    // CAMBIO: En lugar de solo IDs, guardamos las entidades completas
+    private PersonalEntity personal; // Entidad completa del personal (médico)
+    private PacienteEntity paciente; // Entidad completa del paciente
+
     private int estado;
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate fechaPrescripcion;
-
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate fechaRetiro;
@@ -34,20 +36,20 @@ public class RecetaEntity {
         this.id = id;
     }
 
-    public String getIdPersonal() {
-        return idPersonal;
+    public PersonalEntity getPersonal() {
+        return personal;
     }
 
-    public void setIdPersonal(String idPersonal) {
-        this.idPersonal = idPersonal;
+    public void setPersonal(PersonalEntity personal) {
+        this.personal = personal;
     }
 
-    public String getIdPaciente() {
-        return idPaciente;
+    public PacienteEntity getPaciente() {
+        return paciente;
     }
 
-    public void setIdPaciente(String idPaciente) {
-        this.idPaciente = idPaciente;
+    public void setPaciente(PacienteEntity paciente) {
+        this.paciente = paciente;
     }
 
     public LocalDate getFechaPrescripcion() {
@@ -81,6 +83,4 @@ public class RecetaEntity {
     public void setDetalleMedicamentos(List<DetalleMedicamentoEntity> detalleMedicamentos) {
         this.detalleMedicamentos = detalleMedicamentos;
     }
-
-
 }

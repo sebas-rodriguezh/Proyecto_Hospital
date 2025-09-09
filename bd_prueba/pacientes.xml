@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pacientesData>
+    <pacientes>
+        <Paciente>
+            <id>PAC001</id>
+            <nombre>Majid</nombre>
+            <telefono>2233</telefono>
+            <fechaNacimiento>1990-05-15</fechaNacimiento>
+        </Paciente>
+        <Paciente>
+            <id>PAC002</id>
+            <nombre>Laura Fernández</nombre>
+            <telefono>99998888</telefono>
+            <fechaNacimiento>1985-03-22</fechaNacimiento>
+        </Paciente>
+        <Paciente>
+            <id>DUPLICADO001</id>
+            <nombre>Pedro Sánchez</nombre>
+            <telefono>77776666</telefono>
+            <fechaNacimiento>2000-08-10</fechaNacimiento>
+        </Paciente>
+    </pacientes>
+</pacientesData>

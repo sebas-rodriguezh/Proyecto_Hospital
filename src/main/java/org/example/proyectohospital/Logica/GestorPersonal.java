@@ -1,31 +1,185 @@
 package org.example.proyectohospital.Logica;
 
-import org.example.proyectohospital.Modelo.Administrador;
-import org.example.proyectohospital.Modelo.Farmaceuta;
-import org.example.proyectohospital.Modelo.Medico;
-import org.example.proyectohospital.Modelo.Personal;
-
-import java.util.ArrayList;
+import org.example.proyectohospital.Datos.*;
+import org.example.proyectohospital.Modelo.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GestorPersonal {
-    private List<Personal> personal;
+    private final PersonalDatos store;
 
-    public GestorPersonal(List<Personal> personal) {
-        this.personal = new ArrayList<>(personal);
+    public GestorPersonal(String rutaArchivo) {
+        this.store = new PersonalDatos(rutaArchivo);
     }
 
-    public GestorPersonal() {
-        this.personal = new ArrayList<>();
+    // === MÉTODOS DE LECTURA ===
+
+    public List<Personal> findAll() {
+        PersonalConector data = store.load();
+        return data.getPersonal().stream()
+                .map(PersonalMapper::toModel)
+                .collect(Collectors.toList());
     }
 
-    public List<Personal> getPersonal() {
-        return personal;
+    public List<Personal> findByText(String texto) {
+        PersonalConector data = store.load();
+        if (texto == null || texto.trim().isEmpty()) {
+            return data.getPersonal().stream()
+                    .map(PersonalMapper::toModel)
+                    .collect(Collectors.toList());
+        }
+
+        String textoBusqueda = texto.toLowerCase().trim();
+        return data.getPersonal().stream()
+                .filter(p -> p.getNombre().toLowerCase().contains(textoBusqueda) ||
+                        p.getId().toLowerCase().contains(textoBusqueda) ||
+                        p.getTipo().toLowerCase().contains(textoBusqueda))
+                .map(PersonalMapper::toModel)
+                .collect(Collectors.toList());
     }
 
-    public void setPersonal(List<Personal> personal) {
-        this.personal = new ArrayList<>(personal);
+    public Personal getPersonalPorID(String idPersonal) {
+        PersonalConector data = store.load();
+        return data.getPersonal().stream()
+                .filter(p -> p.getId().equals(idPersonal))
+                .map(PersonalMapper::toModel)
+                .findFirst()
+                .orElse(null);
     }
+
+    public Personal buscarPersonalPorNombre(String nombrePersonal) {
+        PersonalConector data = store.load();
+        return data.getPersonal().stream()
+                .filter(p -> p.getNombre().equalsIgnoreCase(nombrePersonal))
+                .map(PersonalMapper::toModel)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Boolean existePersonalConEseID(String idPersonal) {
+        PersonalConector data = store.load();
+        return data.getPersonal().stream()
+                .anyMatch(p -> p.getId().equals(idPersonal));
+    }
+
+    public List<Personal> obtenerPersonalPorTipo(String tipo) {
+        PersonalConector data = store.load();
+        return data.getPersonal().stream()
+                .filter(p -> p.getTipo().equalsIgnoreCase(tipo))
+                .map(PersonalMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    public Personal verificarCredenciales(String id, String clave) {
+        PersonalConector data = store.load();
+        return data.getPersonal().stream()
+                .filter(p -> p.getId().equals(id) && p.getClave().equals(clave))
+                .map(PersonalMapper::toModel)
+                .findFirst()
+                .orElse(null);
+    }
+
+    // === MÉTODOS DE ESCRITURA ===
+
+    public Personal create(Personal nuevo) {
+        try {
+            if (nuevo == null) {
+                throw new IllegalArgumentException("El personal no puede ser nulo");
+            }
+
+            PersonalConector data = store.load();
+
+            // Validaciones usando los métodos existentes
+            if (existePersonalConEseID(nuevo.getId())) {
+                throw new IllegalArgumentException("Ya existe personal con ese ID");
+            }
+
+            // Agregar al XML
+            PersonalEntity personalEntity = PersonalMapper.toXML(nuevo);
+            data.getPersonal().add(personalEntity);
+            store.save(data);
+
+            return nuevo;
+        } catch (Exception e) {
+            throw new RuntimeException("Error creando personal: " + e.getMessage());
+        }
+    }
+
+    public Personal update(Personal actualizado) {
+        try {
+            if (actualizado == null) {
+                throw new IllegalArgumentException("El personal no puede ser nulo");
+            }
+
+            PersonalConector data = store.load();
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
+
+            for (int i = 0; i < data.getPersonal().size(); i++) {
+                PersonalEntity actual = data.getPersonal().get(i);
+                if (actual.getId().equals(actualizado.getId())) {
+                    // Encontramos el personal a modificar y aplicamos los cambios
+                    data.getPersonal().set(i, PersonalMapper.toXML(actualizado));
+                    store.save(data);
+                    actualizarRecetasConPersonal(actualizado, gestorRecetas);
+                    return actualizado;
+                }
+            }
+
+            throw new IllegalArgumentException("Personal no encontrado con ID: " + actualizado.getId());
+        } catch (Exception e) {
+            throw new RuntimeException("Error actualizando personal: " + e.getMessage());
+        }
+    }
+
+    private void actualizarRecetasConPersonal(Personal personalActualizado, GestorRecetas gestorRecetas) {
+        try {
+            List<Receta> recetasDelPersonal = gestorRecetas.obtenerRecetasPorMedico(personalActualizado.getId());
+
+            for (Receta receta : recetasDelPersonal) {
+                // Reemplazar el objeto personal viejo con el actualizado
+                receta.setPersonal(personalActualizado);
+                gestorRecetas.update(receta);
+            }
+
+            System.out.println("Actualizadas " + recetasDelPersonal.size() + " recetas del personal: " + personalActualizado.getNombre());
+
+        } catch (Exception e) {
+            System.err.println("Error actualizando recetas: " + e.getMessage());
+        }
+    }
+
+    public Boolean deleteById(String idPersonal) {
+        try {
+            if (idPersonal == null || idPersonal.trim().isEmpty()) {
+                throw new IllegalArgumentException("ID no puede ser nulo o vacío");
+            }
+
+            // 🔥 NUEVO: Eliminar recetas asociadas en cascada
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
+            List<Receta> recetasAsociadas = gestorRecetas.obtenerRecetasPorMedico(idPersonal);
+
+            if (!recetasAsociadas.isEmpty()) {
+                System.out.println("Eliminando " + recetasAsociadas.size() + " recetas asociadas al personal...");
+                for (Receta receta : recetasAsociadas) {
+                    gestorRecetas.deleteById(receta.getId());
+                }
+            }
+
+            PersonalConector data = store.load();
+            boolean eliminado = data.getPersonal().removeIf(personal -> personal.getId().equals(idPersonal));
+
+            if (eliminado) {
+                store.save(data);
+                System.out.println("Personal eliminado correctamente: " + idPersonal);
+            }
+
+            return eliminado;
+        } catch (Exception e) {
+            throw new RuntimeException("Error eliminando personal: " + e.getMessage());
+        }
+    }
+
+    // === MÉTODOS ORIGINALES ADAPTADOS ===
 
     public Boolean insertarPersonal(Personal persona, Boolean respuestaListaPacientes) {
         try {
@@ -37,7 +191,7 @@ public class GestorPersonal {
                 throw new IllegalArgumentException("Existe una persona con ese ID en el sistema.");
             }
 
-            personal.add(persona);
+            create(persona);
             return true;
 
         } catch (IllegalArgumentException e) {
@@ -51,43 +205,31 @@ public class GestorPersonal {
             return false;
         }
 
-        for (Personal persona : personal) {
-            if (persona.getId().equals(idPersonal)) {
-                personal.remove(persona);
-                return true;
-            }
-        }
-        return false;
+        return deleteById(idPersonal);
     }
 
-    public Boolean existePersonalConEseID(String idPersonal) {
-        for (Personal persona : personal) {
-            if (persona.getId().equals(idPersonal)) {
-                return true;
-            }
-        }
-        return false;
+    public List<Personal> getPersonal() {
+        return findAll();
     }
 
-    public Personal getPersonalPorID(String idPersonal) {
-        for (Personal persona : personal) {
-            if (persona.getId().equals(idPersonal)) {
-                return persona;
-            }
-        }
-        return null;
-    }
+    public void setPersonal(List<Personal> personal) {
+        try {
+            // Reemplazar todo el contenido del XML
+            PersonalConector data = store.load();
+            List<PersonalEntity> entities = personal.stream()
+                    .map(PersonalMapper::toXML)
+                    .collect(Collectors.toList());
 
-    public Personal buscarPersonalPorNombre(String nombrePersonal) {
-        for (Personal persona : personal) {
-            if (persona.getNombre().equalsIgnoreCase(nombrePersonal)) {
-                return persona;
-            }
+            data.setPersonal(entities);
+            store.save(data);
+        } catch (Exception e) {
+            throw new RuntimeException("Error estableciendo personal: " + e.getMessage());
         }
-        return null;
     }
 
     public String mostrarTodoElPersonal() {
+        List<Personal> personal = findAll();
+
         if (personal.isEmpty()) {
             return "No hay personal registrado.";
         }
@@ -133,25 +275,6 @@ public class GestorPersonal {
         return sb.toString();
     }
 
-    public Personal verificarCredenciales(String id, String clave) {
-        for (Personal persona : personal) {
-            if (persona.getId().equals(id) && persona.getClave().equals(clave)) {
-                return persona;
-            }
-        }
-        return null;
-    }
-
-    public List<Personal> obtenerPersonalPorTipo(String tipo) {
-        List<Personal> resultado = new ArrayList<>();
-        for (Personal persona : personal) {
-            if (persona.tipo().equalsIgnoreCase(tipo)) {
-                resultado.add(persona);
-            }
-        }
-        return resultado;
-    }
-
     public String mostrarPersonalPorTipo(String tipo) {
         List<Personal> personalFiltrado = obtenerPersonalPorTipo(tipo);
 
@@ -173,5 +296,45 @@ public class GestorPersonal {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public boolean cambiarClave(String idPersonal, String claveActual, String nuevaClave) {
+        try {
+            // Verificar que la nueva clave no sea nula o vacía
+            if (nuevaClave == null || nuevaClave.trim().isEmpty()) {
+                System.err.println("Error: La nueva clave no puede estar vacía");
+                return false;
+            }
+
+            // Verificar credenciales actuales
+            Personal personal = verificarCredenciales(idPersonal, claveActual);
+            if (personal == null) {
+                System.err.println("Error: Credenciales actuales incorrectas");
+                return false;
+            }
+
+            // Actualizar la clave
+            personal.setClave(nuevaClave);
+
+            // Guardar los cambios en el XML
+            PersonalConector data = store.load();
+            for (int i = 0; i < data.getPersonal().size(); i++) {
+                PersonalEntity actual = data.getPersonal().get(i);
+                if (actual.getId().equals(idPersonal)) {
+                    // Actualizar la entidad con la nueva clave
+                    data.getPersonal().set(i, PersonalMapper.toXML(personal));
+                    store.save(data);
+                    System.out.println("Clave actualizada exitosamente para: " + personal.getNombre());
+                    return true;
+                }
+            }
+
+            System.err.println("Error: No se encontró el personal con ID: " + idPersonal);
+            return false;
+
+        } catch (Exception e) {
+            System.err.println("Error cambiando clave: " + e.getMessage());
+            return false;
+        }
     }
 }

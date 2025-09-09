@@ -1,5 +1,7 @@
 package org.example.proyectohospital.Logica;
 
+import java.nio.file.Paths;
+
 public class Hospital {
     private static Hospital instance;
     private GestorMedicamentos medicamentos;
@@ -7,7 +9,19 @@ public class Hospital {
     private GestorPersonal personal;
     private GestorRecetas recetas;
 
-    //Singleton.
+    private static final String RUTA_BASE = Paths.get(System.getProperty("user.dir"), "bd").toString();
+    private static final String RUTA_PACIENTES_DEFAULT = Paths.get(RUTA_BASE, "pacientes.xml").toString();
+    private static final String RUTA_PERSONAL_DEFAULT = Paths.get(RUTA_BASE, "personal.xml").toString();
+    private static final String RUTA_MEDICAMENTOS_DEFAULT = Paths.get(RUTA_BASE, "medicamentos.xml").toString();
+    private static final String RUTA_RECETAS_DEFAULT = Paths.get(RUTA_BASE, "recetas.xml").toString();
+
+    private Hospital(String rutaPacientes, String rutaPersonal, String rutaMedicamentos, String rutaRecetas) {
+        this.pacientes = new GestorPacientes(rutaPacientes);
+        this.personal = new GestorPersonal(rutaPersonal);
+        this.medicamentos = new GestorMedicamentos(rutaMedicamentos);
+        this.recetas = new GestorRecetas(rutaRecetas);
+    }
+
     private Hospital(GestorPersonal personal, GestorPacientes pacientes,
                      GestorMedicamentos medicamentos, GestorRecetas recetas) {
         this.personal = personal;
@@ -17,10 +31,8 @@ public class Hospital {
     }
 
     private Hospital() {
-        this.personal = new GestorPersonal();
-        this.pacientes = new GestorPacientes();
-        this.medicamentos = new GestorMedicamentos();
-        this.recetas = new GestorRecetas();
+        this(RUTA_PACIENTES_DEFAULT, RUTA_PERSONAL_DEFAULT,
+                RUTA_MEDICAMENTOS_DEFAULT, RUTA_RECETAS_DEFAULT);
     }
 
     public static Hospital getInstance() {
@@ -30,7 +42,13 @@ public class Hospital {
         return instance;
     }
 
-    //Metodo Opcional: Inicializar con datos específicos
+    public static void initialize(String rutaPacientes, String rutaPersonal,
+                                  String rutaMedicamentos, String rutaRecetas) {
+        if (instance == null) {
+            instance = new Hospital(rutaPacientes, rutaPersonal, rutaMedicamentos, rutaRecetas);
+        }
+    }
+
     public static void initialize(GestorPersonal personal, GestorPacientes pacientes,
                                   GestorMedicamentos medicamentos, GestorRecetas recetas) {
         if (instance == null) {
@@ -69,4 +87,13 @@ public class Hospital {
     public void setMedicamentos(GestorMedicamentos medicamentos) {
         this.medicamentos = medicamentos;
     }
+
+    public static void reset() {
+        instance = null;
+    }
+
+    public static String getRutaPacientesDefault() { return RUTA_PACIENTES_DEFAULT; }
+    public static String getRutaPersonalDefault() { return RUTA_PERSONAL_DEFAULT; }
+    public static String getRutaMedicamentosDefault() { return RUTA_MEDICAMENTOS_DEFAULT; }
+    public static String getRutaRecetasDefault() { return RUTA_RECETAS_DEFAULT; }
 }

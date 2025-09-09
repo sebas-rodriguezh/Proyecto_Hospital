@@ -13,8 +13,11 @@ public class RecetaMapper {
 
         RecetaEntity recetaEntity = new RecetaEntity();
         recetaEntity.setId(receta.getId());
-        recetaEntity.setIdPersonal(receta.getPersonal().getId());
-        recetaEntity.setIdPaciente(receta.getPaciente().getId());
+
+        // CAMBIO: Convertir las entidades completas usando los mappers
+        recetaEntity.setPersonal(PersonalMapper.toXML(receta.getPersonal()));
+        recetaEntity.setPaciente(PacienteMapper.toXML(receta.getPaciente()));
+
         recetaEntity.setFechaPrescripcion(receta.getFechaPrescripcion());
         recetaEntity.setFechaRetiro(receta.getFechaRetiro());
         recetaEntity.setEstado(receta.getEstado());
@@ -23,7 +26,10 @@ public class RecetaMapper {
         List<DetalleMedicamentoEntity> detallesEntity = new ArrayList<>();
         for (DetalleMedicamento detalle : receta.getDetalleMedicamentos()) {
             DetalleMedicamentoEntity detalleEntity = new DetalleMedicamentoEntity();
-            detalleEntity.setCodigoMedicamento(detalle.getMedicamento().getCodigo());
+
+            // CAMBIO: Guardar la entidad completa del medicamento
+            detalleEntity.setMedicamento(MedicamentoMapper.toXML(detalle.getMedicamento()));
+
             detalleEntity.setIdDetalle(detalle.getIdDetalle());
             detalleEntity.setCantidad(detalle.getCantidad());
             detalleEntity.setDuracion(detalle.getDuracion());
@@ -40,12 +46,9 @@ public class RecetaMapper {
             return null;
         }
 
-        // Obtenemos el hospital para acceder a los gestores
-        Hospital hospital = Hospital.getInstance();
-
-        // Recuperamos las entidades completas usando los IDs
-        Personal personal = hospital.getPersonal().getPersonalPorID(recetaEntity.getIdPersonal());
-        Paciente paciente = hospital.getPacientes().getPaciente(recetaEntity.getIdPaciente());
+        // CAMBIO: No necesitamos Hospital - las entidades vienen completas
+        Personal personal = PersonalMapper.toModel(recetaEntity.getPersonal());
+        Paciente paciente = PacienteMapper.toModel(recetaEntity.getPaciente());
 
         Receta receta = new Receta(
                 recetaEntity.getId(),
@@ -59,8 +62,8 @@ public class RecetaMapper {
         // Convertir lista de detalles
         List<DetalleMedicamento> detallesModel = new ArrayList<>();
         for (DetalleMedicamentoEntity detalleEntity : recetaEntity.getDetalleMedicamentos()) {
-            // Recuperamos el medicamento completo usando el código
-            Medicamento medicamento = hospital.getMedicamentos().getMedicamento(detalleEntity.getCodigoMedicamento());
+            // CAMBIO: El medicamento viene completo en la entidad
+            Medicamento medicamento = MedicamentoMapper.toModel(detalleEntity.getMedicamento());
 
             DetalleMedicamento detalle = new DetalleMedicamento(
                     medicamento,
@@ -75,5 +78,4 @@ public class RecetaMapper {
 
         return receta;
     }
-
 }

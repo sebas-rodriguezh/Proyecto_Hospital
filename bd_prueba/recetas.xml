@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<recetasData>
+    <recetas>
+        <Receta>
+            <id>REC001</id>
+            <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+                <nombre>Dr. Juan Pérez modelele</nombre>
+                <id>MED001</id>
+                <clave>nuevaClaveSegura</clave>
+                <especialidad>Locura</especialidad>
+            </personal>
+            <paciente>
+                <id>PAC001</id>
+                <nombre>Majid</nombre>
+                <telefono>2233</telefono>
+                <fechaNacimiento>1990-05-15</fechaNacimiento>
+            </paciente>
+            <estado>2</estado>
+            <fechaPrescripcion>2025-09-09</fechaPrescripcion>
+            <fechaRetiro>2025-09-16</fechaRetiro>
+            <detallesMedicamentos>
+                <DetalleMedicamento>
+                    <medicamento>
+                        <codigo>MED001</codigo>
+                        <nombre>Paracetamol</nombre>
+                        <presentacion>Tabletas 500mg</presentacion>
+                    </medicamento>
+                    <idDetalle>DET001</idDetalle>
+                    <cantidad>10</cantidad>
+                    <duracion>7</duracion>
+                    <indicacion>Tomar 1 tableta cada 8 horas</indicacion>
+                </DetalleMedicamento>
+                <DetalleMedicamento>
+                    <medicamento>
+                        <codigo>MED002</codigo>
+                        <nombre>Ibuprofeno</nombre>
+                        <presentacion>Cápsulas 400mg</presentacion>
+                    </medicamento>
+                    <idDetalle>DET002</idDetalle>
+                    <cantidad>28</cantidad>
+                    <duracion>28</duracion>
+                    <indicacion>Tomar después de la segunda comida</indicacion>
+                </DetalleMedicamento>
+            </detallesMedicamentos>
+        </Receta>
+    </recetas>
+</recetasData>
