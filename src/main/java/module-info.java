@@ -3,6 +3,8 @@ module org.example.proyectohospital {
     requires javafx.fxml;
     requires java.xml;
     requires jakarta.xml.bind;
+    requires org.example.proyectohospital;
+    requires java.desktop;
 
     opens org.example.proyectohospital.Datos to jakarta.xml.bind;
     exports org.example.proyectohospital.Datos;

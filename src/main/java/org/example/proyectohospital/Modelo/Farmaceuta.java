@@ -21,4 +21,5 @@ public class Farmaceuta extends Personal {
                 ", clave='" + clave + '\'' +
                 '}';
     }
+
 }

@@ -1,20 +1,22 @@
 package org.example.proyectohospital.Controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Modelo.Farmaceuta;
+import org.example.proyectohospital.Modelo.Medico;
 import org.example.proyectohospital.Modelo.Personal;
+import org.example.proyectohospital.Logica.GestorPersonal;
+
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class TabFarmaceutasEnAdminController implements Initializable {
     @FXML private Button btnMostrarTodosLosFarmaceutas;
@@ -31,14 +33,25 @@ public class TabFarmaceutasEnAdminController implements Initializable {
     @FXML private TextField txtIdFarmaceuta;
 
     //private Personal persona = new Farmaceuta("Luis","1111","1111");
-    //private final GestorPersonal gestor = new GestorPersonal(new XMLPersonalRepository());
+    private final GestorPersonal gestor = new GestorPersonal();
+    private ObservableList<Farmaceuta> listaFarmaceuta = FXCollections.observableArrayList();
 
     @FXML
-    public void mostrarTodosLosFarmaceutas(ActionEvent actionEvent) {
+    public void mostrarTodosLosFarmaceutas() {
+        List<Farmaceuta> farmaceutas = gestor.obtenerPersonalPorTipo("Farmaceuta").stream().map(p->(Farmaceuta)p).collect(Collectors.toList());
+        listaFarmaceuta.setAll(farmaceutas);
     }
 
     @FXML
     public void modificarFarmaceuta(ActionEvent actionEvent) {
+        Farmaceuta seleccionado = tbvResultadoBusquedaFarmaceuta.getSelectionModel().getSelectedItem();
+        if (seleccionado != null) {
+            mostrarAlerta("Error", "Seleccione un medico ");
+        }
+
+        seleccionado.setNombre(txtNombreFarmaceuta.getText());
+
+        limpiarCamposFarmaceutas();
     }
 
 
@@ -47,37 +60,69 @@ public class TabFarmaceutasEnAdminController implements Initializable {
         String texto = txtBuscarFarmaceuta.getText();
 
         if (texto.isEmpty()) {
-            //tbvResultadoBusquedaFarmaceuta.setItems(FXCollections.observableArrayList(gestor.obtenerSoloFarmaceutas()));
-        } else {
-            //List<Farmaceuta> resultados = gestor.buscarFarmaceutasPorNombre(texto);
-            //tbvResultadoBusquedaFarmaceuta.setItems(FXCollections.observableArrayList(resultados));
-
+            mostrarTodosLosFarmaceutas();
         }
+        List<Farmaceuta> resultados = gestor.obtenerPersonalPorTipo("Farmaceuta").stream().map(p->(Farmaceuta)p).filter(f->f.getId().toLowerCase().contains(texto)||f.getNombre().toLowerCase().contains(texto)).collect(Collectors.toList());
+
+        listaFarmaceuta.setAll(resultados);
     }
 
 
     @FXML
     public void borrarFarmaceuta(ActionEvent actionEvent) {
+        Farmaceuta seleccionado = tbvResultadoBusquedaFarmaceuta.getSelectionModel().getSelectedItem();
+        if (seleccionado != null) {
+            mostrarAlerta("Error", "Debe seleccionar un medico para borrar");
+            return;
+        }
+        gestor.eliminar(seleccionado.getId());
     }
 
     @FXML
-    public void limpiarCamposFarmaceutas(ActionEvent actionEvent) {
+    public void limpiarCamposFarmaceutas() {
         txtNombreFarmaceuta.clear();
         txtIdFarmaceuta.clear();
         txtBuscarFarmaceuta.clear();
     }
 
+    @FXML
     public void guardarFarmaceuta(ActionEvent actionEvent) {
+        String idFarmaceuta = txtIdFarmaceuta.getText();
+        String nombreFarmaceuta = txtNombreFarmaceuta.getText();
+
+        if(idFarmaceuta.isEmpty() || nombreFarmaceuta.isEmpty()) {
+            mostrarAlerta("Error", "Debe llenar todos los campos obligatorios");
+            return;
+        }
+
+        Farmaceuta nuevo = new Farmaceuta(nombreFarmaceuta, idFarmaceuta, idFarmaceuta);
+        boolean insertado = gestor.insertarPersonal(nuevo,false);
+
+        if(!insertado){
+            mostrarAlerta("Error", "Ya existe un farmaceuta con ese numero de identificación");
+            return;
+        }
+
+        mostrarTodosLosFarmaceutas();
+        limpiarCamposFarmaceutas();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        colNombreFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-//        colIDFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("id"));
-//
-//        // Cargar todos al inicio
-//        tbvResultadoBusquedaFarmaceuta.setItems(FXCollections.observableArrayList(
-//                gestor.obtenerSoloFarmaceutas()
-//        ));
+        colNombreFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colIDFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        // Cargar todos al inicio
+        tbvResultadoBusquedaFarmaceuta.setItems(listaFarmaceuta);
+
+        mostrarTodosLosFarmaceutas();
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
