@@ -50,7 +50,7 @@
                      <columns>
                         <TableColumn fx:id="colIdHistorico" prefWidth="73.33331298828125" text="ID Receta" />
                         <TableColumn fx:id="colPacienteHistorico" prefWidth="100.00003051757812" text="Paciente" />
-                        <TableColumn fx:id="colPacienteHistorico1" prefWidth="179.33331298828125" text="Fecha Nacimiento" />
+                        <TableColumn fx:id="colFechaNacimientoPaciente" prefWidth="179.33331298828125" text="Fecha Nacimiento" />
                         <TableColumn fx:id="colFechaConfeccionHistorico" prefWidth="135.33331298828125" text="Fecha Confección" />
                         <TableColumn fx:id="colFechaRetiroHistorico" prefWidth="131.33331298828125" style="-fx-ba: #228B22;" text="Fecha Retiro" />
                         <TableColumn fx:id="colEstadoHistorico" prefWidth="88.66668701171875" text="Estado" />

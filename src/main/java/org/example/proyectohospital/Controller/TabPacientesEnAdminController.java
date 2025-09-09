@@ -49,84 +49,6 @@ public class TabPacientesEnAdminController {
     }
 
     @FXML
-    private void guardarPaciente(ActionEvent actionEvent) {
-        String idPaciente = txtIdPaciente.getText();
-        String nombrePaciente = txtNombrePaciente.getText();
-        String numeroTelefonoPaciente = txtNumeroTelefonoPaciente.getText();
-        LocalDate fechaNacimientoPaciente = dtpFecaNacimientoPaciente.getValue();
-
-        if(idPaciente.isEmpty() || nombrePaciente.isEmpty() || numeroTelefonoPaciente.isEmpty()) {
-            mostrarAlerta("Error","Debe llenar todos los campos obligatorios");
-        }
-
-        int telefonoPaciente;
-        try {
-            telefonoPaciente = Integer.parseInt(numeroTelefonoPaciente);
-        }catch(NumberFormatException e){
-            mostrarAlerta("Error","Debe ingresar un numero de telefono");
-            return;
-        }
-
-        Paciente nuevo = new Paciente(telefonoPaciente,fechaNacimientoPaciente,nombrePaciente,idPaciente);
-        boolean insertado = gestor.insertarPaciente(nuevo,null);
-
-        if(!insertado){
-            mostrarAlerta("Error","No se logro guardar el paciente");
-            return;
-        }
-
-        mostrarTodosLosPacientes();
-        limpiarCamposPaciente();
-    }
-
-    @FXML
-    private void buscarPaciente(ActionEvent actionEvent) {
-        String criterio = txtIdPaciente.getText().toLowerCase();
-
-        if(criterio.isEmpty()){
-            mostrarAlerta("Error", "Debe ingresar un numero de telefono valido");
-            return;
-        }
-
-        List<Paciente> resultados = gestor.getPacientes().stream().filter(p -> p.getNombre().toLowerCase().contains(criterio) || p.getId().toLowerCase().contains(criterio)).collect(Collectors.toList());
-        listaPacientes.setAll(resultados);
-    }
-
-    @FXML
-    private void modificarPaciente(ActionEvent actionEvent) {
-        Paciente seleccionado = tbvResultadoPaciente.getSelectionModel().getSelectedItem();
-        if(seleccionado == null){
-            mostrarAlerta("Error", "Debe seleccionar un paciente");
-            return;
-        }
-
-        seleccionado.setId(txtIdPaciente.getText());
-        seleccionado.setNombre(txtNombrePaciente.getText());
-        seleccionado.setFechaNacimiento(dtpFecaNacimientoPaciente.getValue());
-
-        try{
-            seleccionado.setTelefono(Integer.parseInt(txtNumeroTelefonoPaciente.getText()));
-        }catch(NumberFormatException e){
-            mostrarAlerta("Error","Debe ingresar un numero de telefono valido");
-            return;
-        }
-        mostrarTodosLosPacientes();
-        limpiarCamposPaciente();
-    }
-
-    @FXML
-    private void borrarPaciente(ActionEvent actionEvent) {
-        Paciente seleccionado = tbvResultadoPaciente.getSelectionModel().getSelectedItem();
-        if(seleccionado == null){
-            mostrarAlerta("Error", "Debe seleccionar un paciente");
-            return;
-        }
-
-        gestor.eliminar(seleccionado.getId());
-        mostrarTodosLosPacientes();
-    }
-
-    @FXML
     public void mostrarTodosLosPacientes() {
         listaPacientes.setAll(gestor.getPacientes());
     }
@@ -146,5 +68,84 @@ public class TabPacientesEnAdminController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+
+    @FXML
+    public void guardarPaciente(javafx.event.ActionEvent actionEvent) {
+        String idPaciente = txtIdPaciente.getText();
+        String nombrePaciente = txtNombrePaciente.getText();
+        String numeroTelefonoPaciente = txtNumeroTelefonoPaciente.getText();
+        LocalDate fechaNacimientoPaciente = dtpFecaNacimientoPaciente.getValue();
+
+        if(idPaciente.isEmpty() || nombrePaciente.isEmpty() || numeroTelefonoPaciente.isEmpty()) {
+            mostrarAlerta("Error","Debe llenar todos los campos obligatorios");
+        }
+
+        int telefonoPaciente;
+        try {
+            telefonoPaciente = Integer.parseInt(numeroTelefonoPaciente);
+        }catch(NumberFormatException e){
+            mostrarAlerta("Error","Debe ingresar un numero de telefono");
+            return;
+        }
+
+        Paciente nuevo = new Paciente(telefonoPaciente,fechaNacimientoPaciente,nombrePaciente,idPaciente);
+        boolean insertado = gestor.insertarPaciente(nuevo,false);
+
+        if(!insertado){
+            mostrarAlerta("Error","No se logro guardar el paciente");
+            return;
+        }
+
+        mostrarTodosLosPacientes();
+        limpiarCamposPaciente();
+
+    }
+    @FXML
+    public void borrarPaciente(javafx.event.ActionEvent actionEvent) {
+        Paciente seleccionado = tbvResultadoPaciente.getSelectionModel().getSelectedItem();
+        if(seleccionado == null){
+            mostrarAlerta("Error", "Debe seleccionar un paciente");
+            return;
+        }
+
+        gestor.eliminar(seleccionado.getId());
+        mostrarTodosLosPacientes();
+    }
+
+    @FXML
+    public void buscarPaciente(javafx.event.ActionEvent actionEvent) {
+        String criterio = txtIdPaciente.getText().toLowerCase();
+
+        if(criterio.isEmpty()){
+            mostrarAlerta("Error", "Debe ingresar un numero de telefono valido");
+            return;
+        }
+
+        List<Paciente> resultados = gestor.getPacientes().stream().filter(p -> p.getNombre().toLowerCase().contains(criterio) || p.getId().toLowerCase().contains(criterio)).collect(Collectors.toList());
+        listaPacientes.setAll(resultados);
+    }
+
+    @FXML
+    public void modificarPaciente(javafx.event.ActionEvent actionEvent) {
+        Paciente seleccionado = tbvResultadoPaciente.getSelectionModel().getSelectedItem();
+        if(seleccionado == null){
+            mostrarAlerta("Error", "Debe seleccionar un paciente");
+            return;
+        }
+
+        seleccionado.setId(txtIdPaciente.getText());
+        seleccionado.setNombre(txtNombrePaciente.getText());
+        seleccionado.setFechaNacimiento(dtpFecaNacimientoPaciente.getValue());
+
+        try{
+            seleccionado.setTelefono(Integer.parseInt(txtNumeroTelefonoPaciente.getText()));
+        }catch(NumberFormatException e){
+            mostrarAlerta("Error","Debe ingresar un numero de telefono valido");
+            return;
+        }
+        mostrarTodosLosPacientes();
+        limpiarCamposPaciente();
     }
 }

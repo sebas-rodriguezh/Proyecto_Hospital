@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pacientesData>
+    <pacientes>
+        <Paciente>
+            <id>P001</id>
+            <nombre>Pedro Martínez</nombre>
+            <telefono>12345678</telefono>
+            <fechaNacimiento>1990-05-15</fechaNacimiento>
+        </Paciente>
+        <Paciente>
+            <id>P002</id>
+            <nombre>Laura Sánchez</nombre>
+            <telefono>87654321</telefono>
+            <fechaNacimiento>1985-10-20</fechaNacimiento>
+        </Paciente>
+        <Paciente>
+            <id>P003</id>
+            <nombre>Carlos López</nombre>
+            <telefono>11223344</telefono>
+            <fechaNacimiento>1995-03-10</fechaNacimiento>
+        </Paciente>
+    </pacientes>
+</pacientesData>

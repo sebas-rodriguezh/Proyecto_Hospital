@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<personalData>
+    <personal>
+        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="administradorEntity">
+            <nombre>Administrador Principal</nombre>
+            <id>admin</id>
+            <clave>1234</clave>
+        </Personal>
+        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+            <nombre>Dr. Juan Pérez</nombre>
+            <id>12345</id>
+            <clave>1234</clave>
+            <especialidad>Cardiología</especialidad>
+        </Personal>
+        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+            <nombre>Dra. María González</nombre>
+            <id>67890</id>
+            <clave>1234</clave>
+            <especialidad>Pediatría</especialidad>
+        </Personal>
+        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="farmaceutaEntity">
+            <nombre>Carlos Rodríguez</nombre>
+            <id>11111</id>
+            <clave>1234</clave>
+        </Personal>
+        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="farmaceutaEntity">
+            <nombre>Ana López</nombre>
+            <id>22222</id>
+            <clave>1234</clave>
+        </Personal>
+    </personal>
+</personalData>

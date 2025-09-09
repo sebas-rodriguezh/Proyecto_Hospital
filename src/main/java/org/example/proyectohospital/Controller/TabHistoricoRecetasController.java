@@ -17,7 +17,7 @@ public class TabHistoricoRecetasController implements Initializable {
     @FXML private TableView<Receta> tblViewRecetasHistoricoRecetas;
     @FXML private TableColumn<Receta, String> colIdHistorico;
     @FXML private TableColumn<Receta, String> colPacienteHistorico;
-    @FXML private TableColumn<Receta, LocalDate> colFechaNacimientoHistorico;
+    @FXML private TableColumn <Receta, LocalDate> colFechaNacimientoPaciente;
     @FXML private TableColumn<Receta, LocalDate> colFechaConfeccionHistorico;
     @FXML private TableColumn<Receta, LocalDate> colFechaRetiroHistorico;
     @FXML private TableColumn<Receta, String> colEstadoHistorico;
@@ -77,13 +77,13 @@ public class TabHistoricoRecetasController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colIdHistorico.setCellValueFactory(new PropertyValueFactory<>("id"));
         colPacienteHistorico.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colFechaNacimientoHistorico.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
+        colFechaNacimientoPaciente.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
         colFechaConfeccionHistorico.setCellValueFactory(new PropertyValueFactory<>("fechaConfeccion"));
         colFechaRetiroHistorico.setCellValueFactory(new PropertyValueFactory<>("fechaRetiro"));
         colEstadoHistorico.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        colFechaNacimientoHistorico.setCellFactory(col -> new TableCell<>() {
+        colFechaNacimientoPaciente.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(LocalDate fecha, boolean empty) {
                 super.updateItem(fecha, empty);

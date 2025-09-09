@@ -37,10 +37,17 @@ public class Hospital {
     }
 
     // Constructor privado por defecto
-    private Hospital() {
-        this(RUTA_PACIENTES_DEFAULT, RUTA_PERSONAL_DEFAULT,
-                RUTA_MEDICAMENTOS_DEFAULT, RUTA_RECETAS_DEFAULT);
+//    private Hospital() {
+//        this(RUTA_PACIENTES_DEFAULT, RUTA_PERSONAL_DEFAULT,
+//                RUTA_MEDICAMENTOS_DEFAULT, RUTA_RECETAS_DEFAULT);
+//
+//    }
 
+    private Hospital () {
+        this.gestorPacientes = new GestorPacientes(RUTA_PACIENTES_DEFAULT);
+        this.gestorPersonal = new GestorPersonal(RUTA_PERSONAL_DEFAULT);
+        this.gestorMedicamentos = new GestorMedicamentos(RUTA_MEDICAMENTOS_DEFAULT);
+        this.gestorRecetas = new GestorRecetas(RUTA_RECETAS_DEFAULT);
     }
 
     // Método para obtener la instancia (con inicialización automática)

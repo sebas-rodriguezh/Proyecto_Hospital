@@ -3,6 +3,7 @@ package org.example.proyectohospital.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,35 +14,53 @@ import javafx.stage.Stage;
 import org.example.proyectohospital.Logica.GestorPersonal;
 import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Personal;
+import org.example.proyectohospital.Logica.InicializadorDatos;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginController {
-    @FXML
-    private Button btnIngresar;
-    @FXML
-    private Button btnCambiarPassword;
-    @FXML
-    private Button btnSalir;
-    @FXML
-    private PasswordField pwdPassword;
-    @FXML
-    private TextField txtIdUsuario;
-
+public class LoginController implements Initializable {
+    @FXML private Button btnIngresar;
+    @FXML private Button btnCambiarPassword;
+    @FXML private Button btnSalir;
+    @FXML private PasswordField pwdPassword;
+    @FXML private TextField txtIdUsuario;
 
     private final GestorPersonal gestorPersonal = Hospital.getInstance().getGestorPersonal();
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Inicializando LoginController...");
+
+        // Inicializar datos si es necesario
+        try {
+            InicializadorDatos.inicializarSiEsNecesario();
+
+            // Verificar que tenemos datos
+            System.out.println("Personal registrado: " + gestorPersonal.getPersonal().size());
+            InicializadorDatos.mostrarPersonalExistente();
+
+        } catch (Exception e) {
+            System.err.println("Error durante la inicialización: " + e.getMessage());
+            e.printStackTrace();
+            mostrarAlerta("Error de Inicialización", "Hubo un problema al cargar los datos: " + e.getMessage());
+        }
+    }
 
     @FXML
     private void salirDelaApp(ActionEvent actionEvent) {
         System.exit(0);
     }
 
-
     @FXML
     private void iniciarSesion(ActionEvent actionEvent) {
-        String id = txtIdUsuario.getText();
+        String id = txtIdUsuario.getText().trim();
         String password = pwdPassword.getText();
+
+        System.out.println("=== INTENTO DE LOGIN ===");
+        System.out.println("ID ingresado: '" + id + "'");
+        System.out.println("Password ingresado: '" + password + "'");
 
         if (id.isEmpty() || password.isEmpty()) {
             mostrarAlerta("Campos vacíos", "Debe ingresar usuario y contraseña.");
@@ -49,7 +68,20 @@ public class LoginController {
         }
 
         try {
+            // DEBUG: Buscar específicamente el usuario
+            Personal personalPorID = gestorPersonal.getPersonalPorID(id);
+            System.out.println("Personal encontrado por ID: " + personalPorID);
+
+            if (personalPorID != null) {
+                System.out.println("- Nombre: " + personalPorID.getNombre());
+                System.out.println("- Clave almacenada: '" + personalPorID.getClave() + "'");
+                System.out.println("- Tipo: " + personalPorID.tipo());
+                System.out.println("- ¿Claves coinciden?: " + personalPorID.getClave().equals(password));
+            }
+
+            // Intentar verificar credenciales
             Personal personal = gestorPersonal.verificarCredenciales(id, password);
+            System.out.println("Resultado verificarCredenciales: " + personal);
 
             if (personal != null) {
                 mostrarAlerta("Bienvenido", "Bienvenido " + personal.getNombre() + " (" + personal.tipo() + ")");
@@ -57,13 +89,21 @@ public class LoginController {
                 cerrarVentanaLogin();
             } else {
                 mostrarAlerta("Error", "Usuario o contraseña incorrectos.");
+
+                // DEBUG: Mostrar usuarios disponibles
+                System.out.println("\n=== USUARIOS DISPONIBLES ===");
+                for (Personal p : gestorPersonal.getPersonal()) {
+                    System.out.println("ID: '" + p.getId() + "' | Clave: '" + p.getClave() + "' | Nombre: " + p.getNombre());
+                }
+
                 pwdPassword.clear();
-                txtIdUsuario.clear();
+                txtIdUsuario.requestFocus();
             }
 
         } catch (Exception e) {
-            mostrarAlerta("Error del sistema", "Error al verificar credenciales: " + e.getMessage());
+            System.err.println("Error durante el login: " + e.getMessage());
             e.printStackTrace();
+            mostrarAlerta("Error del sistema", "Error al verificar credenciales: " + e.getMessage());
         }
     }
 
@@ -110,24 +150,21 @@ public class LoginController {
 
             Object controller = loader.getController();
             if (controller instanceof WindowAdministradorController) {
-                // Aquí puedes pasar información adicional al controlador si es necesario
                 System.out.println("Ventana de administrador abierta para: " + personal.getNombre());
             } else if (controller instanceof WindowFarmaceutaController) {
                 System.out.println("Ventana de farmaceuta abierta para: " + personal.getNombre());
             }
 
         } catch (IOException e) {
-            mostrarAlerta("Error", "No se pudo abrir la ventana: " + e.getMessage());
+            System.err.println("Error al abrir ventana: " + e.getMessage());
             e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir la ventana: " + e.getMessage());
         }
-
-
     }
 
     @FXML
     private void cambiarPassword(ActionEvent actionEvent) {
         try {
-            // Abrir ventana de cambio de contraseña
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/View/CambiarClave.fxml"));
             Parent root = loader.load();
 
