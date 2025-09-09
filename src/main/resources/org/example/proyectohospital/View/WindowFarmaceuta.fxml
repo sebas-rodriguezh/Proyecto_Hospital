@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="572.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Resources.View.WindowFarmaceuta">
+<AnchorPane prefHeight="572.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.WindowFarmaceutaController">
     <children>
         <TabPane prefHeight="566.0" prefWidth="757.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>

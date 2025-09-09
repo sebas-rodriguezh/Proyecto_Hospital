@@ -1,6 +1,5 @@
 package org.example.proyectohospital.Controller;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,10 +24,24 @@ public class TabAlistadoFarmaceutaController implements Initializable {
 
     @FXML
     private void alistarMedicamentoSeleccionado(ActionEvent actionEvent) {
+        Receta seleccionada = tableRecetasAlistado.getSelectionModel().getSelectedItem();
+        if (seleccionada == null) {
+            mostrarAlerta("Selección requerida", "Debe seleccionar una receta válida");
+            return;
+        }
+
+        //LOGICA DE ALISTAR EL MEDICAMENTO
     }
 
     @FXML
     private void buscarReceta(ActionEvent actionEvent) {
+        String filtro = txtBuscarPacienteSolicitud.getText().trim();
+        if(filtro.isEmpty()){
+            mostrarAlerta("Búsqueda inválida","Ingrese ID o nombre del paciente.");
+            return;
+        }
+
+        //LOGICA DE BUSCAR RECETA
     }
 
 
@@ -37,13 +50,7 @@ public class TabAlistadoFarmaceutaController implements Initializable {
 
         colIdAlistado.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        colPacienteAlistado.setCellValueFactory(data ->
-                new SimpleStringProperty(
-                        data.getValue().getPaciente() != null
-                                ? data.getValue().getPaciente().getNombre()
-                                : ""
-                )
-        );
+        colPacienteAlistado.setCellValueFactory(new PropertyValueFactory<>("nombrePaciente"));
 
         colFechaRetiroAlistado.setCellValueFactory(new PropertyValueFactory<>("fechaRetiro"));
 
@@ -55,6 +62,14 @@ public class TabAlistadoFarmaceutaController implements Initializable {
                 setText(empty || fecha == null ? "" : fecha.format(formatter));
             }
         });
+
     }
 
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 }

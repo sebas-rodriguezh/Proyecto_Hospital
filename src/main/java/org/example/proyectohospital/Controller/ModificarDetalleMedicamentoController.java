@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.example.proyectohospital.Modelo.Medicamento;
 
 import java.net.URL;
@@ -24,16 +25,41 @@ public class ModificarDetalleMedicamentoController implements Initializable {
     private Medicamento medicamento; // referencia al medicamento actual
 
     public void setMedicamento(Medicamento medicamento) {
+        this.medicamento = medicamento;
         tbvResultadoMedicamento.getItems().setAll(medicamento);
     }
 
 
     @FXML
     private void volverAAnterior(ActionEvent actionEvent) {
+        Stage stage = (Stage) btnSalir.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private  void guardarDetalleMedicamento(ActionEvent actionEvent) {
+        if(medicamento == null){
+            mostrarAlerta("Error","Medicamento invalido");
+            return;
+        }
+
+        int cantidad = spinnerCantidad.getValue();
+        int dias = spinnerDuracionEnDias.getValue();
+        String indicaciones  = txtIndicaciones.getText();
+
+        String resumen =  String.format("Medicamento: %s (%s)\nPresentacion: %s\nCantidad: %d\nDuracion: %d\nndicaciones: %s",
+                medicamento.getNombre(),
+                medicamento.getCodigo(),
+                medicamento.getPresentacion(),
+                cantidad,
+                dias,
+                indicaciones
+        );
+
+        mostrarAlerta("Detalle medicamento guardado",resumen);
+
+        Stage stage = (Stage) btnGuardar.getScene().getWindow();
+        stage.close();
     }
 
     @Override
@@ -54,6 +80,14 @@ public class ModificarDetalleMedicamentoController implements Initializable {
         spinnerDuracionEnDias.setEditable(false);
         spinnerCantidad.setEditable(false);
 
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
 }
