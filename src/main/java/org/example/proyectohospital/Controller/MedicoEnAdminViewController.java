@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.example.proyectohospital.Logica.GestorPersonal;
+import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Medico;
 import org.example.proyectohospital.Modelo.Personal;
 
@@ -32,7 +33,7 @@ public class MedicoEnAdminViewController implements Initializable {
     @FXML private TextField txtNombreMedico;
     @FXML private TextField txtIdMedico;
 
-    private GestorPersonal gestor = new GestorPersonal();
+    private GestorPersonal gestor = Hospital.getInstance().getGestorPersonal();
     private ObservableList<Medico> listaMedicos = FXCollections.observableArrayList();
 
     public MedicoEnAdminViewController() {

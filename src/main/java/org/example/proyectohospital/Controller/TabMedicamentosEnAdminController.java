@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Logica.GestorMedicamentos;
+import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Medicamento;
 
 import java.net.URL;
@@ -29,7 +30,7 @@ public class TabMedicamentosEnAdminController implements Initializable{
     @FXML TableColumn<Medicamento, String> colNombreMedicamento;
     @FXML TableColumn<Medicamento, String> colPresentacionMedicamento;
 
-    private final GestorMedicamentos gestor = new GestorMedicamentos();
+    private final GestorMedicamentos gestor = Hospital.getInstance().getGestorMedicamentos();
     private ObservableList<Medicamento> listaMedicamentos = FXCollections.observableArrayList();
 
     @Override

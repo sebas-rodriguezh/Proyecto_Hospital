@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.DetalleMedicamento;
 import org.example.proyectohospital.Modelo.Medicamento;
 import org.example.proyectohospital.Modelo.Receta;
@@ -26,8 +27,8 @@ public class TabDashboardController implements Initializable {
     @FXML private DatePicker dtpHasta;
     @FXML private DatePicker dtpDesde;
 
-    private final GestorRecetas gestorRecetas = new GestorRecetas();
-    private final GestorMedicamentos gestorMedicamentos = new GestorMedicamentos();
+    private final GestorRecetas gestorRecetas = Hospital.getInstance().getGestorRecetas();
+    private final GestorMedicamentos gestorMedicamentos = Hospital.getInstance().getGestorMedicamentos();
 
     @FXML
     public void seleccionMedicamento(ActionEvent actionEvent) {

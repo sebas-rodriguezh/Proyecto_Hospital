@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Farmaceuta;
 import org.example.proyectohospital.Modelo.Medico;
 import org.example.proyectohospital.Modelo.Personal;
@@ -32,8 +33,7 @@ public class TabFarmaceutasEnAdminController implements Initializable {
     @FXML private TextField txtNombreFarmaceuta;
     @FXML private TextField txtIdFarmaceuta;
 
-    //private Personal persona = new Farmaceuta("Luis","1111","1111");
-    private final GestorPersonal gestor = new GestorPersonal();
+    private final GestorPersonal gestor = Hospital.getInstance().getGestorPersonal();
     private ObservableList<Farmaceuta> listaFarmaceuta = FXCollections.observableArrayList();
 
     @FXML

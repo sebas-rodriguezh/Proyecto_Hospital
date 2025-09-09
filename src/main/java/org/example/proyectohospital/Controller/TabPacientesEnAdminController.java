@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Logica.GestorPacientes;
+import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Paciente;
 
 import java.awt.event.ActionEvent;
@@ -36,7 +37,7 @@ public class TabPacientesEnAdminController {
     @FXML private Button btnBuscarPaciente;
 
 
-    private final GestorPacientes gestor = new GestorPacientes();
+    private final GestorPacientes gestor = Hospital.getInstance().getPacientes();
     private ObservableList<Paciente> listaPacientes = FXCollections.observableArrayList();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
