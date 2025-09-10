@@ -24,9 +24,14 @@
             <clave>1234</clave>
         </Personal>
         <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="farmaceutaEntity">
-            <nombre>Ana López</nombre>
-            <id>22222</id>
-            <clave>1234</clave>
+            <nombre>Luis Pedregal</nombre>
+            <id>45645</id>
+            <clave>45645</clave>
+        </Personal>
+        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="farmaceutaEntity">
+            <nombre>Celes Chinchilla</nombre>
+            <id>3239</id>
+            <clave>3239</clave>
         </Personal>
     </personal>
 </personalData>

@@ -117,8 +117,7 @@ public class TabMedicamentosEnAdminController implements Initializable{
             mostrarAlerta("Error", "Error al borrar medicamento: " + e.getMessage());
         }
 
-
-        gestor.eliminar(seleccionado.getCodigo());
+        //gestor.eliminar(seleccionado.getCodigo());
     }
 
     @FXML

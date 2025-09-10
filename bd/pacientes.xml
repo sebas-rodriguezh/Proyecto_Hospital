@@ -2,12 +2,6 @@
 <pacientesData>
     <pacientes>
         <Paciente>
-            <id>P001</id>
-            <nombre>Pedro Martínez</nombre>
-            <telefono>12345678</telefono>
-            <fechaNacimiento>1990-05-15</fechaNacimiento>
-        </Paciente>
-        <Paciente>
             <id>P002</id>
             <nombre>Laura Correa</nombre>
             <telefono>88654388</telefono>

@@ -131,6 +131,35 @@ public class GestorPersonal {
         }
     }
 
+    public Personal update(Personal actualizado, String idOriginal) {
+        try {
+            if (actualizado == null || idOriginal == null) {
+                throw new IllegalArgumentException("El personal no puede ser nulo");
+            }
+
+            PersonalConector data = store.load();
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
+
+            for (int i = 0; i < data.getPersonal().size(); i++) {
+                PersonalEntity actual = data.getPersonal().get(i);
+                if (actual.getId().equals(idOriginal)) {
+                    data.getPersonal().set(i, PersonalMapper.toXML(actualizado));
+                    store.save(data);
+                    actualizarRecetasConPersonal(actualizado, gestorRecetas);
+                    return actualizado;
+                }
+            }
+
+            throw new IllegalArgumentException("Personal no encontrado con ID: " + actualizado.getId());
+        } catch (Exception e) {
+            throw new RuntimeException("Error actualizando personal: " + e.getMessage());
+        }
+    }
+
+
+
+
+
     private void actualizarRecetasConPersonal(Personal personalActualizado, GestorRecetas gestorRecetas) {
         try {
             List<Receta> recetasDelPersonal = gestorRecetas.obtenerRecetasPorMedico(personalActualizado.getId());

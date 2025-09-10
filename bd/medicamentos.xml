@@ -31,10 +31,5 @@
             <nombre>Dexometazona</nombre>
             <presentacion>Liquido 250ml</presentacion>
         </Medicamento>
-        <Medicamento>
-            <codigo>PAR002</codigo>
-            <nombre>Paracetamol</nombre>
-            <presentacion>Liquido 100ml</presentacion>
-        </Medicamento>
     </medicamentos>
 </medicamentosData>
