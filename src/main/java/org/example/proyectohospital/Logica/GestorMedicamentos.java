@@ -115,6 +115,36 @@ public class GestorMedicamentos {
         }
     }
 
+    public Medicamento update(Medicamento actualizado, String codigoOriginal) {
+        try {
+            if (actualizado == null || codigoOriginal == null) {
+                throw new IllegalArgumentException("Medicamento o código original no pueden ser nulos");
+            }
+
+            MedicamentoConector data = store.load();
+
+            for (int i = 0; i < data.getMedicamentos().size(); i++) {
+                MedicamentoEntity actual = data.getMedicamentos().get(i);
+
+                if (actual.getCodigo().equals(codigoOriginal)) {
+                    // Encontramos el medicamento a modificar
+                    data.getMedicamentos().set(i, MedicamentoMapper.toXML(actualizado));
+                    store.save(data);
+                    return actualizado;
+                }
+            }
+
+            throw new IllegalArgumentException("Medicamento no encontrado con código: " + codigoOriginal);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error actualizando medicamento: " + e.getMessage());
+        }
+    }
+
+
+
+
+
     public Boolean deleteById(String codigo) {
         try {
             if (codigo == null || codigo.trim().isEmpty()) {

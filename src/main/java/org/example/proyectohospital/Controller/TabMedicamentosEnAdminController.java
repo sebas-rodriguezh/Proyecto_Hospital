@@ -31,7 +31,7 @@ public class TabMedicamentosEnAdminController implements Initializable{
     @FXML TableColumn<Medicamento, String> colPresentacionMedicamento;
 
     private final GestorMedicamentos gestor = Hospital.getInstance().getGestorMedicamentos();
-    private ObservableList<Medicamento> listaMedicamentos = FXCollections.observableArrayList();
+    private final ObservableList<Medicamento> listaMedicamentos = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -39,26 +39,35 @@ public class TabMedicamentosEnAdminController implements Initializable{
         colNombreMedicamento.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colPresentacionMedicamento.setCellValueFactory(new PropertyValueFactory<>("presentacion"));
         tbvResultadoBusquedaMedicamento.setItems(listaMedicamentos);
+
+        mostrarTodosLosMedicamentos();
     }
     @FXML
-    private void guardarMedicamento(){
-        String codigo = txtCodigoMedicamento.getText();
-        String nombre = txtNombreMedicamento.getText();
-        String presentacion = txtPresentacionMedicamento.getText();
+    private void guardarMedicamento() {
+        String codigo = txtCodigoMedicamento.getText().trim();
+        String nombre = txtNombreMedicamento.getText().trim();
+        String presentacion = txtPresentacionMedicamento.getText().trim();
 
-        if(codigo.isEmpty() || nombre.isEmpty() || presentacion.isEmpty()){
+        if(codigo.isEmpty() || nombre.isEmpty() || presentacion.isEmpty()) {
             mostrarAlerta("Error","Debe llenar todos los campos obligatorios");
             return;
         }
 
-        Medicamento nuevo = new Medicamento(codigo,nombre,presentacion);
-        boolean insertado = gestor.insertarMedicamento(nuevo);
+        try {
+            Medicamento nuevo = new Medicamento(nombre, presentacion, codigo);
+            boolean insertado = gestor.insertarMedicamento(nuevo);
 
-        if(!insertado){
-            mostrarAlerta("Error", "No se logro guardar este medicamento");
-            return;
+            if (insertado) {
+                mostrarTodosLosMedicamentos(); //Lo que hace es solo setear a la tableView lo que tiene el gestor.
+                limpiarCamposMedicamentos();
+                mostrarAlerta("Éxito", "Medicamento guardado correctamente");
+            } else {
+                mostrarAlerta("Error", "Ya existe un medicamento con ese código");
+
+            }
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al guardar medicamento: " + e.getMessage());
         }
-        limpiarCamposMedicamentos();
     }
 
     @FXML
@@ -70,47 +79,92 @@ public class TabMedicamentosEnAdminController implements Initializable{
     }
 
     @FXML
-    private void buscarMedicamento(){
-        String criterio = txtBuscarMedicamento.getText().toLowerCase();
+    private void buscarMedicamento() {
+        String criterio = txtBuscarMedicamento.getText().toLowerCase().trim();
 
-        if(criterio.isEmpty()){
-            mostrarAlerta("Error","Ingrese un nombre o codigo valido");
+        if(criterio.isEmpty()) {
+            mostrarTodosLosMedicamentos(); //Si no pone nada, se muestra todo.
             return;
         }
 
-        List<Medicamento> resultados = gestor.getMedicamentos().stream().filter(p->p.getCodigo().toLowerCase().contains(criterio)||p.getNombre().toLowerCase().contains(criterio)).collect(Collectors.toList());
+        try {
+            List<Medicamento> resultados = gestor.getMedicamentos().stream().filter(p->p.getCodigo().toLowerCase().contains(criterio)||p.getNombre().toLowerCase().contains(criterio)).collect(Collectors.toList());
+            listaMedicamentos.setAll(resultados); //Si encontramos, la listaMedicamentos queda con los resultados de la búsqueda.
 
-        listaMedicamentos.setAll(resultados);
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al buscar medicamento: " + e.getMessage());
+        }
     }
 
     @FXML
-    private void borrarMedicamento(){
+    private void borrarMedicamento() {
         Medicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
-        if(seleccionado != null){
-            mostrarAlerta("Error", "Debe seleccionar un medicamento para borrar");
+        if(seleccionado == null){
+            mostrarAlerta("Error", "Debe seleccionar un medicamento para borrar.");
             return;
         }
+
+        try {
+            boolean eliminado = gestor.eliminar(seleccionado.getCodigo()); //FALTA ELIMINACION CASCADA EN RECETAS.
+            if (eliminado) {
+                mostrarTodosLosMedicamentos(); //Se muestra nuevamente todo menos el medicamento borrado.
+                mostrarAlerta("Éxito", "Medicamento eliminado correctamente");
+            } else {
+                mostrarAlerta("Error", "No se pudo eliminar el medicamento");
+            }
+        }
+        catch (Exception e) {
+            mostrarAlerta("Error", "Error al borrar medicamento: " + e.getMessage());
+        }
+
+
         gestor.eliminar(seleccionado.getCodigo());
     }
 
     @FXML
-    private void modificarMedicamento(){
+    private void modificarMedicamento() {
         Medicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
-        if(seleccionado != null){
+        if(seleccionado == null) {
             mostrarAlerta("Error", "Debe seleccionar un medicamento  para modificar");
             return;
         }
-        seleccionado.setCodigo(txtCodigoMedicamento.getText());
-        seleccionado.setNombre(txtNombreMedicamento.getText());
-        seleccionado.setPresentacion(txtPresentacionMedicamento.getText());
-        limpiarCamposMedicamentos();
+        String nombre = txtNombreMedicamento.getText().trim();
+        String presentacion = txtPresentacionMedicamento.getText().trim();
+        String codigo = txtCodigoMedicamento.getText().trim();
+
+        if (nombre.isEmpty() || presentacion.isEmpty() ||  codigo.isEmpty()) {
+            mostrarAlerta("Error", "Complete los campos");
+            return;
+        }
+
+        try {
+            String codigoOriginal = seleccionado.getCodigo();
+            seleccionado.setCodigo(codigo);
+            seleccionado.setNombre(nombre);
+            seleccionado.setPresentacion(presentacion);
+
+            gestor.update(seleccionado, codigoOriginal);
+            mostrarTodosLosMedicamentos();
+            limpiarCamposMedicamentos();
+            mostrarAlerta("Éxito", "Medicamento modificado correctamente");
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al modificar medicamento: " + e.getMessage());
+
+        }
     }
 
     @FXML
-    public void mostrarTodosLosMedicamentos(){
-        listaMedicamentos.setAll(gestor.getMedicamentos());
+    public void mostrarTodosLosMedicamentos() {
+        try {
+            listaMedicamentos.setAll(gestor.getMedicamentos());
+        }
+        catch (Exception e) {
+            mostrarAlerta("Error", "Error al cargar medicamentos: " + e.getMessage());
+
+        }
     }
-    private void mostrarAlerta(String titulo, String mensaje){
+
+    private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
         alert.setHeaderText(null);

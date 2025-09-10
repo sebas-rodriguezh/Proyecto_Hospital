@@ -12,9 +12,9 @@
             <presentacion>Tableta 400mg</presentacion>
         </Medicamento>
         <Medicamento>
-            <codigo>AMO003</codigo>
-            <nombre>Amoxicilina</nombre>
-            <presentacion>Cápsula 250mg</presentacion>
+            <codigo>CON493</codigo>
+            <nombre>Conrelax</nombre>
+            <presentacion>Liquido 500ml</presentacion>
         </Medicamento>
         <Medicamento>
             <codigo>ASP004</codigo>
@@ -25,6 +25,16 @@
             <codigo>LOR005</codigo>
             <nombre>Loratadina</nombre>
             <presentacion>Tableta 10mg</presentacion>
+        </Medicamento>
+        <Medicamento>
+            <codigo>DEX2023</codigo>
+            <nombre>Dexometazona</nombre>
+            <presentacion>Liquido 250ml</presentacion>
+        </Medicamento>
+        <Medicamento>
+            <codigo>PAR002</codigo>
+            <nombre>Paracetamol</nombre>
+            <presentacion>Liquido 100ml</presentacion>
         </Medicamento>
     </medicamentos>
 </medicamentosData>
