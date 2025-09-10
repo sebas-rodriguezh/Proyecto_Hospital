@@ -7,17 +7,17 @@
                 <nombre>Dr. Juan Pérez modelele</nombre>
                 <id>MED001</id>
                 <clave>nuevaClaveSegura</clave>
-                <especialidad>Locura</especialidad>
+                <especialidad>CambiosDos</especialidad>
             </personal>
             <paciente>
                 <id>PAC001</id>
                 <nombre>Majid</nombre>
-                <telefono>2233</telefono>
+                <telefono>43504543</telefono>
                 <fechaNacimiento>1990-05-15</fechaNacimiento>
             </paciente>
             <estado>2</estado>
-            <fechaPrescripcion>2025-09-09</fechaPrescripcion>
-            <fechaRetiro>2025-09-16</fechaRetiro>
+            <fechaPrescripcion>2025-09-10</fechaPrescripcion>
+            <fechaRetiro>2025-09-17</fechaRetiro>
             <detallesMedicamentos>
                 <DetalleMedicamento>
                     <medicamento>

@@ -304,7 +304,7 @@ public class MainPrueba {
             // 3. Modificar el médico
             System.out.println("\n🔧 Modificando médico...");
             medico.setNombre("Dr. Juan Pérez modelele");
-            medico.setEspecialidad("Locura");
+            medico.setEspecialidad("CambiosDos");
             gestorPersonal.update(medico);
 
             // 4. Verificar cambios en el médico
@@ -360,7 +360,7 @@ public class MainPrueba {
             // 3. Modificar el paciente
             System.out.println("\n🔧 Modificando paciente...");
             paciente.setNombre("Majid");
-            paciente.setTelefono(2233);
+            paciente.setTelefono(43504543);
             gestorPacientes.update(paciente);
 
             // 4. Verificar cambios en el paciente

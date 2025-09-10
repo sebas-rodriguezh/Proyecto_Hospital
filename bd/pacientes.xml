@@ -9,15 +9,27 @@
         </Paciente>
         <Paciente>
             <id>P002</id>
-            <nombre>Laura Sánchez</nombre>
-            <telefono>87654321</telefono>
-            <fechaNacimiento>1985-10-20</fechaNacimiento>
+            <nombre>Laura Correa</nombre>
+            <telefono>88654388</telefono>
+            <fechaNacimiento>1978-10-27</fechaNacimiento>
         </Paciente>
         <Paciente>
             <id>P003</id>
             <nombre>Carlos López</nombre>
             <telefono>11223344</telefono>
             <fechaNacimiento>1995-03-10</fechaNacimiento>
+        </Paciente>
+        <Paciente>
+            <id>P004</id>
+            <nombre>Ana Rodriguez</nombre>
+            <telefono>11873364</telefono>
+            <fechaNacimiento>2004-09-24</fechaNacimiento>
+        </Paciente>
+        <Paciente>
+            <id>PAC005</id>
+            <nombre>Sebastián Munjia</nombre>
+            <telefono>22490130</telefono>
+            <fechaNacimiento>2004-09-23</fechaNacimiento>
         </Paciente>
     </pacientes>
 </pacientesData>

@@ -5,7 +5,7 @@
             <nombre>Dr. Juan Pérez modelele</nombre>
             <id>MED001</id>
             <clave>nuevaClaveSegura</clave>
-            <especialidad>Locura</especialidad>
+            <especialidad>CambiosDos</especialidad>
         </Personal>
         <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="administradorEntity">
             <nombre>Carlos López</nombre>
