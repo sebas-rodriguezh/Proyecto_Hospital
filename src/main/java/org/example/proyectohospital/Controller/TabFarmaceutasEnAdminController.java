@@ -82,10 +82,18 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                 seleccionado.setNombre(nombre);
                 seleccionado.setClave(id);
 
-                gestor.update(seleccionado, idOriginal);
-                mostrarTodosLosFarmaceutas();
-                limpiarCamposFarmaceutas();
-                mostrarAlerta("Éxito", "Medicamento modificado correctamente");
+
+                //Acá se deben de validar las modificaciones.
+                if (gestor.existePersonalConEseID(id) || gestorPacientes.existeAlguienConEseID(id)) {
+                    mostrarAlerta("Error", "El ID nuevo, ya está registrado en el sistema.");
+                    return;
+                } else {
+                    gestor.update(seleccionado, idOriginal);
+                    mostrarTodosLosFarmaceutas();
+                    limpiarCamposFarmaceutas();
+                    mostrarAlerta("Éxito", "Medicamento modificado correctamente");
+                }
+
             } catch (Exception e) {
                 mostrarAlerta("Error", "Error al modificar medicamento: " + e.getMessage());
 

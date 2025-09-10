@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.example.proyectohospital.Logica.GestorPacientes;
 import org.example.proyectohospital.Logica.GestorPersonal;
 import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Medico;
@@ -20,21 +21,22 @@ import java.util.stream.Collectors;
 public class MedicoEnAdminViewController implements Initializable {
     @FXML private Button btnMostrarTodosLosMedicos;
     @FXML private Button btnModificarMedico;
-    @FXML private TextField txtBuscarMedico;
     @FXML private Button btnBuscarMedico;
+    @FXML private Button btnBorrarMedico;
+    @FXML private Button btnLimpiarCampos;
+    @FXML private Button btnGuardarMedico;
+    @FXML private TextField txtBuscarMedico;
     @FXML private TableView<Medico> tbvResultadoBusquedaMedico;
     @FXML private TableColumn<Medico, String> colIDMedico;
     @FXML private TableColumn<Medico, String> colNombreMedico;
     @FXML private TableColumn<Medico, String> colEspecialidadMedico;
-    @FXML private Button btnBorrarMedico;
-    @FXML private Button btnLimpiarCampos;
-    @FXML private Button btnGuardarMedico;
     @FXML private TextField txtEspecialidadMedico;
     @FXML private TextField txtNombreMedico;
     @FXML private TextField txtIdMedico;
 
-    private GestorPersonal gestor = Hospital.getInstance().getGestorPersonal();
-    private ObservableList<Medico> listaMedicos = FXCollections.observableArrayList();
+    private final GestorPersonal gestor = Hospital.getInstance().getGestorPersonal();
+    private final GestorPacientes gestorPacientes = Hospital.getInstance().getGestorPacientes();
+    private final ObservableList<Medico> listaMedicos = FXCollections.observableArrayList();
 
     public MedicoEnAdminViewController() {
 
@@ -42,44 +44,115 @@ public class MedicoEnAdminViewController implements Initializable {
 
     @FXML
     public void mostrarTodosLosMedicos() {
-        List<Medico> medicos = gestor.obtenerPersonalPorTipo("Medico").stream().map(p-> (Medico)p).toList();
-        listaMedicos.setAll(medicos);
+        try {
+            List<Medico> medicos = gestor.obtenerPersonalPorTipo("Medico").stream().map(p-> (Medico)p).toList();
+            listaMedicos.setAll(medicos);
+        }
+        catch (Exception e) {
+            mostrarAlerta("Error","Error al cargar medicos." + e.getMessage());
+        }
     }
 
     @FXML
     private void modificarMedico(ActionEvent actionEvent) {
         Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
-        if (seleccionado != null) {
+
+        if (seleccionado == null)
+        {
             mostrarAlerta("Error", "Seleccione un medico ");
+            return;
         }
+        try
+        {
+            //Capturando de pantalla.
+            String id = txtIdMedico.getText().trim();
+            String nombre = txtNombreMedico.getText().trim();
+            String especialidad = txtEspecialidadMedico.getText().trim();
 
-        seleccionado.setNombre(txtNombreMedico.getText());
-        seleccionado.setEspecialidad(txtEspecialidadMedico.getText());
+            if (id.isEmpty() || nombre.isEmpty() || especialidad.isEmpty())
+            {
+                mostrarAlerta("Error", "Debe de rellenar todos los campos.");
+                return;
+            }
 
-        limpiarCamposMedicos();
+            try
+            {
+                String idOriginal = seleccionado.getId();
+                seleccionado.setId(id);
+                seleccionado.setClave(id);
+                seleccionado.setNombre(nombre);
+                seleccionado.setEspecialidad(especialidad);
+
+                //Acá se deben de validar las modificaciones.
+                if (gestor.existePersonalConEseID(id) || gestorPacientes.existeAlguienConEseID(id)) {
+                    mostrarAlerta("Error", "El ID nuevo, ya está registrado en el sistema.");
+                    return;
+                } else {
+                    gestor.update(seleccionado, idOriginal);
+                    mostrarTodosLosMedicos();
+                    limpiarCamposMedicos();
+                    mostrarAlerta("Éxito", "Medico modificado correctamente");
+                }
+            }
+            catch (Exception e)
+            {
+                mostrarAlerta("Error", "Error al modificar medico: " + e.getMessage());
+            }
+
+        }
+        catch (Exception e)
+        {
+            mostrarAlerta("Error","Error al modificar medico." + e.getMessage());
+        }
     }
 
     @FXML
     private void buscarMedico(ActionEvent actionEvent) {
         String criterio = txtBuscarMedico.getText().toLowerCase();
-        if(criterio.isEmpty()){
+        if(criterio.isEmpty()) {
             mostrarAlerta("Error", "Ingrese un nombre o identificacion valido");
             return;
         }
-
-        List<Medico> fitrados = gestor.obtenerPersonalPorTipo("Medico").stream().map(p->(Medico)p).filter(m-> m.getId().toLowerCase().contains(criterio) || m.getNombre().toLowerCase().contains(criterio)).collect(Collectors.toList());
-        listaMedicos.setAll(fitrados);
+        try
+        {
+            List<Medico> resultados = gestor.obtenerPersonalPorTipo("Medico").stream()
+                    .map(p -> (Medico) p)
+                    .filter(f -> {
+                        String textoBusqueda = criterio.toLowerCase().trim();
+                        return f.getId().toLowerCase().contains(textoBusqueda) ||
+                                f.getNombre().toLowerCase().contains(textoBusqueda);
+                    })
+                    .collect(Collectors.toList());
+            listaMedicos.setAll(resultados);
+        }
+        catch (Exception e) {
+            mostrarAlerta("Error","Error al buscar medico." + e.getMessage());
+        }
     }
 
 
     @FXML
     private void borrarMedico(ActionEvent actionEvent) {
         Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
-        if (seleccionado != null) {
+        if (seleccionado == null) {
             mostrarAlerta("Error", "Debe seleccionar un medico para borrar");
             return;
         }
-        gestor.eliminar(seleccionado.getId());
+        try {
+            boolean eliminado = gestor.eliminar(seleccionado.getId());
+            if (eliminado) {
+                mostrarTodosLosMedicos();
+                limpiarCamposMedicos();
+                mostrarAlerta("Éxito", "Medico eliminado correctamente");
+
+            } else {
+                mostrarAlerta("Error", "No se pudo eliminar el medico");
+            }
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al borrar medico: " + e.getMessage());
+
+        }
+
 
     }
 
@@ -93,24 +166,36 @@ public class MedicoEnAdminViewController implements Initializable {
 
     @FXML
     private void guardarMedico(ActionEvent actionEvent) {
-        String idMedico = txtIdMedico.getText();
-        String nombreMedico = txtNombreMedico.getText();
-        String especialidadMedico = txtEspecialidadMedico.getText();
 
-        if(idMedico.isEmpty() || nombreMedico.isEmpty() || especialidadMedico.isEmpty()) {
-            mostrarAlerta("Error","Debe llenar todos los campos obligatorios");
-            return;
+        try {
+            String idMedico = txtIdMedico.getText();
+            String nombreMedico = txtNombreMedico.getText();
+            String especialidadMedico = txtEspecialidadMedico.getText();
+
+            if(idMedico.isEmpty() || nombreMedico.isEmpty() || especialidadMedico.isEmpty()) {
+                mostrarAlerta("Error","Debe llenar todos los campos obligatorios");
+                return;
+            }
+            Personal nuevo = new Medico(nombreMedico, idMedico, idMedico, especialidadMedico);
+            boolean respuestaPacientes = gestorPacientes.existeAlguienConEseID(nuevo.getId());
+            boolean insertado = gestor.insertarPersonal(nuevo,respuestaPacientes);
+
+            if(insertado) {
+                mostrarTodosLosMedicos();
+                limpiarCamposMedicos();
+                mostrarAlerta(" Éxito","Paciente guardado correctamente.");
+            }
+
+            else
+            {
+                mostrarAlerta("Error", "Ya existe un usuario con ese ID");
+            }
+
         }
-
-        Medico medico = new Medico(nombreMedico, idMedico, idMedico,especialidadMedico); //idmedico quedaria como la clave por defecto
-        boolean nuevo = gestor.insertarPersonal(medico,false);
-
-        if(!nuevo){
+        catch (Exception e) {
             mostrarAlerta("Error","No se logro insertar el medico");
-            return;
         }
 
-        limpiarCamposMedicos();
     }
 
     @Override
@@ -123,6 +208,9 @@ public class MedicoEnAdminViewController implements Initializable {
 
         colEspecialidadMedico.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getEspecialidad()));
+
+        tbvResultadoBusquedaMedico.setItems(listaMedicos);
+        mostrarTodosLosMedicos();
     }
 
     private void mostrarAlerta(String titulo, String mensaje){
