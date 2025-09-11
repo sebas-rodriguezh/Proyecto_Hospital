@@ -57,54 +57,54 @@ public class MedicoEnAdminViewController implements Initializable {
     private void modificarMedico(ActionEvent actionEvent) {
         Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
 
-        if (seleccionado == null)
-        {
-            mostrarAlerta("Error", "Seleccione un medico ");
+        if (seleccionado == null) {
+            mostrarAlerta("Error", "Seleccione un medico");
             return;
         }
-        try
-        {
-            //Capturando de pantalla.
-            String id = txtIdMedico.getText().trim();
+
+        try {
+            String nuevoId = txtIdMedico.getText().trim();
             String nombre = txtNombreMedico.getText().trim();
             String especialidad = txtEspecialidadMedico.getText().trim();
 
-            if (id.isEmpty() || nombre.isEmpty() || especialidad.isEmpty())
-            {
+            if (nuevoId.isEmpty() || nombre.isEmpty() || especialidad.isEmpty()) {
                 mostrarAlerta("Error", "Debe de rellenar todos los campos.");
                 return;
             }
 
-            try
-            {
-                String idOriginal = seleccionado.getId();
-                seleccionado.setId(id);
-                seleccionado.setClave(id);
-                seleccionado.setNombre(nombre);
-                seleccionado.setEspecialidad(especialidad);
-
-                //Acá se deben de validar las modificaciones.
-                if (gestor.existePersonalConEseID(id) || gestorPacientes.existeAlguienConEseID(id)) {
-                    mostrarAlerta("Error", "El ID nuevo, ya está registrado en el sistema.");
+            if (!seleccionado.getId().equals(nuevoId)) {
+                if (gestor.existePersonalConEseID(nuevoId) || gestorPacientes.existeAlguienConEseID(nuevoId)) {
+                    mostrarAlerta("Error", "El ID nuevo ya está registrado en el sistema.");
                     return;
-                } else {
-                    gestor.update(seleccionado, idOriginal);
-                    mostrarTodosLosMedicos();
-                    limpiarCamposMedicos();
-                    mostrarAlerta("Éxito", "Medico modificado correctamente");
                 }
             }
-            catch (Exception e)
-            {
-                mostrarAlerta("Error", "Error al modificar medico: " + e.getMessage());
+
+            String idOriginal = seleccionado.getId();
+
+            seleccionado.setId(nuevoId);
+            seleccionado.setClave(nuevoId);
+            seleccionado.setNombre(nombre);
+            seleccionado.setEspecialidad(especialidad);
+
+            gestor.update(seleccionado, idOriginal);
+
+            Medico medicoLogueado = Hospital.getInstance().getMedicoLogueado();
+            if (medicoLogueado != null && medicoLogueado.getId().equals(idOriginal)) {
+                Hospital.getInstance().setMedicoLogueado(seleccionado);
             }
 
-        }
-        catch (Exception e)
-        {
-            mostrarAlerta("Error","Error al modificar medico." + e.getMessage());
+            mostrarTodosLosMedicos();
+            limpiarCamposMedicos();
+            mostrarAlerta("Éxito", "Médico modificado correctamente");
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al modificar medico: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+
+
 
     @FXML
     private void buscarMedico(ActionEvent actionEvent) {

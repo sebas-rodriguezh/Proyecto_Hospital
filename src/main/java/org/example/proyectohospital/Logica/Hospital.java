@@ -1,5 +1,7 @@
 package org.example.proyectohospital.Logica;
 
+import org.example.proyectohospital.Modelo.Medico;
+
 import java.nio.file.Paths;
 
 public class Hospital {
@@ -8,6 +10,7 @@ public class Hospital {
     private GestorPacientes gestorPacientes;
     private GestorPersonal gestorPersonal;
     private GestorRecetas gestorRecetas;
+    private Medico medicoLogueado;
 
     private static final String RUTA_BASE = Paths.get(System.getProperty("user.dir"), "bd").toString();
     private static final String RUTA_PACIENTES_DEFAULT = Paths.get(RUTA_BASE, "pacientes.xml").toString();
@@ -149,6 +152,21 @@ public class Hospital {
     public void setMedicamentos(GestorMedicamentos medicamentos) {
         this.gestorMedicamentos = medicamentos;
     }
+
+    public void setMedicoLogueado(Medico medico) {
+        this.medicoLogueado = medico;
+        System.out.println("Médico establecido en Hospital: " +
+                (medico != null ? medico.getNombre() : "null"));
+    }
+
+    public Medico getMedicoLogueado() {
+        return medicoLogueado;
+    }
+
+    public boolean hayMedicoLogueado() {
+        return medicoLogueado != null;
+    }
+
 
     // ======== MÉTODOS UTILITARIOS ========
 

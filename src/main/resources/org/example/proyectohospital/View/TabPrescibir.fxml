@@ -86,7 +86,7 @@
                                             <Image url="@../Resources/Assets/Images/pacienteLogoDos.png" />
                                         </image>
                                     </ImageView>
-                                    <TableView id="tbvResultadoBusquedaPaciente" fx:id="tbvResultadoBusquedaPaciente" layoutX="83.0" layoutY="42.0" prefHeight="52.0" prefWidth="531.0">
+                                    <TableView id="tbvResultadoBusquedaPaciente" fx:id="tbvResultadoBusquedaPaciente" layoutX="83.0" layoutY="7.0" prefHeight="101.0" prefWidth="538.0">
                                         <columns>
                                             <TableColumn id="colIDPaciente" fx:id="colIDPaciente" prefWidth="83.0" text="ID" />
                                             <TableColumn id="colNombrePaciente" fx:id="colNombrePaciente" minWidth="7.0" prefWidth="150.0" text="Nombre" />
@@ -94,17 +94,16 @@
                                             <TableColumn id="colTelefonoPaciente" fx:id="colTelefonoPaciente" minWidth="0.0" prefWidth="137.0" text="Teléfono" />
                                         </columns>
                                     </TableView>
-                                    <Label layoutX="220.0" layoutY="10.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Información del paciente" />
                                 </children>
                             </Pane>
                             <Pane layoutX="15.0" layoutY="135.0" prefHeight="112.0" prefWidth="628.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                 <children>
-                                    <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="5.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="73.0" fitWidth="73.0" layoutX="5.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                                         <image>
                                             <Image url="@../Resources/Assets/Images/pildoraF3.jpg" />
                                         </image>
                                     </ImageView>
-                                    <TableView id="tbvResultadoBusquedaMedicamento" fx:id="tbvResultadoBusquedaMedicamento" layoutX="83.0" layoutY="42.0" prefHeight="52.0" prefWidth="538.0">
+                                    <TableView id="tbvResultadoBusquedaMedicamento" fx:id="tbvResultadoBusquedaMedicamento" layoutX="83.0" layoutY="5.0" prefHeight="101.0" prefWidth="538.0">
                                         <columns>
                                             <TableColumn id="colNombreMedicamento" fx:id="colNombreMedicamento" prefWidth="113.0" text="Medicamento" />
                                             <TableColumn id="colPresentacionMedicamento" fx:id="colPresentacionMedicamento" minWidth="7.0" prefWidth="107.0" text="Presentación" />
@@ -113,7 +112,6 @@
                                             <TableColumn id="colDuracionMedicamento" fx:id="colDuracionMedicamento" minWidth="0.0" prefWidth="73.0" text="Duración" />
                                         </columns>
                                     </TableView>
-                                    <Label layoutX="220.0" layoutY="10.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Información del medicamento" />
                                 </children>
                             </Pane>
                         </children>

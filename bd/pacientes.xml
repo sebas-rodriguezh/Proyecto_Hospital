@@ -15,15 +15,9 @@
         </Paciente>
         <Paciente>
             <id>P004</id>
-            <nombre>Ana Rodriguez</nombre>
-            <telefono>11873364</telefono>
-            <fechaNacimiento>2004-09-24</fechaNacimiento>
-        </Paciente>
-        <Paciente>
-            <id>PAC005</id>
-            <nombre>Sebastián Munjia</nombre>
-            <telefono>22490130</telefono>
-            <fechaNacimiento>2004-09-23</fechaNacimiento>
+            <nombre>Camilo Vargas</nombre>
+            <telefono>76543</telefono>
+            <fechaNacimiento>2004-10-19</fechaNacimiento>
         </Paciente>
     </pacientes>
 </pacientesData>

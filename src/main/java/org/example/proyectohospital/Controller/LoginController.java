@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.proyectohospital.Logica.GestorPersonal;
 import org.example.proyectohospital.Logica.Hospital;
+import org.example.proyectohospital.Modelo.Medico;
 import org.example.proyectohospital.Modelo.Personal;
 import org.example.proyectohospital.Logica.InicializadorDatos;
 
@@ -112,6 +113,7 @@ public class LoginController implements Initializable {
         stage.close();
     }
 
+    // Actualización para el método abrirVentanaSegunTipo en LoginController
     private void abrirVentanaSegunTipo(Personal personal) {
         try {
             String fxmlPath = "";
@@ -127,6 +129,13 @@ public class LoginController implements Initializable {
                 case "Medico":
                     fxmlPath = "/org/example/proyectohospital/View/WindowMedico.fxml";
                     windowTitle = "Sistema Hospital - Médico: " + personal.getNombre();
+
+                    if (personal instanceof Medico) {
+                        Hospital.getInstance().setMedicoLogueado((Medico) personal);
+                        System.out.println("✅ Médico guardado en singleton: " + personal.getNombre());
+                    }
+
+
                     break;
 
                 case "Farmaceuta":
@@ -148,12 +157,17 @@ public class LoginController implements Initializable {
             nuevaVentana.setMaximized(true);
             nuevaVentana.show();
 
-            Object controller = loader.getController();
-            if (controller instanceof WindowAdministradorController) {
-                System.out.println("Ventana de administrador abierta para: " + personal.getNombre());
-            } else if (controller instanceof WindowFarmaceutaController) {
-                System.out.println("Ventana de farmaceuta abierta para: " + personal.getNombre());
-            }
+            // Establecer el personal logueado en el controller correspondiente
+//            Object controller = loader.getController();
+//            if (controller instanceof WindowAdministradorController) {
+//                System.out.println("Ventana de administrador abierta para: " + personal.getNombre());
+//            } else if (controller instanceof WindowMedicoController && personal instanceof Medico) {
+//                WindowMedicoController medicoController = (WindowMedicoController) controller;
+//                medicoController.setMedicoActual((Medico) personal);
+//                System.out.println("Ventana de médico abierta para: " + personal.getNombre());
+//            } else if (controller instanceof WindowFarmaceutaController) {
+//                System.out.println("Ventana de farmaceuta abierta para: " + personal.getNombre());
+//            }
 
         } catch (IOException e) {
             System.err.println("Error al abrir ventana: " + e.getMessage());

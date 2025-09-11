@@ -39,16 +39,10 @@
             <clave>74556</clave>
         </Personal>
         <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
-            <nombre>Juana Pereira</nombre>
-            <id>5667455</id>
-            <clave>5667455</clave>
-            <especialidad>Obstetra</especialidad>
-        </Personal>
-        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
-            <nombre>Ronald Ulate</nombre>
-            <id>9032</id>
-            <clave>9032</clave>
-            <especialidad>Neurologia</especialidad>
+            <nombre>Sebas Crack</nombre>
+            <id>1122</id>
+            <clave>1122</clave>
+            <especialidad>Cardiologia</especialidad>
         </Personal>
     </personal>
 </personalData>

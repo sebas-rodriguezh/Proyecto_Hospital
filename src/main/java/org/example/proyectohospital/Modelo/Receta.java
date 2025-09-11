@@ -109,6 +109,19 @@ public class Receta {
         this.detalleMedicamentos = detalleMedicamentos;
     }
 
+    public void agregarDetalleMedicamento(DetalleMedicamento detalle) {
+        if (this.detalleMedicamentos == null) {
+            this.detalleMedicamentos = new ArrayList<>();
+        }
+        this.detalleMedicamentos.add(detalle);
+    }
+
+    public List<DetalleMedicamento> getDetallesMedicamentos() {
+        return detalleMedicamentos != null ? detalleMedicamentos : new ArrayList<>();
+    }
+
+
+
 //    public String mostrarTodosLosDetalles() {
 //        StringBuilder sb = new StringBuilder();
 //        for (DetalleMedicamento detalle : detalleMedicamentos) {
