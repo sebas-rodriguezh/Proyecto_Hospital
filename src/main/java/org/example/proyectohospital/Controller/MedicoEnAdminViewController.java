@@ -145,7 +145,7 @@ public class MedicoEnAdminViewController implements Initializable {
         txtEspecialidadMedico.clear();
         txtBuscarMedico.clear();
         tbvResultadoBusquedaMedico.getSelectionModel().clearSelection();
-        configurarCampoId(true); // 🔥 NUEVO: Configurar campo ID como editable al limpiar
+        configurarCampoId(true);
     }
 
     @FXML
@@ -166,7 +166,7 @@ public class MedicoEnAdminViewController implements Initializable {
             if(insertado) {
                 mostrarTodosLosMedicos();
                 limpiarCamposMedicos();
-                mostrarAlerta(" Éxito","Médico guardado correctamente."); // 🔥 CORREGIDO: era "Paciente"
+                mostrarAlerta(" Éxito","Médico guardado correctamente.");
             }
 
             else
@@ -197,10 +197,10 @@ public class MedicoEnAdminViewController implements Initializable {
         tbvResultadoBusquedaMedico.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
-                        configurarCampoId(false); // ID no editable cuando seleccionas
-                        llenarCamposConMedico(newValue); // Llenar campos con datos del médico
+                        configurarCampoId(false);
+                        llenarCamposConMedico(newValue);
                     } else {
-                        configurarCampoId(true); // ID editable cuando no hay selección
+                        configurarCampoId(true);
                     }
                 }
         );
