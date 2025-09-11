@@ -38,11 +38,5 @@
             <clave>221122</clave>
             <especialidad>General</especialidad>
         </Personal>
-        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
-            <nombre>Carlos Mario</nombre>
-            <id>6453</id>
-            <clave>6453</clave>
-            <especialidad>General</especialidad>
-        </Personal>
     </personal>
 </personalData>
