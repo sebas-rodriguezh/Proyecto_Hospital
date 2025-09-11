@@ -383,5 +383,17 @@ public class GestorRecetas {
         return sb.toString();
     }
 
+    public void guardarCambios() {
+        try {
+            // Ya tienes el store que maneja la persistencia
+            RecetaConector data = store.load(); // Carga los datos actuales
+            store.save(data); // Los guarda nuevamente, aplicando cualquier cambio en memoria
+
+            System.out.println("Cambios guardados en recetas.xml");
+        } catch (Exception e) {
+            System.err.println("Error al guardar cambios en recetas: " + e.getMessage());
+            throw new RuntimeException("No se pudieron guardar los cambios", e);
+        }
+    }
 
 }

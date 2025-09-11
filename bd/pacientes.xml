@@ -15,9 +15,9 @@
         </Paciente>
         <Paciente>
             <id>P004</id>
-            <nombre>Camilo Vargas</nombre>
-            <telefono>76543</telefono>
-            <fechaNacimiento>2004-10-19</fechaNacimiento>
+            <nombre>Celeste Chinchilla</nombre>
+            <telefono>987650</telefono>
+            <fechaNacimiento>2004-10-24</fechaNacimiento>
         </Paciente>
     </pacientes>
 </pacientesData>

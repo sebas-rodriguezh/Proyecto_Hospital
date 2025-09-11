@@ -12,12 +12,6 @@
             <clave>1234</clave>
             <especialidad>Cardiologia</especialidad>
         </Personal>
-        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
-            <nombre>Camila Solano</nombre>
-            <id>2266</id>
-            <clave>2266</clave>
-            <especialidad>Cardiologia</especialidad>
-        </Personal>
         <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="farmaceutaEntity">
             <nombre>Carlos Rodríguez</nombre>
             <id>11111</id>
@@ -39,10 +33,16 @@
             <clave>74556</clave>
         </Personal>
         <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
-            <nombre>Sebas Crack</nombre>
-            <id>1122</id>
-            <clave>1122</clave>
-            <especialidad>Cardiologia</especialidad>
+            <nombre>Sebas Rodriguez</nombre>
+            <id>221122</id>
+            <clave>221122</clave>
+            <especialidad>General</especialidad>
+        </Personal>
+        <Personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+            <nombre>Carlos Mario</nombre>
+            <id>6453</id>
+            <clave>6453</clave>
+            <especialidad>General</especialidad>
         </Personal>
     </personal>
 </personalData>

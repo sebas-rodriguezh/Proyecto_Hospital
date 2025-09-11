@@ -63,33 +63,21 @@ public class MedicoEnAdminViewController implements Initializable {
         }
 
         try {
-            String nuevoId = txtIdMedico.getText().trim();
             String nombre = txtNombreMedico.getText().trim();
             String especialidad = txtEspecialidadMedico.getText().trim();
 
-            if (nuevoId.isEmpty() || nombre.isEmpty() || especialidad.isEmpty()) {
+            if (nombre.isEmpty() || especialidad.isEmpty()) {
                 mostrarAlerta("Error", "Debe de rellenar todos los campos.");
                 return;
             }
 
-            if (!seleccionado.getId().equals(nuevoId)) {
-                if (gestor.existePersonalConEseID(nuevoId) || gestorPacientes.existeAlguienConEseID(nuevoId)) {
-                    mostrarAlerta("Error", "El ID nuevo ya está registrado en el sistema.");
-                    return;
-                }
-            }
-
-            String idOriginal = seleccionado.getId();
-
-            seleccionado.setId(nuevoId);
-            seleccionado.setClave(nuevoId);
             seleccionado.setNombre(nombre);
             seleccionado.setEspecialidad(especialidad);
 
-            gestor.update(seleccionado, idOriginal);
+            gestor.update(seleccionado);
 
             Medico medicoLogueado = Hospital.getInstance().getMedicoLogueado();
-            if (medicoLogueado != null && medicoLogueado.getId().equals(idOriginal)) {
+            if (medicoLogueado != null && medicoLogueado.getId().equals(seleccionado.getId())) {
                 Hospital.getInstance().setMedicoLogueado(seleccionado);
             }
 
@@ -102,9 +90,6 @@ public class MedicoEnAdminViewController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
-
 
     @FXML
     private void buscarMedico(ActionEvent actionEvent) {
@@ -130,7 +115,6 @@ public class MedicoEnAdminViewController implements Initializable {
         }
     }
 
-
     @FXML
     private void borrarMedico(ActionEvent actionEvent) {
         Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
@@ -152,8 +136,6 @@ public class MedicoEnAdminViewController implements Initializable {
             mostrarAlerta("Error", "Error al borrar medico: " + e.getMessage());
 
         }
-
-
     }
 
     @FXML
@@ -162,11 +144,12 @@ public class MedicoEnAdminViewController implements Initializable {
         txtNombreMedico.clear();
         txtEspecialidadMedico.clear();
         txtBuscarMedico.clear();
+        tbvResultadoBusquedaMedico.getSelectionModel().clearSelection();
+        configurarCampoId(true); // 🔥 NUEVO: Configurar campo ID como editable al limpiar
     }
 
     @FXML
     private void guardarMedico(ActionEvent actionEvent) {
-
         try {
             String idMedico = txtIdMedico.getText();
             String nombreMedico = txtNombreMedico.getText();
@@ -183,7 +166,7 @@ public class MedicoEnAdminViewController implements Initializable {
             if(insertado) {
                 mostrarTodosLosMedicos();
                 limpiarCamposMedicos();
-                mostrarAlerta(" Éxito","Paciente guardado correctamente.");
+                mostrarAlerta(" Éxito","Médico guardado correctamente."); // 🔥 CORREGIDO: era "Paciente"
             }
 
             else
@@ -195,7 +178,6 @@ public class MedicoEnAdminViewController implements Initializable {
         catch (Exception e) {
             mostrarAlerta("Error","No se logro insertar el medico");
         }
-
     }
 
     @Override
@@ -210,7 +192,38 @@ public class MedicoEnAdminViewController implements Initializable {
                 new SimpleStringProperty(data.getValue().getEspecialidad()));
 
         tbvResultadoBusquedaMedico.setItems(listaMedicos);
+
+        // 🔥 NUEVO: Listener para controlar cuando seleccionas un médico
+        tbvResultadoBusquedaMedico.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        configurarCampoId(false); // ID no editable cuando seleccionas
+                        llenarCamposConMedico(newValue); // Llenar campos con datos del médico
+                    } else {
+                        configurarCampoId(true); // ID editable cuando no hay selección
+                    }
+                }
+        );
+
+        configurarCampoId(true);
         mostrarTodosLosMedicos();
+    }
+
+    private void configurarCampoId(boolean editable) {
+        txtIdMedico.setEditable(editable);
+        txtIdMedico.setFocusTraversable(editable);
+
+        if (editable) {
+            txtIdMedico.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+        } else {
+            txtIdMedico.setStyle("-fx-background-color: #f0f0f0; -fx-text-fill: #666;");
+        }
+    }
+
+    private void llenarCamposConMedico(Medico medico) {
+        txtIdMedico.setText(medico.getId());
+        txtNombreMedico.setText(medico.getNombre());
+        txtEspecialidadMedico.setText(medico.getEspecialidad());
     }
 
     private void mostrarAlerta(String titulo, String mensaje){
