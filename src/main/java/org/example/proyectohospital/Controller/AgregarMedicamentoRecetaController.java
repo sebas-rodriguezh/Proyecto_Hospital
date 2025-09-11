@@ -36,34 +36,40 @@ public class AgregarMedicamentoRecetaController implements Initializable {
     private Medicamento medicamentoSeleccionado;
     private TabPrescibirController controllerPadre;
 
+    private boolean modoEdicion = false;
+    private DetalleMedicamento detalleOriginal = null;
+
+    public void setModoEdicion(DetalleMedicamento detalleAEditar) {
+        this.modoEdicion = true;
+        this.detalleOriginal = detalleAEditar;
+        this.medicamentoSeleccionado = detalleAEditar.getMedicamento();
+        btnSeleccionar.setDisable(false);
+        tbvResultadoBPaciente.getSelectionModel().select(detalleAEditar.getMedicamento());
+    }
+
+
     public AgregarMedicamentoRecetaController() {
     }
 
-    // Método para establecer la referencia al controller padre
     public void setControllerPadre(TabPrescibirController controller) {
         this.controllerPadre = controller;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configurar las columnas de la tabla
         colCodigoMedicamento.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombreMedicamento.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colPresentacionMedicamento.setCellValueFactory(new PropertyValueFactory<>("presentacion"));
 
-        // Configurar ComboBox de filtros
         comboBoxFiltro.setItems(FXCollections.observableArrayList("Código", "Nombre", "Presentación"));
-        comboBoxFiltro.setValue("Nombre"); // Valor por defecto
+        comboBoxFiltro.setValue("Nombre");
 
-        // Cargar medicamentos desde la lógica de negocio
         cargarMedicamentos();
 
-        // Escuchar cambios en el campo de texto para filtrado en tiempo real
         txtValorBuscado.textProperty().addListener((obs, oldVal, newVal) -> {
             filtrarMedicamentos(newVal);
         });
 
-        // Listener para selección de medicamento
         tbvResultadoBPaciente.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     medicamentoSeleccionado = newValue;
@@ -71,7 +77,7 @@ public class AgregarMedicamentoRecetaController implements Initializable {
                 }
         );
 
-        btnSeleccionar.setDisable(true); // Inicialmente deshabilitado
+        btnSeleccionar.setDisable(true);
     }
 
     private void cargarMedicamentos() {
@@ -129,7 +135,6 @@ public class AgregarMedicamentoRecetaController implements Initializable {
         }
 
         try {
-            // Abrir ventana para configurar detalles del medicamento
             abrirVentanaDetallesMedicamento();
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al abrir detalles del medicamento: " + e.getMessage());
@@ -141,13 +146,16 @@ public class AgregarMedicamentoRecetaController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/View/ModificarDetalleMedicamento.fxml"));
             Parent root = loader.load();
 
-            // Obtener el controller de la ventana de detalles
             ModificarDetalleMedicamentoController detallesController = loader.getController();
             detallesController.setMedicamento(medicamentoSeleccionado);
-            detallesController.setControllerPadre(this); // Establecer referencia a este controller
+            detallesController.setControllerPadre(this);
+
+            if (modoEdicion && detalleOriginal != null) {
+                detallesController.cargarDatosExistentes(detalleOriginal);
+            }
 
             Stage detallesStage = new Stage();
-            detallesStage.setTitle("Configurar Detalles del Medicamento");
+            detallesStage.setTitle(modoEdicion ? "Modificar Detalles del Medicamento" : "Configurar Detalles del Medicamento");
             detallesStage.setScene(new Scene(root));
             detallesStage.initModality(Modality.WINDOW_MODAL);
             detallesStage.initOwner(btnSeleccionar.getScene().getWindow());
@@ -159,18 +167,23 @@ public class AgregarMedicamentoRecetaController implements Initializable {
         }
     }
 
-    // Método llamado desde ModificarDetalleMedicamentoController cuando se guardan los detalles
+
+
     public void recibirDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
         try {
-            // Pasar el detalle del medicamento al controller padre
+            if (modoEdicion && detalleOriginal != null) {
+                detalleMedicamento.setIdDetalle(detalleOriginal.getIdDetalle());
+            }
+
             if (controllerPadre != null) {
                 controllerPadre.agregarDetalleMedicamento(detalleMedicamento);
             }
             cerrarVentana();
         } catch (Exception e) {
-            mostrarAlerta("Error", "Error al agregar medicamento: " + e.getMessage());
+            mostrarAlerta("Error", "Error al procesar medicamento: " + e.getMessage());
         }
     }
+
 
     private void cerrarVentana() {
         Stage stage = (Stage) btnSalir.getScene().getWindow();

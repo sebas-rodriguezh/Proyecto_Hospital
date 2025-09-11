@@ -157,16 +157,11 @@
                             </Pane>
                             <Pane layoutX="10.0" layoutY="139.0" prefHeight="49.0" prefWidth="191.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                 <children>
-                                    <Button id="btnDetallesReceta" fx:id="btnDetallesReceta" alignment="CENTER" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#mostrarDetallesReceta" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Detalles">
+                                    <Button id="btnDetallesReceta" fx:id="btnDetallesReceta" alignment="CENTER" layoutX="8.0" layoutY="10.0" mnemonicParsing="false" onAction="#modificarMedicamentoDeReceta" prefHeight="30.0" prefWidth="174.0" style="-fx-background-color: #556B2F; -fx-text-fill: white; -fx-font-weight: bold;" text="Detalles">
                                         <font>
                                             <Font size="14.0" />
                                         </font>
                                     </Button>
-                                    <ImageView fitHeight="47.0" fitWidth="50.0" layoutX="11.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                                        <image>
-                                            <Image url="@../Resources/Assets/Images/detalles.jpg" />
-                                        </image>
-                                    </ImageView>
                                 </children>
                             </Pane>
                         </children>

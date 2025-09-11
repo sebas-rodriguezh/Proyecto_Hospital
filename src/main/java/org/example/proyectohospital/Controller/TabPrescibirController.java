@@ -22,13 +22,11 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TabPrescibirController implements Initializable {
-
     @FXML private Button btnDetallesReceta;
     @FXML private Button btnLimpiarCampos;
     @FXML private Button btnDescartarMedicamento;
     @FXML private Button btnGuardarReceta;
 
-    // Tabla de detalles de medicamentos
     @FXML private TableColumn<DetalleMedicamento, Integer> colDuracionMedicamento;
     @FXML private TableColumn<DetalleMedicamento, String> colIndicacionesMedicamento;
     @FXML private TableColumn<DetalleMedicamento, Integer> colCantidadMedicamento;
@@ -36,7 +34,6 @@ public class TabPrescibirController implements Initializable {
     @FXML private TableColumn<DetalleMedicamento, String> colNombreMedicamento;
     @FXML private TableView<DetalleMedicamento> tbvResultadoBusquedaMedicamento;
 
-    // Tabla de información del paciente
     @FXML private TableColumn<Paciente, Integer> colTelefonoPaciente;
     @FXML private TableColumn<Paciente, LocalDate> colFechaNacimientoPaciente;
     @FXML private TableColumn<Paciente, String> colNombrePaciente;
@@ -49,46 +46,37 @@ public class TabPrescibirController implements Initializable {
     @FXML private DatePicker dtpFechaPrescripcion;
 
     private final GestorRecetas gestorRecetas = Hospital.getInstance().getGestorRecetas();
-
-    // Variables para almacenar los datos de la receta en construcción
-    private Medico medicoActual; // El médico que inició sesión
+    private Medico medicoActual;
     private Paciente pacienteSeleccionado;
     private ObservableList<DetalleMedicamento> detallesMedicamentos;
-    private static int contadorRecetas = 1; // Contador estático
+    private DetalleMedicamento detalleEnEdicion = null;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configurar columnas de la tabla de pacientes
+
         this.medicoActual = Hospital.getInstance().getMedicoLogueado();
         colIDPaciente.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombrePaciente.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colFechaNacimientoPaciente.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
         colTelefonoPaciente.setCellValueFactory(new PropertyValueFactory<>("telefono"));
 
-        // Configurar columnas de la tabla de medicamentos
-        colNombreMedicamento.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMedicamento().getNombre()));
-        colPresentacionMedicamento.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMedicamento().getPresentacion()));
+        colNombreMedicamento.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMedicamento().getNombre()));
+        colPresentacionMedicamento.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMedicamento().getPresentacion()));
         colCantidadMedicamento.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-        colDuracionMedicamento.setCellValueFactory(new PropertyValueFactory<>("duracion")); // Corregido: "duracion" no "duracionDias"
+        colDuracionMedicamento.setCellValueFactory(new PropertyValueFactory<>("duracion"));
         colIndicacionesMedicamento.setCellValueFactory(new PropertyValueFactory<>("indicacion"));
 
-        // Inicializar lista observable para medicamentos
         detallesMedicamentos = FXCollections.observableArrayList();
         tbvResultadoBusquedaMedicamento.setItems(detallesMedicamentos);
 
-        // Establecer fechas por defecto
         dtpFechaPrescripcion.setValue(LocalDate.now());
         dtpFechaRetiro.setValue(LocalDate.now().plusDays(3));
 
-        // Configurar validaciones simples
-        configurarValidaciones();
+        validarFechas();
     }
 
-    private void configurarValidaciones() {
-        // Validación simple: fecha de retiro no puede ser anterior a prescripción
+    private void validarFechas() {
         dtpFechaRetiro.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && dtpFechaPrescripcion.getValue() != null &&
                     newVal.isBefore(dtpFechaPrescripcion.getValue())) {
@@ -139,59 +127,38 @@ public class TabPrescibirController implements Initializable {
         }
     }
 
-    // Método llamado desde BuscarPacienteController
     public void setPacienteSeleccionado(Paciente paciente) {
         this.pacienteSeleccionado = paciente;
         ObservableList<Paciente> listaPaciente = FXCollections.observableArrayList(paciente);
         tbvResultadoBusquedaPaciente.setItems(listaPaciente);
     }
 
-    // Método llamado desde AgregarMedicamentoRecetaController
     public void agregarDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
-        // Verificar duplicados
-        boolean existe = detallesMedicamentos.stream()
-                .anyMatch(detalle -> detalle.getMedicamento().getCodigo().equals(
-                        detalleMedicamento.getMedicamento().getCodigo()));
-
-        if (existe) {
-            mostrarAlerta("Medicamento duplicado", "Este medicamento ya está en la receta.");
-            return;
+        //Edición
+        if (detalleEnEdicion != null) {
+            for (int i = 0; i < detallesMedicamentos.size(); i++) {
+                if (detallesMedicamentos.get(i).getIdDetalle().equals(detalleEnEdicion.getIdDetalle())) {
+                    detallesMedicamentos.set(i, detalleMedicamento);
+                    detalleEnEdicion = null;
+                    tbvResultadoBusquedaMedicamento.refresh();
+                    return;
+                }
+            }
         }
-        detallesMedicamentos.add(detalleMedicamento);
+        //No edición
+        else {
+            boolean existe = detallesMedicamentos.stream()
+                    .anyMatch(detalle -> detalle.getMedicamento().getCodigo().equals(
+                            detalleMedicamento.getMedicamento().getCodigo()));
+
+            if (existe) {
+                mostrarAlerta("Medicamento duplicado", "Este medicamento ya está en la receta.");
+                return;
+            }
+            detallesMedicamentos.add(detalleMedicamento);
+        }
     }
 
-    @FXML
-    public void mostrarDetallesReceta(ActionEvent actionEvent) {
-//        if (!validarDatos()) return;
-//
-//        StringBuilder resumen = new StringBuilder();
-//        resumen.append("=== RESUMEN DE LA RECETA ===\n\n");
-//        resumen.append("Médico: ").append(medicoActual.getNombre()).append("\n");
-//        resumen.append("Especialidad: ").append(medicoActual.getEspecialidad()).append("\n");
-//        resumen.append("Paciente: ").append(pacienteSeleccionado.getNombre()).append("\n");
-//        resumen.append("Fecha Prescripción: ").append(dtpFechaPrescripcion.getValue()).append("\n");
-//        resumen.append("Fecha Retiro: ").append(dtpFechaRetiro.getValue()).append("\n\n");
-//        resumen.append("Medicamentos:\n");
-//
-//        for (DetalleMedicamento detalle : detallesMedicamentos) {
-//            resumen.append("• ").append(detalle.getMedicamento().getNombre())
-//                    .append(" - ").append(detalle.getCantidad()).append(" unidades")
-//                    .append(" - ").append(detalle.getDuracion()).append(" días\n")
-//                    .append("  ").append(detalle.getIndicaciones()).append("\n\n");
-//        }
-//
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("Detalles de la Receta");
-//        alert.setHeaderText(null);
-//
-//        TextArea textArea = new TextArea(resumen.toString());
-//        textArea.setEditable(false);
-//        textArea.setWrapText(true);
-//        textArea.setPrefRowCount(20);
-//
-//        alert.getDialogPane().setContent(textArea);
-//        alert.showAndWait();
-    }
 
     @FXML
     public void limpiarCamposReceta(ActionEvent actionEvent) {
@@ -205,24 +172,20 @@ public class TabPrescibirController implements Initializable {
     @FXML
     public void descartarMedicamentoDeReceta(ActionEvent actionEvent) {
         DetalleMedicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
-
         if (seleccionado == null) {
             mostrarAlerta("Seleccione medicamento", "Debe seleccionar un medicamento para eliminarlo.");
             return;
         }
-
         detallesMedicamentos.remove(seleccionado);
     }
 
     @FXML
     public void guardarReceta(ActionEvent actionEvent) {
-        if (!validarDatos()) return;
+        if (!validarTodoCompleto()) return;
 
         try {
             String idReceta = generarIdReceta();
-            Receta nuevaReceta = new Receta(idReceta, medicoActual, pacienteSeleccionado,
-                    dtpFechaPrescripcion.getValue(), dtpFechaRetiro.getValue(), 1);
-
+            Receta nuevaReceta = new Receta(idReceta, medicoActual, pacienteSeleccionado, dtpFechaPrescripcion.getValue(), dtpFechaRetiro.getValue(), 1);
 
             for (int i = 0; i < detallesMedicamentos.size(); i++) {
                 DetalleMedicamento detalle = detallesMedicamentos.get(i);
@@ -242,7 +205,7 @@ public class TabPrescibirController implements Initializable {
         }
     }
 
-    private boolean validarDatos() {
+    private boolean validarTodoCompleto() {
         if (medicoActual == null) {
             mostrarAlerta("Error", "No se ha establecido el médico.");
             return false;
@@ -265,12 +228,7 @@ public class TabPrescibirController implements Initializable {
     private String generarIdReceta() {
         LocalDate fecha = LocalDate.now();
         long timestamp = System.currentTimeMillis() % 1000000;
-
-        String idReceta = String.format("REC%02d%02d%06d",
-                fecha.getMonthValue(),
-                fecha.getDayOfMonth(),
-                timestamp);
-
+        String idReceta = String.format("REC%02d%02d%06d", fecha.getMonthValue(), fecha.getDayOfMonth(), timestamp);
         return idReceta;
     }
 
@@ -281,4 +239,37 @@ public class TabPrescibirController implements Initializable {
         alert.setContentText(mensaje);
         alert.show();
     }
+
+    @FXML
+    public void modificarMedicamentoDeReceta(ActionEvent actionEvent) {
+        DetalleMedicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarAlerta("Seleccione medicamento", "Debe seleccionar un medicamento para modificarlo.");
+            return;
+        }
+
+        try {
+            detalleEnEdicion = seleccionado;
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/View/AgregarMedicamentoReceta.fxml"));
+            Parent root = loader.load();
+
+            AgregarMedicamentoRecetaController medicamentoController = loader.getController();
+            medicamentoController.setControllerPadre(this);
+            medicamentoController.setModoEdicion(seleccionado); 
+
+            Stage ventana = new Stage();
+            ventana.setTitle("Modificar Medicamento de la Receta");
+            ventana.setScene(new Scene(root));
+            ventana.initModality(Modality.WINDOW_MODAL);
+            ventana.initOwner(btnSeleccionarMedicamento.getScene().getWindow());
+            ventana.showAndWait();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir la ventana: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

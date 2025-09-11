@@ -14,8 +14,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ModificarDetalleMedicamentoController implements Initializable {
-    @FXML private Button btnSalir;
     @FXML private Button btnGuardar;
+    @FXML private Button btnSalir;
     @FXML private Spinner<Integer> spinnerDuracionEnDias;
     @FXML private Spinner<Integer> spinnerCantidad;
     @FXML private TextField txtIndicaciones;
@@ -23,10 +23,8 @@ public class ModificarDetalleMedicamentoController implements Initializable {
     @FXML private TableColumn<Medicamento, String> colNombreMedicamento;
     @FXML private TableColumn<Medicamento, String> colCodigoMedicamento;
     @FXML private TableView<Medicamento> tbvResultadoMedicamento;
-
     private static int contadorId = 1;
-
-    private Medicamento medicamento; // referencia al medicamento actual
+    private Medicamento medicamento;
     private AgregarMedicamentoRecetaController controllerPadre;
 
     public void setMedicamento(Medicamento medicamento) {
@@ -50,7 +48,6 @@ public class ModificarDetalleMedicamentoController implements Initializable {
             return;
         }
 
-        // Validar que se hayan ingresado datos válidos
         int cantidad = spinnerCantidad.getValue();
         int dias = spinnerDuracionEnDias.getValue();
         String indicaciones = txtIndicaciones.getText().trim();
@@ -66,23 +63,9 @@ public class ModificarDetalleMedicamentoController implements Initializable {
         }
 
         try {
-            // 🔥 GENERAR ID AUTOINCREMENTAL
             String idDetalle = String.valueOf(contadorId++);
+            DetalleMedicamento detalleMedicamento = new DetalleMedicamento(medicamento, idDetalle, cantidad, dias, indicaciones);
 
-            // Crear el DetalleMedicamento con ID autoincremental
-            DetalleMedicamento detalleMedicamento = new DetalleMedicamento(
-                    medicamento,
-                    idDetalle, // ← ID autoincremental
-                    cantidad,
-                    dias,
-                    indicaciones
-            );
-
-            System.out.println("Detalle medicamento creado - ID: " + idDetalle +
-                    ", Medicamento: " + medicamento.getNombre() +
-                    ", Cantidad: " + cantidad);
-
-            // Pasar el detalle al controller padre
             if (controllerPadre != null) {
                 controllerPadre.recibirDetalleMedicamento(detalleMedicamento);
             }
@@ -96,25 +79,21 @@ public class ModificarDetalleMedicamentoController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configurar columnas
         colCodigoMedicamento.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombreMedicamento.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colPresentacionMedicamento.setCellValueFactory(new PropertyValueFactory<>("presentacion"));
 
-        // Configurar spinners con valores por defecto y rangos
         spinnerCantidad.setValueFactory(
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1)
         );
 
         spinnerDuracionEnDias.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 365, 7) // Valor por defecto: 7 días
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 365, 1)
         );
 
-        // Hacer que los spinners sean editables
         spinnerCantidad.setEditable(true);
         spinnerDuracionEnDias.setEditable(true);
 
-        // Agregar validadores para los spinners
         spinnerCantidad.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 spinnerCantidad.getEditor().setText(oldValue);
@@ -126,9 +105,6 @@ public class ModificarDetalleMedicamentoController implements Initializable {
                 spinnerDuracionEnDias.getEditor().setText(oldValue);
             }
         });
-
-        // Configurar placeholder para las indicaciones
-        txtIndicaciones.setPromptText("Ej: Tomar 1 comprimido cada 8 horas después de las comidas");
     }
 
     private void cerrarVentana() {
@@ -143,4 +119,14 @@ public class ModificarDetalleMedicamentoController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    public void cargarDatosExistentes(DetalleMedicamento detalle) {
+        if (detalle != null) {
+            spinnerCantidad.getValueFactory().setValue(detalle.getCantidad());
+            spinnerDuracionEnDias.getValueFactory().setValue(detalle.getDuracion());
+            txtIndicaciones.setText(detalle.getIndicacion());
+        }
+    }
+
+
 }
