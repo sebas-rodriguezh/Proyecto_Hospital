@@ -113,7 +113,6 @@ public class LoginController implements Initializable {
         stage.close();
     }
 
-    // Actualización para el método abrirVentanaSegunTipo en LoginController
     private void abrirVentanaSegunTipo(Personal personal) {
         try {
             String fxmlPath = "";
@@ -156,18 +155,6 @@ public class LoginController implements Initializable {
             nuevaVentana.setScene(new Scene(root));
             nuevaVentana.setMaximized(true);
             nuevaVentana.show();
-
-            // Establecer el personal logueado en el controller correspondiente
-//            Object controller = loader.getController();
-//            if (controller instanceof WindowAdministradorController) {
-//                System.out.println("Ventana de administrador abierta para: " + personal.getNombre());
-//            } else if (controller instanceof WindowMedicoController && personal instanceof Medico) {
-//                WindowMedicoController medicoController = (WindowMedicoController) controller;
-//                medicoController.setMedicoActual((Medico) personal);
-//                System.out.println("Ventana de médico abierta para: " + personal.getNombre());
-//            } else if (controller instanceof WindowFarmaceutaController) {
-//                System.out.println("Ventana de farmaceuta abierta para: " + personal.getNombre());
-//            }
 
         } catch (IOException e) {
             System.err.println("Error al abrir ventana: " + e.getMessage());
