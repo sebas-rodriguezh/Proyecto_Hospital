@@ -144,4 +144,9 @@ public class TabHistoricoRecetasController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+
+    public void refrescarTabla() {
+        btnBuscarHistorico();
+    }
 }

@@ -6,10 +6,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Modelo.Receta;
+import org.example.proyectohospital.Logica.GestorRecetas;
+
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TabEntregaFarmaceutaController implements Initializable {
@@ -22,19 +25,28 @@ public class TabEntregaFarmaceutaController implements Initializable {
     @FXML private Button btnBuscarTabEntregaFarmaceuta;
     @FXML private TextField txtIdNombreEntregaFarmaceuta;
 
+    private GestorRecetas gestorRecetas;
+
+
     @FXML
     public void entregarReceta(ActionEvent actionEvent) {
-        Receta seleccionada= tableTabEntregaFarmaceuta.getSelectionModel().getSelectedItem();
-        if(seleccionada==null){
+        Receta seleccionada = tableTabEntregaFarmaceuta.getSelectionModel().getSelectedItem();
+        if (seleccionada == null) {
             mostrarAlerta("Selección requerida", "Debe seleccionar una receta válida");
+            return;
         }
 
         String detalles = txtDetallesEntregaFarmaceuta.getText().trim();
-        if(detalles.isEmpty()){
-            mostrarAlerta("Selección requerida", "Debe seleccionar una receta válida");
+        if (detalles.isEmpty()) {
+            mostrarAlerta("Datos incompletos", "Debe agregar detalles de entrega");
+            return;
         }
 
-        //LOGICA PARA MARCAR LA RECETA COMO ENTREGADA
+        // Aquí podrías guardar los detalles si quieres
+        if (gestorRecetas.actualizarEstadoReceta(seleccionada.getId(), 4)) { // cambia a Entregada
+            mostrarAlerta("Éxito", "Receta entregada correctamente");
+            buscarRecetaParaEntrega(null); // refrescar tabla
+        }
     }
 
     @FXML
@@ -44,14 +56,19 @@ public class TabEntregaFarmaceutaController implements Initializable {
 
     @FXML
     public void buscarRecetaParaEntrega(ActionEvent actionEvent) {
-        String filtro= txtIdNombreEntregaFarmaceuta.getText().trim();
-        if(filtro.isEmpty()){
-            mostrarAlerta("Búsqueda inválida","Ingrese ID o nombre válido.");
+        String filtro = txtIdNombreEntregaFarmaceuta.getText().trim();
+        List<Receta> recetas = gestorRecetas.obtenerRecetasPorEstado(3);
 
+        if (!filtro.isEmpty()) {
+            recetas = recetas.stream()
+                    .filter(r -> r.getId().toLowerCase().contains(filtro.toLowerCase()) ||
+                            r.getNombrePaciente().toLowerCase().contains(filtro.toLowerCase()))
+                    .toList();
         }
 
-        //LOGICA PARA BUSCAR RECETA PARA ENTREGAR
+        tableTabEntregaFarmaceuta.getItems().setAll(recetas);
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

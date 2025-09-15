@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="572.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.WindowFarmaceutaController">
+<AnchorPane prefHeight="572.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.WindowFarmaceutaController">
     <children>
-        <TabPane prefHeight="566.0" prefWidth="757.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane id="tabPaneFarmaceuta" fx:id="tabPaneFarmaceuta" prefHeight="566.0" prefWidth="757.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                      <!-- Tab 1: Solicitud -->
-                 <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Solicitud">
+                 <Tab id="tabSolicitudFarmaceuta" fx:id="tabSolicitudFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Solicitud">
                      <content>
                          <fx:include source="TabSolicitudFarmaceuta.fxml" />
                     </content>
                 </Tab>
 
                     <!-- Tab 2: Alistado -->
-                 <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Alistado">
+                 <Tab id="tabAlistadoFarmaceuta" fx:id="tabAlistadoFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Alistado">
                       <content>
                         <fx:include source="TabAlistadoFarmaceuta.fxml" />
                         </content>
                  </Tab>
 
                     <!-- Tab 3: Entrega -->
-                <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Entrega">
+                <Tab id="tabEntregaFarmaceuta" fx:id="tabEntregaFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Entrega">
                      <content>
                      <fx:include source="TabEntregaFarmaceuta.fxml" />
                      </content>
                  </Tab>
 
                 <!--Tab 4: Historial Recetas-->
-                <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Histórico Recetas">
+                <Tab id="tabHistoricoFarmaceuta" fx:id="tabHistoricoFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Histórico Recetas">
                     <content>
                         <fx:include source="TabHistoricoRecetas.fxml" />
                     </content>

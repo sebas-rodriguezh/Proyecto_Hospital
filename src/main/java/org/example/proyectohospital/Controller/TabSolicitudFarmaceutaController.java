@@ -6,10 +6,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Modelo.Receta;
+import org.example.proyectohospital.Logica.GestorRecetas;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TabSolicitudFarmaceutaController implements Initializable {
@@ -25,29 +27,45 @@ public class TabSolicitudFarmaceutaController implements Initializable {
     @FXML private Button btnBuscarSolicitud;
     @FXML private Button btnPonerEnProceso;
 
+    private GestorRecetas gestorRecetas;
 
     @FXML
-    private void buscarReceta(ActionEvent event) {
+    public void buscarReceta(ActionEvent event) {
         String filtro = txtBuscarPacienteSolicitud.getText().trim();
         LocalDate fechaRetiro = dateRetiroSolicitud.getValue();
 
-        if(filtro.isEmpty() && fechaRetiro == null) {
-            mostrarAlerta("Selección requerida", "Debe seleccionar una receta válida");
-            return;
-        }
-        //LOGICA DE FILTRADO, BUSCAR RECETAS SEGUN ID, PACIENTE O FECHA
-    }
+        List<Receta> recetas = gestorRecetas.obtenerRecetasPorEstado(1);
 
+        if (!filtro.isEmpty()) {
+            recetas = recetas.stream()
+                    .filter(r -> r.getId().toLowerCase().contains(filtro.toLowerCase()) ||
+                            r.getNombrePaciente().toLowerCase().contains(filtro.toLowerCase()))
+                    .toList();
+        }
+
+        if (fechaRetiro != null) {
+            recetas = recetas.stream()
+                    .filter(r -> r.getFechaRetiro().equals(fechaRetiro))
+                    .toList();
+        }
+
+        tableRecetasSolicitud.getItems().setAll(recetas);
+    }
 
     @FXML
-    private void ponerEnProceso(ActionEvent event) {
+    public void ponerEnProceso(ActionEvent event) {
         Receta receta = tableRecetasSolicitud.getSelectionModel().getSelectedItem();
-        if(receta == null) {
+        if (receta == null) {
             mostrarAlerta("Selección requerida", "Debe seleccionar una receta válida");
             return;
         }
-        //LOGICA ACTUALIZAR EL ESTADO DE LA RECETA
+
+        if (gestorRecetas.actualizarEstadoReceta(receta.getId(), 2)) { // cambia a Confeccionada
+            mostrarAlerta("Éxito", "Receta puesta en proceso correctamente");
+            buscarReceta(null); // refrescar tabla
+        }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

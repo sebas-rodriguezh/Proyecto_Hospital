@@ -6,10 +6,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Modelo.Receta;
+import org.example.proyectohospital.Logica.GestorRecetas;
+
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TabAlistadoFarmaceutaController implements Initializable {
@@ -22,31 +25,44 @@ public class TabAlistadoFarmaceutaController implements Initializable {
     @FXML private TableColumn <Receta, LocalDate> colFechaRetiroAlistado;
     @FXML private TableView <Receta> tableRecetasAlistado;
 
+    private GestorRecetas gestorRecetas;
+
     @FXML
-    private void alistarMedicamentoSeleccionado(ActionEvent actionEvent) {
+    public void buscarReceta(ActionEvent event) {
+        String filtro = txtBuscarPacienteSolicitud.getText().trim();
+
+        List<Receta> recetas = gestorRecetas.obtenerRecetasPorEstado(2);
+
+        if (!filtro.isEmpty()) {
+            recetas = recetas.stream()
+                    .filter(r -> r.getId().toLowerCase().contains(filtro.toLowerCase()) ||
+                            r.getNombrePaciente().toLowerCase().contains(filtro.toLowerCase()))
+                    .toList();
+        }
+
+        tableRecetasAlistado.getItems().setAll(recetas);
+    }
+
+    @FXML
+    public void alistarMedicamentoSeleccionado(ActionEvent actionEvent) {
         Receta seleccionada = tableRecetasAlistado.getSelectionModel().getSelectedItem();
         if (seleccionada == null) {
             mostrarAlerta("Selección requerida", "Debe seleccionar una receta válida");
             return;
         }
 
-        //LOGICA DE ALISTAR EL MEDICAMENTO
-    }
-
-    @FXML
-    private void buscarReceta(ActionEvent actionEvent) {
-        String filtro = txtBuscarPacienteSolicitud.getText().trim();
-        if(filtro.isEmpty()){
-            mostrarAlerta("Búsqueda inválida","Ingrese ID o nombre del paciente.");
-            return;
+        if (gestorRecetas.actualizarEstadoReceta(seleccionada.getId(), 3)) { // cambia a Lista
+            mostrarAlerta("Éxito", "Receta alistada correctamente");
+            buscarReceta(null); // refrescar tabla
         }
-
-        //LOGICA DE BUSCAR RECETA
     }
+
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        gestorRecetas = new GestorRecetas("src/main/resources/recetas.xml");
 
         colIdAlistado.setCellValueFactory(new PropertyValueFactory<>("id"));
 
