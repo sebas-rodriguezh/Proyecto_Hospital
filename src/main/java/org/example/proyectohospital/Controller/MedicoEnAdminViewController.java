@@ -193,7 +193,6 @@ public class MedicoEnAdminViewController implements Initializable {
 
         tbvResultadoBusquedaMedico.setItems(listaMedicos);
 
-        // 🔥 NUEVO: Listener para controlar cuando seleccionas un médico
         tbvResultadoBusquedaMedico.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {

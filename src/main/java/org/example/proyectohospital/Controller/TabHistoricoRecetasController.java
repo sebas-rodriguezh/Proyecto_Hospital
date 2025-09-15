@@ -1,11 +1,15 @@
 package org.example.proyectohospital.Controller;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.proyectohospital.Modelo.DetalleMedicamento;
 import org.example.proyectohospital.Modelo.Receta;
+import org.example.proyectohospital.Logica.GestorRecetas;
+import org.example.proyectohospital.Datos.RecetaEntity;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -23,18 +27,20 @@ public class TabHistoricoRecetasController implements Initializable {
     @FXML private TableColumn<Receta, String> colEstadoHistorico;
 
     // Tabla de detalles de la receta seleccionada
-    @FXML private TableView<Receta> tableDetallesHistorico;
-    @FXML private TableColumn<Receta, String> colMedicamento;
-    @FXML private TableColumn<Receta, String> colPresentacion;
-    @FXML private TableColumn<Receta, Integer> colCantidad;
-    @FXML private TableColumn<Receta, String> colIndicaciones;
-    @FXML private TableColumn<Receta, Integer> colDuracion;
+    @FXML private TableView<DetalleMedicamento> tableDetallesHistorico;
+    @FXML private TableColumn<DetalleMedicamento, String> colMedicamento;
+    @FXML private TableColumn<DetalleMedicamento, String> colPresentacion;
+    @FXML private TableColumn<DetalleMedicamento, Integer> colCantidad;
+    @FXML private TableColumn<DetalleMedicamento, String> colIndicaciones;
+    @FXML private TableColumn<DetalleMedicamento, Integer> colDuracion;
 
     // Campos de búsqueda y filtro
     @FXML private TextField txtBuscarPacienteIdHistoricoRecetas;
     @FXML private ComboBox<String> comboEstadoHistorico;
     @FXML private Button btnBuscarHistorico;
     @FXML private Button btnVerDetallesHistorico;
+
+    private final GestorRecetas gestorRecetas = new GestorRecetas("recetas.xml");
 
     @FXML
     private void btnBuscarHistorico() {
@@ -47,7 +53,12 @@ public class TabHistoricoRecetasController implements Initializable {
         }
 
         //LOGICA FILTRAR RECETAS SEGUN PACIENTE ID O ESTADO
+        var recetas = gestorRecetas.obtenerRecetasPorPaciente(filtro);
+        if(recetas.isEmpty()) {
+            mostrarAlerta("Sin resultados", "No se no encontraron recetas con los criterios indicados");
+        }
 
+        tblViewRecetasHistoricoRecetas.getItems().setAll(recetas);
     }
 
     @FXML
@@ -59,16 +70,29 @@ public class TabHistoricoRecetasController implements Initializable {
         }
 
         // LÓGICA PARA MOSTRAR LOS DETALLES DE LA RECETA EN tableDetallesHistorico
+        var detalles = gestorRecetas.obtenerDetalles(seleccionada.getId());
+
+        if(detalles.isEmpty()){
+            mostrarAlerta("Sin detalles","La receta seleccionada no tiene medicamentos asociados");
+        }
+
+        tableDetallesHistorico.getItems().setAll(detalles);
     }
 
     @FXML
     private void ordenarRecetasHistoricoRecetas(){
         //ORDENAR TABLA
+        tblViewRecetasHistoricoRecetas.getSortOrder().clear();
+        tblViewRecetasHistoricoRecetas.getSortOrder().add(colFechaConfeccionHistorico);
+        tblViewRecetasHistoricoRecetas.sort();
     }
 
     @FXML
     private void ordenarDetallesHistorico() {
         //ORDENAR TABLA
+        tableDetallesHistorico.getSortOrder().clear();
+        tableDetallesHistorico.getSortOrder().add(colMedicamento);
+        tableDetallesHistorico.sort();
     }
 
 
@@ -105,8 +129,8 @@ public class TabHistoricoRecetasController implements Initializable {
             }
         });
 
-        colMedicamento.setCellValueFactory(new PropertyValueFactory<>("medicamento"));
-        colPresentacion.setCellValueFactory(new PropertyValueFactory<>("presentacion"));
+        colMedicamento.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getMedicamento().getNombre()));
+        colPresentacion.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getMedicamento().getPresentacion()));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colIndicaciones.setCellValueFactory(new PropertyValueFactory<>("indicaciones"));
         colDuracion.setCellValueFactory(new PropertyValueFactory<>("duracion"));

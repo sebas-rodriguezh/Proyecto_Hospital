@@ -321,6 +321,12 @@ public class GestorRecetas {
                 .orElse(null);
     }
 
+    public List<DetalleMedicamento> obtenerDetalles(String idReceta) {
+        Receta receta = getRecetaPorID(idReceta);
+        if (receta == null) return List.of();
+        return receta.getDetalleMedicamentos();
+    }
+
     public boolean hayDetalles(String idReceta) {
         Receta receta = getRecetaPorID(idReceta);
         return receta != null && !receta.getDetalleMedicamentos().isEmpty();
@@ -394,6 +400,16 @@ public class GestorRecetas {
             System.err.println("Error al guardar cambios en recetas: " + e.getMessage());
             throw new RuntimeException("No se pudieron guardar los cambios", e);
         }
+    }
+
+    public static String estadoToString(int estado){
+        return switch(estado){
+            case 1 -> "Procesada";
+            case 2 -> "Confeccionada";
+            case 3 -> "Lista";
+            case 4 -> "Entregada";
+            default -> "Desconocido";
+        };
     }
 
 }

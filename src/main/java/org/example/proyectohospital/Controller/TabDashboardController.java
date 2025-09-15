@@ -4,7 +4,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.DetalleMedicamento;
 import org.example.proyectohospital.Modelo.Medicamento;
@@ -15,7 +17,9 @@ import org.example.proyectohospital.Logica.GestorMedicamentos;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class TabDashboardController implements Initializable {
     @FXML private TableColumn <Receta, String> colIMeses;
@@ -26,6 +30,11 @@ public class TabDashboardController implements Initializable {
     @FXML private ComboBox <Medicamento> comboBoxMedicamentos;
     @FXML private DatePicker dtpHasta;
     @FXML private DatePicker dtpDesde;
+    @FXML private LineChart<String,Number> lineChartMedicamentos;
+    @FXML private PieChart pieChartRecetas;
+    @FXML private CategoryAxis rangoXAxis;
+    @FXML private NumberAxis rangoYAxis;
+
 
     private final GestorRecetas gestorRecetas = Hospital.getInstance().getGestorRecetas();
     private final GestorMedicamentos gestorMedicamentos = Hospital.getInstance().getGestorMedicamentos();
@@ -79,10 +88,14 @@ public class TabDashboardController implements Initializable {
                         r.getDetalleMedicamentos().stream()
                             .anyMatch(d->d.getMedicamento().equals(medicamentoSeleccionado)))
                 .toList();
+        //CargarGraficos
+        cargarGraficos(medicamentoSeleccionado,desde,hasta);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        colIMedicamento.setCellValueFactory(new PropertyValueFactory<>("nombreMedicamento"));
+        colIMeses.setCellValueFactory(new PropertyValueFactory<>("meses"));
         List<Medicamento> medicamentos = gestorMedicamentos.getMedicamentos();
         comboBoxMedicamentos.getItems().setAll(medicamentos);
 
@@ -110,6 +123,34 @@ public class TabDashboardController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    private void cargarGraficos(Medicamento medicamento, LocalDate desde, LocalDate hasta) {
+        //Grafico de lineas
+        lineChartMedicamentos.getData().clear();
+
+        Map<String, Long> cantidadPorMes =  gestorRecetas.getRecetas().stream().filter(r-> !r.getFechaPrescripcion()
+                .isBefore(desde) && !r.getFechaPrescripcion().isAfter(hasta) && r.getDetalleMedicamentos().stream().anyMatch(d-> d.getMedicamento().equals(medicamento))).collect(Collectors.groupingBy(r-> r.getFechaPrescripcion().getMonth().toString(), Collectors.counting()));
+
+        XYChart.Series<String, Number> serie = new XYChart.Series<>();
+        serie.setName("Medicamento: "+medicamento.getNombre());
+
+        cantidadPorMes.forEach((key, value) -> serie.getData().add(new XYChart.Data<>(key, value)));
+
+        lineChartMedicamentos.getData().add(serie);
+
+        //Grafico tipo Pastel
+        pieChartRecetas.getData().clear();
+
+        Map<String, Long> cantidadPorEstado = gestorRecetas.getRecetas().stream()
+                .filter(r -> !r.getFechaPrescripcion().isBefore(desde) && !r.getFechaPrescripcion().isAfter(hasta))
+                .collect(Collectors.groupingBy(r->GestorRecetas.estadoToString(r.getEstado()), Collectors.counting()));
+
+        cantidadPorEstado.forEach((estado,cantidad)->{
+            if(cantidad > 0){
+                pieChartRecetas.getData().add(new PieChart.Data(estado,cantidad));
+            }
+        });
     }
 
 }
