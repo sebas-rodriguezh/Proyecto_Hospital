@@ -63,5 +63,109 @@
                 </DetalleMedicamento>
             </detallesMedicamentos>
         </Receta>
+        <Receta>
+            <id>REC0915176777</id>
+            <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+                <nombre>Sebas Rodriguez</nombre>
+                <id>221122</id>
+                <clave>221122</clave>
+                <especialidad>General</especialidad>
+            </personal>
+            <paciente>
+                <id>P003</id>
+                <nombre>Carlos López</nombre>
+                <telefono>11223344</telefono>
+                <fechaNacimiento>1995-03-10</fechaNacimiento>
+            </paciente>
+            <estado>2</estado>
+            <fechaPrescripcion>2025-09-15</fechaPrescripcion>
+            <fechaRetiro>2025-09-18</fechaRetiro>
+            <detallesMedicamentos>
+                <DetalleMedicamento>
+                    <medicamento>
+                        <codigo>CON493</codigo>
+                        <nombre>Conrelax</nombre>
+                        <presentacion>Liquido 500ml</presentacion>
+                    </medicamento>
+                    <idDetalle>1</idDetalle>
+                    <cantidad>3</cantidad>
+                    <duracion>5</duracion>
+                    <indicacion>Tomar con café</indicacion>
+                </DetalleMedicamento>
+            </detallesMedicamentos>
+        </Receta>
+        <Receta>
+            <id>REC0915197217</id>
+            <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+                <nombre>Sebas Rodriguez</nombre>
+                <id>221122</id>
+                <clave>221122</clave>
+                <especialidad>General</especialidad>
+            </personal>
+            <paciente>
+                <id>P004</id>
+                <nombre>Celeste Chinchilla</nombre>
+                <telefono>987650</telefono>
+                <fechaNacimiento>2004-10-24</fechaNacimiento>
+            </paciente>
+            <estado>1</estado>
+            <fechaPrescripcion>2025-09-15</fechaPrescripcion>
+            <fechaRetiro>2025-09-18</fechaRetiro>
+            <detallesMedicamentos>
+                <DetalleMedicamento>
+                    <medicamento>
+                        <codigo>DEX2023</codigo>
+                        <nombre>Dexometazona</nombre>
+                        <presentacion>Liquido 250ml</presentacion>
+                    </medicamento>
+                    <idDetalle>2</idDetalle>
+                    <cantidad>1</cantidad>
+                    <duracion>1</duracion>
+                    <indicacion>Tomar hoy</indicacion>
+                </DetalleMedicamento>
+            </detallesMedicamentos>
+        </Receta>
+        <Receta>
+            <id>REC0915012073</id>
+            <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+                <nombre>Sebas Rodriguez</nombre>
+                <id>221122</id>
+                <clave>221122</clave>
+                <especialidad>General</especialidad>
+            </personal>
+            <paciente>
+                <id>P004</id>
+                <nombre>Celeste Chinchilla</nombre>
+                <telefono>987650</telefono>
+                <fechaNacimiento>2004-10-24</fechaNacimiento>
+            </paciente>
+            <estado>3</estado>
+            <fechaPrescripcion>2025-09-15</fechaPrescripcion>
+            <fechaRetiro>2025-09-18</fechaRetiro>
+            <detallesMedicamentos>
+                <DetalleMedicamento>
+                    <medicamento>
+                        <codigo>IBU002</codigo>
+                        <nombre>Ibuprofeno</nombre>
+                        <presentacion>Tableta 400mg</presentacion>
+                    </medicamento>
+                    <idDetalle>1</idDetalle>
+                    <cantidad>6</cantidad>
+                    <duracion>3</duracion>
+                    <indicacion>Tomar hoy y mañana</indicacion>
+                </DetalleMedicamento>
+                <DetalleMedicamento>
+                    <medicamento>
+                        <codigo>LOR005</codigo>
+                        <nombre>Loratadina</nombre>
+                        <presentacion>Tableta 10mg</presentacion>
+                    </medicamento>
+                    <idDetalle>3</idDetalle>
+                    <cantidad>3</cantidad>
+                    <duracion>11</duracion>
+                    <indicacion>Tomar si le duele algo</indicacion>
+                </DetalleMedicamento>
+            </detallesMedicamentos>
+        </Receta>
     </recetas>
 </recetasData>

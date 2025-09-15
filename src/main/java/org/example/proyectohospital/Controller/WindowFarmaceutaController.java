@@ -36,10 +36,9 @@ public class WindowFarmaceutaController implements Initializable {
                     if (newTab == tabEntregaFarmaceuta && tabEntregaContentController != null) {
                         tabEntregaContentController.actualizarTabla();
                     }
-//
-//                    if (newTab == tabHistoricoFarmaceuta && tabHistoricoContentController != null) {
-//                        tabHistoricoContentController.actualizarTabla();
-//                    }
+                    if (newTab == tabHistoricoFarmaceuta && tabHistoricoContentController != null) {
+                        tabHistoricoContentController.actualizarTabla();
+                    }
                 }
         );
     }

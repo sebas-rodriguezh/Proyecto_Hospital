@@ -119,17 +119,15 @@ public class Receta {
     public List<DetalleMedicamento> getDetallesMedicamentos() {
         return detalleMedicamentos != null ? detalleMedicamentos : new ArrayList<>();
     }
+    public LocalDate getFechaConfeccion() {
+        return this.fechaPrescripcion; // Usamos fechaPrescripcion como fecha de confección
+    }
 
+    public String getFechaNacimiento() {
+        return (paciente != null && paciente.getFechaNacimiento() != null) ?
+                paciente.getFechaNacimiento().toString() : "";
+    }
 
-
-//    public String mostrarTodosLosDetalles() {
-//        StringBuilder sb = new StringBuilder();
-//        for (DetalleMedicamento detalle : detalleMedicamentos) {
-//            sb.append(detalle.toString()).append("\n");
-//        }
-//        return sb.toString();
-//    }
-//
     public String getNombreEstado(int estado) {
         switch (estado) {
             case 1: return "Confeccionada";
@@ -145,20 +143,6 @@ public class Receta {
     }
 
 
-//
-//    @Override
-//    public String toString() {
-//        String estadoStr = obtenerNombreEstado(1);
-//        return "Receta {" + '\n' +
-//                "id='" + id + '\n' +
-//                ", personal=" + personal.toString() + '\n' +
-//                ", paciente=" + paciente.toString() + '\n' +
-//                ", fechaPrescripcion=" + fechaPrescripcion + '\n' +
-//                ", fechaRetiro=" + fechaRetiro + '\n' +
-//                ", estado=" + estadoStr + '\n' +
-//                ", detalleMedicamentos=" + this.mostrarTodosLosDetalles() + '\n' +
-//                '}';
-//    }
 
 
 }

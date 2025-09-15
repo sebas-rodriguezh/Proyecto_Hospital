@@ -56,12 +56,18 @@ public class GestorRecetas {
     }
 
     public List<Receta> obtenerRecetasPorPaciente(String idPaciente) {
+        if (idPaciente == null || idPaciente.trim().isEmpty()) {
+            return getRecetas();
+        }
+
         RecetaConector data = store.load();
         return data.getRecetas().stream()
-                .filter(r -> r.getPaciente().getId().equals(idPaciente))
+                .filter(r -> r.getPaciente().getId().contains(idPaciente.toLowerCase()) ||
+                        r.getPaciente().getNombre().contains(idPaciente.toLowerCase()))
                 .map(RecetaMapper::toModel)
                 .collect(Collectors.toList());
     }
+
 
     public List<Receta> obtenerRecetasPorMedico(String idMedico) {
         RecetaConector data = store.load();
