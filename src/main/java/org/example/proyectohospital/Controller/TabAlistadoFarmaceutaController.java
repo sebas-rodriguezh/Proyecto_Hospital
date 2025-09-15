@@ -1,13 +1,15 @@
 package org.example.proyectohospital.Controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Receta;
 import org.example.proyectohospital.Logica.GestorRecetas;
-
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -20,12 +22,32 @@ public class TabAlistadoFarmaceutaController implements Initializable {
     @FXML private Button btnPonerEnLista;
     @FXML private Button btnBuscarSolicitud;
     @FXML private TextField txtBuscarPacienteSolicitud;
+    @FXML private TableColumn <Receta, String> colEstadoReceta;
     @FXML private TableColumn <Receta, String> colIdAlistado;
     @FXML private TableColumn<Receta, String> colPacienteAlistado;
     @FXML private TableColumn <Receta, LocalDate> colFechaRetiroAlistado;
     @FXML private TableView <Receta> tableRecetasAlistado;
 
-    private GestorRecetas gestorRecetas;
+    private final GestorRecetas gestorRecetas = Hospital.getInstance().getGestorRecetas();
+    private final ObservableList<Receta> listaRecetas = FXCollections.observableArrayList();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        inicializarTabla();
+    }
+
+    private void inicializarTabla() {
+        listaRecetas.setAll(gestorRecetas.obtenerRecetasPorEstado(2));
+        tableRecetasAlistado.setItems(listaRecetas);
+        colIdAlistado.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colPacienteAlistado.setCellValueFactory(new PropertyValueFactory<>("nombrePaciente"));
+        colFechaRetiroAlistado.setCellValueFactory(new PropertyValueFactory<>("fechaRetiro"));
+        colEstadoReceta.setCellValueFactory(new PropertyValueFactory<>("nombreEstado"));
+    }
+
+    public void actualizarTabla() {
+        listaRecetas.setAll(gestorRecetas.obtenerRecetasPorEstado(2));
+    }
 
     @FXML
     public void buscarReceta(ActionEvent event) {
@@ -55,30 +77,6 @@ public class TabAlistadoFarmaceutaController implements Initializable {
             mostrarAlerta("Éxito", "Receta alistada correctamente");
             buscarReceta(null); // refrescar tabla
         }
-    }
-
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        gestorRecetas = new GestorRecetas("src/main/resources/recetas.xml");
-
-        colIdAlistado.setCellValueFactory(new PropertyValueFactory<>("id"));
-
-        colPacienteAlistado.setCellValueFactory(new PropertyValueFactory<>("nombrePaciente"));
-
-        colFechaRetiroAlistado.setCellValueFactory(new PropertyValueFactory<>("fechaRetiro"));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        colFechaRetiroAlistado.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDate fecha, boolean empty) {
-                super.updateItem(fecha, empty);
-                setText(empty || fecha == null ? "" : fecha.format(formatter));
-            }
-        });
-
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {

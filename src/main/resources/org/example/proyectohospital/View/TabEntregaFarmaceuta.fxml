@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -30,35 +29,26 @@
             </Button>
          </children>
       </Pane>
-      <Pane layoutX="13.0" layoutY="79.0" prefHeight="253.0" prefWidth="745.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+      <Pane layoutX="13.0" layoutY="79.0" prefHeight="415.0" prefWidth="745.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
          <children>
-            <Pane layoutX="6.0" layoutY="7.0" prefHeight="242.0" prefWidth="734.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+            <Pane layoutX="6.0" layoutY="7.0" prefHeight="395.0" prefWidth="734.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                <children>
-                  <TableView id="tableTabEntregaFarmaceuta" fx:id="tableTabEntregaFarmaceuta" layoutX="7.0" layoutY="13.0" onSort="#tableTabEntregaFarmaceuta" prefHeight="216.0" prefWidth="714.0">
+                  <TableView id="tableTabEntregaFarmaceuta" fx:id="tableTabEntregaFarmaceuta" layoutX="7.0" layoutY="13.0" prefHeight="373.0" prefWidth="714.0">
                      <columns>
-                        <TableColumn fx:id="colIdEntrega" prefWidth="154.0" text="ID Receta" />
-                        <TableColumn fx:id="colPacienteEntrega" prefWidth="281.0" text="Paciente" />
-                        <TableColumn fx:id="colFechaRetiroEntrega" prefWidth="211.0" text="Fecha Retiro" />
+                        <TableColumn fx:id="colIdEntrega" prefWidth="129.0" text="ID Receta" />
+                        <TableColumn fx:id="colPacienteEntrega" prefWidth="208.0" text="Paciente" />
+                        <TableColumn fx:id="colFechaRetiroEntrega" prefWidth="179.0" text="Fecha Retiro" />
+                        <TableColumn fx:id="colEstadoReceta" prefWidth="233.0" text="Estado" />
                      </columns>
                   </TableView>
                </children>
             </Pane>
          </children>
       </Pane>
-      <Label id="lblTabEntregaFarmaceutaResumen" fx:id="lblTabEntregaFarmaceutaResumen" layoutX="13.0" layoutY="334.0" prefHeight="28.0" prefWidth="427.0" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Resumen de la receta para entrega:" />
-      <Button id="btnEntregarRecetaFarmaceuta" fx:id="btnEntregarRecetaFarmaceuta" layoutX="14.0" layoutY="503.0" onAction="#entregarReceta" prefHeight="27.0" prefWidth="139.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Entregar receta">
+      <Button id="btnEntregarRecetaFarmaceuta" fx:id="btnEntregarRecetaFarmaceuta" layoutX="14.0" layoutY="507.0" onAction="#entregarReceta" prefHeight="27.0" prefWidth="139.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Entregar receta">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Pane layoutX="13.0" layoutY="362.0" prefHeight="133.0" prefWidth="745.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-         <children>
-            <Pane layoutX="7.0" layoutY="10.0" prefHeight="114.0" prefWidth="728.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-               <children>
-                  <TextArea id="txtDetallesEntregaFarmaceuta" fx:id="txtDetallesEntregaFarmaceuta" editable="false" layoutX="7.0" layoutY="6.0" prefHeight="97.0" prefWidth="708.0" wrapText="true" />
-               </children>
-            </Pane>
-         </children>
-      </Pane>
    </children>
 </AnchorPane>

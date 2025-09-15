@@ -130,15 +130,21 @@ public class Receta {
 //        return sb.toString();
 //    }
 //
-//    public String obtenerNombreEstado(int estado) {
-//        switch (estado) {
-//            case 1: return "Procesada";
-//            case 2: return "Confeccionada";
-//            case 3: return "Lista";
-//            case 4: return "Entregada";
-//            default: return "Desconocido";
-//        }
-//    }
+    public String getNombreEstado(int estado) {
+        switch (estado) {
+            case 1: return "Confeccionada";
+            case 2: return "Procesada";
+            case 3: return "Lista";
+            case 4: return "Entregada";
+            default: return "Desconocido";
+        }
+    }
+
+    public String getNombreEstado() {
+        return getNombreEstado(this.estado);
+    }
+
+
 //
 //    @Override
 //    public String toString() {

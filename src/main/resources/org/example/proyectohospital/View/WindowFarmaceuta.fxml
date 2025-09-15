@@ -11,28 +11,33 @@
                      <!-- Tab 1: Solicitud -->
                  <Tab id="tabSolicitudFarmaceuta" fx:id="tabSolicitudFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Solicitud">
                      <content>
-                         <fx:include source="TabSolicitudFarmaceuta.fxml" />
-                    </content>
+<!--                         <fx:include source="TabSolicitudFarmaceuta.fxml" />-->
+                         <fx:include source="TabSolicitudFarmaceuta.fxml" fx:id="tabSolicitudFarmaceutaContent" />
+                     </content>
                 </Tab>
 
                     <!-- Tab 2: Alistado -->
                  <Tab id="tabAlistadoFarmaceuta" fx:id="tabAlistadoFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Alistado">
                       <content>
-                        <fx:include source="TabAlistadoFarmaceuta.fxml" />
-                        </content>
+<!--                        <fx:include source="TabAlistadoFarmaceuta.fxml" />-->
+                          <fx:include source="TabAlistadoFarmaceuta.fxml" fx:id="tabAlistadoContent" />
+                      </content>
                  </Tab>
 
                     <!-- Tab 3: Entrega -->
                 <Tab id="tabEntregaFarmaceuta" fx:id="tabEntregaFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Entrega">
                      <content>
-                     <fx:include source="TabEntregaFarmaceuta.fxml" />
+<!--                     <fx:include source="TabEntregaFarmaceuta.fxml" />-->
+                         <fx:include source="TabEntregaFarmaceuta.fxml" fx:id="tabEntregaContent" />
+
                      </content>
                  </Tab>
 
                 <!--Tab 4: Historial Recetas-->
                 <Tab id="tabHistoricoFarmaceuta" fx:id="tabHistoricoFarmaceuta" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Histórico Recetas">
                     <content>
-                        <fx:include source="TabHistoricoRecetas.fxml" />
+<!--                        <fx:include source="TabHistoricoRecetas.fxml" />-->
+                        <fx:include source="TabHistoricoRecetas.fxml" fx:id="tabHistoricoContent" />
                     </content>
                 </Tab>
             </tabs>

@@ -21,9 +21,10 @@
                   <Pane layoutX="7.0" layoutY="8.0" prefHeight="375.0" prefWidth="702.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" />
                   <TableView fx:id="tableRecetasAlistado" layoutX="17.0" layoutY="18.0" prefHeight="350.0" prefWidth="683.0">
                      <columns>
-                        <TableColumn fx:id="colIdAlistado" prefWidth="242.0" text="ID Receta" />
-                        <TableColumn fx:id="colPacienteAlistado" prefWidth="252.0" text="Paciente" />
-                        <TableColumn fx:id="colFechaRetiroAlistado" minWidth="0.0" prefWidth="188.0" text="Fecha Retiro" />
+                        <TableColumn fx:id="colIdAlistado" prefWidth="134.0" text="ID Receta" />
+                        <TableColumn fx:id="colPacienteAlistado" prefWidth="173.0" text="Paciente" />
+                        <TableColumn fx:id="colFechaRetiroAlistado" minWidth="0.0" prefWidth="220.0" text="Fecha Retiro" />
+                        <TableColumn fx:id="colEstadoReceta" minWidth="0.0" prefWidth="155.0" text="Estado" />
                      </columns>
                   </TableView>
                </children>

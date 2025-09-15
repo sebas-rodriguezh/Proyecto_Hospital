@@ -15,7 +15,7 @@
                 <telefono>88654388</telefono>
                 <fechaNacimiento>1978-10-27</fechaNacimiento>
             </paciente>
-            <estado>1</estado>
+            <estado>4</estado>
             <fechaPrescripcion>2025-09-13</fechaPrescripcion>
             <fechaRetiro>2025-09-16</fechaRetiro>
             <detallesMedicamentos>
@@ -29,6 +29,37 @@
                     <cantidad>1</cantidad>
                     <duracion>8</duracion>
                     <indicacion>Tomar 1 vez al dia</indicacion>
+                </DetalleMedicamento>
+            </detallesMedicamentos>
+        </Receta>
+        <Receta>
+            <id>REC0915186352</id>
+            <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
+                <nombre>Sebas Rodriguez</nombre>
+                <id>221122</id>
+                <clave>221122</clave>
+                <especialidad>General</especialidad>
+            </personal>
+            <paciente>
+                <id>P004</id>
+                <nombre>Celeste Chinchilla</nombre>
+                <telefono>987650</telefono>
+                <fechaNacimiento>2004-10-24</fechaNacimiento>
+            </paciente>
+            <estado>4</estado>
+            <fechaPrescripcion>2025-09-15</fechaPrescripcion>
+            <fechaRetiro>2025-09-18</fechaRetiro>
+            <detallesMedicamentos>
+                <DetalleMedicamento>
+                    <medicamento>
+                        <codigo>DEX2023</codigo>
+                        <nombre>Dexometazona</nombre>
+                        <presentacion>Liquido 250ml</presentacion>
+                    </medicamento>
+                    <idDetalle>1</idDetalle>
+                    <cantidad>5</cantidad>
+                    <duracion>5</duracion>
+                    <indicacion>Tomar en caso de dolor</indicacion>
                 </DetalleMedicamento>
             </detallesMedicamentos>
         </Receta>
