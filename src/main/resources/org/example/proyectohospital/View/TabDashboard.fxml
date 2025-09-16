@@ -25,7 +25,7 @@
 
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="619.0" prefWidth="846.0">
                 <children>
-                    <Pane layoutX="3.0" layoutY="6.0" prefHeight="240.0" prefWidth="823.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <Pane layoutX="3.0" layoutY="6.0" prefHeight="240.0" prefWidth="784.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                         <children>
                             <Pane layoutX="9.0" layoutY="3.0" prefHeight="209.0" prefWidth="380.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                 <children>
@@ -65,12 +65,12 @@
                                     </Button>
                                 </children>
                             </Pane>
-                            <Button id="btnDesplegarDashboard" fx:id="btnDesplegarDashboard" alignment="CENTER" layoutX="512.0" layoutY="148.0" mnemonicParsing="false" onAction="#desplegarDashboard" prefHeight="30.0" prefWidth="193.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Desplegar Dashboard ✔✔">
+                            <Button id="btnDesplegarDashboard" fx:id="btnDesplegarDashboard" alignment="CENTER" layoutX="483.0" layoutY="142.0" mnemonicParsing="false" onAction="#desplegarDashboard" prefHeight="30.0" prefWidth="193.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Desplegar Dashboard ✔✔">
                                 <font>
                                     <Font size="14.0" />
                                 </font>
                             </Button>
-                            <TableView id="tbvResultadoBMedicamento" fx:id="tbvResultadoBMedicamento" layoutX="441.0" layoutY="46.0" prefHeight="90.0" prefWidth="335.0">
+                            <TableView id="tbvResultadoBMedicamento" fx:id="tbvResultadoBMedicamento" layoutX="412.0" layoutY="45.0" prefHeight="90.0" prefWidth="335.0">
                                 <columns>
                                     <TableColumn id="colIMedicamento" fx:id="colIMedicamento" minWidth="0.0" prefWidth="101.0" text="Medicamento" />
                                     <TableColumn id="colIMeses" fx:id="colIMeses" minWidth="5.0" prefWidth="273.0" text="Meses" />
@@ -78,7 +78,7 @@
                             </TableView>
                         </children>
                     </Pane>
-                    <Pane layoutX="9.0" layoutY="255.0" prefHeight="334.0" prefWidth="447.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <Pane layoutX="9.0" layoutY="255.0" prefHeight="325.0" prefWidth="447.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                         <children>
                             <Label alignment="CENTER" layoutX="116.0" layoutY="14.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
                <Label layoutX="48.0" layoutY="243.0" />
@@ -92,11 +92,11 @@
                </LineChart>
                         </children>
                     </Pane>
-                    <Pane layoutX="464.0" layoutY="254.0" prefHeight="334.0" prefWidth="362.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <Pane layoutX="464.0" layoutY="254.0" prefHeight="327.0" prefWidth="325.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                         <children>
                             <Label alignment="CENTER" layoutX="152.0" layoutY="14.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
                <Label layoutX="69.0" layoutY="248.0" />
-               <PieChart id="pieChartRecetas" fx:id="pieChartRecetas" layoutY="1.0" prefHeight="327.0" prefWidth="362.0" title="Cantidad de recetas por estado" />
+               <PieChart id="pieChartRecetas" fx:id="pieChartRecetas" layoutY="1.0" prefHeight="325.0" prefWidth="325.0" title="Cantidad de recetas por estado" />
                         </children>
                     </Pane>
                 </children>

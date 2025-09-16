@@ -35,18 +35,18 @@ public class LoginController implements Initializable {
         System.out.println("Inicializando LoginController...");
 
         // Inicializar datos si es necesario
-        try {
-            InicializadorDatos.inicializarSiEsNecesario();
-
-            // Verificar que tenemos datos
-            System.out.println("Personal registrado: " + gestorPersonal.getPersonal().size());
-            InicializadorDatos.mostrarPersonalExistente();
-
-        } catch (Exception e) {
-            System.err.println("Error durante la inicialización: " + e.getMessage());
-            e.printStackTrace();
-            mostrarAlerta("Error de Inicialización", "Hubo un problema al cargar los datos: " + e.getMessage());
-        }
+//        try {
+//            InicializadorDatos.inicializarSiEsNecesario();
+//
+//            // Verificar que tenemos datos
+//            System.out.println("Personal registrado: " + gestorPersonal.getPersonal().size());
+//            InicializadorDatos.mostrarPersonalExistente();
+//
+//        } catch (Exception e) {
+//            System.err.println("Error durante la inicialización: " + e.getMessage());
+//            e.printStackTrace();
+//            mostrarAlerta("Error de Inicialización", "Hubo un problema al cargar los datos: " + e.getMessage());
+//        }
     }
 
     @FXML
@@ -58,11 +58,6 @@ public class LoginController implements Initializable {
     private void iniciarSesion(ActionEvent actionEvent) {
         String id = txtIdUsuario.getText().trim();
         String password = pwdPassword.getText();
-
-        System.out.println("=== INTENTO DE LOGIN ===");
-        System.out.println("ID ingresado: '" + id + "'");
-        System.out.println("Password ingresado: '" + password + "'");
-
         if (id.isEmpty() || password.isEmpty()) {
             mostrarAlerta("Campos vacíos", "Debe ingresar usuario y contraseña.");
             return;
@@ -70,15 +65,15 @@ public class LoginController implements Initializable {
 
         try {
             // DEBUG: Buscar específicamente el usuario
-            Personal personalPorID = gestorPersonal.getPersonalPorID(id);
-            System.out.println("Personal encontrado por ID: " + personalPorID);
-
-            if (personalPorID != null) {
-                System.out.println("- Nombre: " + personalPorID.getNombre());
-                System.out.println("- Clave almacenada: '" + personalPorID.getClave() + "'");
-                System.out.println("- Tipo: " + personalPorID.tipo());
-                System.out.println("- ¿Claves coinciden?: " + personalPorID.getClave().equals(password));
-            }
+//            Personal personalPorID = gestorPersonal.getPersonalPorID(id);
+//            System.out.println("Personal encontrado por ID: " + personalPorID);
+//
+//            if (personalPorID != null) {
+//                System.out.println("- Nombre: " + personalPorID.getNombre());
+//                System.out.println("- Clave almacenada: '" + personalPorID.getClave() + "'");
+//                System.out.println("- Tipo: " + personalPorID.tipo());
+//                System.out.println("- ¿Claves coinciden?: " + personalPorID.getClave().equals(password));
+//            }
 
             // Intentar verificar credenciales
             Personal personal = gestorPersonal.verificarCredenciales(id, password);
@@ -92,10 +87,10 @@ public class LoginController implements Initializable {
                 mostrarAlerta("Error", "Usuario o contraseña incorrectos.");
 
                 // DEBUG: Mostrar usuarios disponibles
-                System.out.println("\n=== USUARIOS DISPONIBLES ===");
-                for (Personal p : gestorPersonal.getPersonal()) {
-                    System.out.println("ID: '" + p.getId() + "' | Clave: '" + p.getClave() + "' | Nombre: " + p.getNombre());
-                }
+//                System.out.println("\n=== USUARIOS DISPONIBLES ===");
+//                for (Personal p : gestorPersonal.getPersonal()) {
+//                    System.out.println("ID: '" + p.getId() + "' | Clave: '" + p.getClave() + "' | Nombre: " + p.getNombre());
+//                }
 
                 pwdPassword.clear();
                 txtIdUsuario.requestFocus();
@@ -118,7 +113,6 @@ public class LoginController implements Initializable {
             String fxmlPath = "";
             String windowTitle = "";
 
-            // Determinar qué ventana abrir según el tipo de personal
             switch (personal.tipo()) {
                 case "Administrador":
                     fxmlPath = "/org/example/proyectohospital/View/WindowAdministrador.fxml";
@@ -131,7 +125,6 @@ public class LoginController implements Initializable {
 
                     if (personal instanceof Medico) {
                         Hospital.getInstance().setMedicoLogueado((Medico) personal);
-                        System.out.println("✅ Médico guardado en singleton: " + personal.getNombre());
                     }
 
 

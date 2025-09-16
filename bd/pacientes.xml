@@ -19,5 +19,11 @@
             <telefono>987650</telefono>
             <fechaNacimiento>2004-10-24</fechaNacimiento>
         </Paciente>
+        <Paciente>
+            <id>P005</id>
+            <nombre>Daniela Madrid</nombre>
+            <telefono>56436543</telefono>
+            <fechaNacimiento>2014-10-04</fechaNacimiento>
+        </Paciente>
     </pacientes>
 </pacientesData>

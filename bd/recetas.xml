@@ -37,7 +37,7 @@
             <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
                 <nombre>Sebas Rodriguez</nombre>
                 <id>221122</id>
-                <clave>221122</clave>
+                <clave>54321</clave>
                 <especialidad>General</especialidad>
             </personal>
             <paciente>
@@ -68,7 +68,7 @@
             <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
                 <nombre>Sebas Rodriguez</nombre>
                 <id>221122</id>
-                <clave>221122</clave>
+                <clave>54321</clave>
                 <especialidad>General</especialidad>
             </personal>
             <paciente>
@@ -99,7 +99,7 @@
             <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
                 <nombre>Sebas Rodriguez</nombre>
                 <id>221122</id>
-                <clave>221122</clave>
+                <clave>54321</clave>
                 <especialidad>General</especialidad>
             </personal>
             <paciente>
@@ -130,7 +130,7 @@
             <personal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="medicoEntity">
                 <nombre>Sebas Rodriguez</nombre>
                 <id>221122</id>
-                <clave>221122</clave>
+                <clave>54321</clave>
                 <especialidad>General</especialidad>
             </personal>
             <paciente>
