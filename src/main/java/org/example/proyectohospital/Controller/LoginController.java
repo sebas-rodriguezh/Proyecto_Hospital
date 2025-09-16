@@ -111,7 +111,9 @@ public class LoginController implements Initializable {
             Stage nuevaVentana = new Stage();
             nuevaVentana.setTitle(windowTitle);
             nuevaVentana.setScene(new Scene(root));
-            nuevaVentana.setMaximized(true);
+            nuevaVentana.setResizable(false);
+            nuevaVentana.setMaximized(false);
+            nuevaVentana.sizeToScene();
             nuevaVentana.show();
 
         } catch (IOException e) {

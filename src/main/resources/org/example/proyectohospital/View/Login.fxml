@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.LoginController">
+<AnchorPane prefHeight="442.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.Controller.LoginController">
    <children>
-      <VBox layoutX="50.0" layoutY="45.0" prefHeight="213.0" prefWidth="501.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+      <VBox layoutX="119.0" layoutY="126.0" prefHeight="213.0" prefWidth="501.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
          <children>
             <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="40.0" prefWidth="595.0" style="-fx-font-size: 23px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Inicio Sesión" />
             <GridPane>
@@ -38,24 +38,33 @@
             </GridPane>
          </children>
       </VBox>
-      <Button id="btnSalir" fx:id="btnSalir" alignment="CENTER" layoutX="403.0" layoutY="307.0" mnemonicParsing="false" onAction="#salirDelaApp" prefHeight="19.0" prefWidth="96.0" style="-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold;" text="Salir">
+      <Button id="btnSalir" fx:id="btnSalir" alignment="CENTER" layoutX="469.0" layoutY="379.0" mnemonicParsing="false" onAction="#salirDelaApp" prefHeight="19.0" prefWidth="96.0" style="-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold;" text="Salir">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button id="btnCambiarPassword" fx:id="btnCambiarPassword" alignment="CENTER" layoutX="219.0" layoutY="307.0" mnemonicParsing="false" onAction="#cambiarPassword" prefHeight="30.0" prefWidth="157.0" style="-fx-background-color: #00BFFF; -fx-text-fill: white; -fx-font-weight: bold;" text="Cambiar contraseña">
+      <Button id="btnCambiarPassword" fx:id="btnCambiarPassword" alignment="CENTER" layoutX="298.0" layoutY="379.0" mnemonicParsing="false" onAction="#cambiarPassword" prefHeight="30.0" prefWidth="157.0" style="-fx-background-color: #00BFFF; -fx-text-fill: white; -fx-font-weight: bold;" text="Cambiar contraseña">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button id="btnIngresar" fx:id="btnIngresar" alignment="CENTER" layoutX="88.0" layoutY="307.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="25.0" prefWidth="104.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Ingresar">
+      <Button id="btnIngresar" fx:id="btnIngresar" alignment="CENTER" layoutX="180.0" layoutY="379.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="25.0" prefWidth="104.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Ingresar">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <ImageView fitHeight="34.0" fitWidth="51.0" layoutX="284.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="52.0" fitWidth="83.0" layoutX="586.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Resources/Assets/Images/login.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" contentDisplay="TOP" layoutX="38.0" layoutY="23.0" prefHeight="40.0" prefWidth="686.0" style="-fx-font-size: 33px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="¡Bienvenido al Hospital!">
+         <font>
+            <Font size="42.0" />
+         </font></Label>
+      <ImageView fitHeight="73.0" fitWidth="96.0" layoutX="123.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Assets/Images/hospitalImg.png" />
          </image>
       </ImageView>
    </children>
