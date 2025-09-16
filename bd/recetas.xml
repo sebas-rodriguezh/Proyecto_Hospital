@@ -157,8 +157,8 @@
                 <DetalleMedicamento>
                     <medicamento>
                         <codigo>LOR005</codigo>
-                        <nombre>Loratadina</nombre>
-                        <presentacion>Tableta 10mg</presentacion>
+                        <nombre>Salbutamol</nombre>
+                        <presentacion>Tableta 500mg</presentacion>
                     </medicamento>
                     <idDetalle>3</idDetalle>
                     <cantidad>3</cantidad>

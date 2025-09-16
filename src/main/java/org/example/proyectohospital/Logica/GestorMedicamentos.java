@@ -1,7 +1,10 @@
 package org.example.proyectohospital.Logica;
 
+import org.example.proyectohospital.Modelo.DetalleMedicamento;
 import org.example.proyectohospital.Modelo.Medicamento;
 import org.example.proyectohospital.Datos.*;
+import org.example.proyectohospital.Modelo.Receta;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,6 +101,7 @@ public class GestorMedicamentos {
             }
 
             MedicamentoConector data = store.load();
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas(); // 🔥 NUEVO
 
             for (int i = 0; i < data.getMedicamentos().size(); i++) {
                 MedicamentoEntity actual = data.getMedicamentos().get(i);
@@ -105,6 +109,7 @@ public class GestorMedicamentos {
                     // Encontramos el medicamento a modificar y aplicamos los cambios
                     data.getMedicamentos().set(i, MedicamentoMapper.toXML(actualizado));
                     store.save(data);
+                    actualizarRecetasConMedicamento(actualizado, gestorRecetas);
                     return actualizado;
                 }
             }
@@ -114,6 +119,29 @@ public class GestorMedicamentos {
             throw new RuntimeException("Error actualizando medicamento: " + e.getMessage());
         }
     }
+
+    private void actualizarRecetasConMedicamento(Medicamento medicamentoActualizado, GestorRecetas gestorRecetas) {
+        try {
+            List<Receta> recetasConMedicamento = gestorRecetas.obtenerRecetasPorMedicamento(medicamentoActualizado.getCodigo());
+
+            for (Receta receta : recetasConMedicamento) {
+                // Buscar y actualizar el detalle que contiene este medicamento
+                for (DetalleMedicamento detalle : receta.getDetallesMedicamentos()) {
+                    if (detalle.getMedicamento().getCodigo().equals(medicamentoActualizado.getCodigo())) {
+                        detalle.setMedicamento(medicamentoActualizado);
+                    }
+                }
+                gestorRecetas.update(receta);
+            }
+
+            System.out.println("Actualizadas " + recetasConMedicamento.size() +
+                    " recetas con el medicamento: " + medicamentoActualizado.getNombre());
+
+        } catch (Exception e) {
+            System.err.println("Error actualizando recetas con medicamento: " + e.getMessage());
+        }
+    }
+
 
     public Medicamento update(Medicamento actualizado, String codigoOriginal) {
         try {

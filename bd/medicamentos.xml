@@ -23,13 +23,18 @@
         </Medicamento>
         <Medicamento>
             <codigo>LOR005</codigo>
-            <nombre>Loratadina</nombre>
-            <presentacion>Tableta 10mg</presentacion>
+            <nombre>Salbutamol</nombre>
+            <presentacion>Tableta 500mg</presentacion>
         </Medicamento>
         <Medicamento>
             <codigo>DEX2023</codigo>
             <nombre>Dexometazona</nombre>
             <presentacion>Liquido 250ml</presentacion>
+        </Medicamento>
+        <Medicamento>
+            <codigo>PEP654</codigo>
+            <nombre>Peptobismol</nombre>
+            <presentacion>liquido 750ml</presentacion>
         </Medicamento>
     </medicamentos>
 </medicamentosData>

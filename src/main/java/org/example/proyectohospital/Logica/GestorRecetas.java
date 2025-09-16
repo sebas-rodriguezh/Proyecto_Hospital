@@ -418,4 +418,11 @@ public class GestorRecetas {
         };
     }
 
+    public List<Receta> obtenerRecetasPorMedicamento(String codigoMedicamento) {
+        List<Receta> recetas = findAll();
+        return recetas.stream()
+                .filter(receta -> receta.getDetallesMedicamentos().stream()
+                        .anyMatch(detalle -> detalle.getMedicamento().getCodigo().equals(codigoMedicamento)))
+                .collect(Collectors.toList());
+    }
 }
