@@ -3,8 +3,7 @@ import jakarta.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DetalleMedicamentoEntity {
-    // CAMBIO: En lugar de solo el código, guardamos la entidad completa
-    private MedicamentoEntity medicamento; // Entidad completa
+    private MedicamentoEntity medicamento;
     private String idDetalle;
     private int cantidad;
     private int duracion;

@@ -12,8 +12,6 @@ public class GestorPersonal {
         this.store = new PersonalDatos(rutaArchivo);
     }
 
-    // === MÉTODOS DE LECTURA ===
-
     public List<Personal> findAll() {
         PersonalConector data = store.load();
         return data.getPersonal().stream()
@@ -79,8 +77,6 @@ public class GestorPersonal {
                 .orElse(null);
     }
 
-    // === MÉTODOS DE ESCRITURA ===
-
     public Personal create(Personal nuevo) {
         try {
             if (nuevo == null) {
@@ -89,12 +85,10 @@ public class GestorPersonal {
 
             PersonalConector data = store.load();
 
-            // Validaciones usando los métodos existentes
             if (existePersonalConEseID(nuevo.getId())) {
                 throw new IllegalArgumentException("Ya existe personal con ese ID");
             }
 
-            // Agregar al XML
             PersonalEntity personalEntity = PersonalMapper.toXML(nuevo);
             data.getPersonal().add(personalEntity);
             store.save(data);
@@ -117,7 +111,6 @@ public class GestorPersonal {
             for (int i = 0; i < data.getPersonal().size(); i++) {
                 PersonalEntity actual = data.getPersonal().get(i);
                 if (actual.getId().equals(actualizado.getId())) {
-                    // Encontramos el personal a modificar y aplicamos los cambios
                     data.getPersonal().set(i, PersonalMapper.toXML(actualizado));
                     store.save(data);
                     actualizarRecetasConPersonal(actualizado, gestorRecetas);
@@ -165,7 +158,6 @@ public class GestorPersonal {
             List<Receta> recetasDelPersonal = gestorRecetas.obtenerRecetasPorMedico(personalActualizado.getId());
 
             for (Receta receta : recetasDelPersonal) {
-                // Reemplazar el objeto personal viejo con el actualizado
                 receta.setPersonal(personalActualizado);
                 gestorRecetas.update(receta);
             }
@@ -183,7 +175,6 @@ public class GestorPersonal {
                 throw new IllegalArgumentException("ID no puede ser nulo o vacío");
             }
 
-            // 🔥 NUEVO: Eliminar recetas asociadas en cascada
             GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
             List<Receta> recetasAsociadas = gestorRecetas.obtenerRecetasPorMedico(idPersonal);
 
@@ -207,8 +198,6 @@ public class GestorPersonal {
             throw new RuntimeException("Error eliminando personal: " + e.getMessage());
         }
     }
-
-    // === MÉTODOS ORIGINALES ADAPTADOS ===
 
     public Boolean insertarPersonal(Personal persona, Boolean respuestaListaPacientes) {
         try {
@@ -243,7 +232,6 @@ public class GestorPersonal {
 
     public void setPersonal(List<Personal> personal) {
         try {
-            // Reemplazar todo el contenido del XML
             PersonalConector data = store.load();
             List<PersonalEntity> entities = personal.stream()
                     .map(PersonalMapper::toXML)
@@ -329,28 +317,22 @@ public class GestorPersonal {
 
     public boolean cambiarClave(String idPersonal, String claveActual, String nuevaClave) {
         try {
-            // Verificar que la nueva clave no sea nula o vacía
             if (nuevaClave == null || nuevaClave.trim().isEmpty()) {
                 System.err.println("Error: La nueva clave no puede estar vacía");
                 return false;
             }
-
-            // Verificar credenciales actuales
             Personal personal = verificarCredenciales(idPersonal, claveActual);
             if (personal == null) {
                 System.err.println("Error: Credenciales actuales incorrectas");
                 return false;
             }
 
-            // Actualizar la clave
             personal.setClave(nuevaClave);
 
-            // Guardar los cambios en el XML
             PersonalConector data = store.load();
             for (int i = 0; i < data.getPersonal().size(); i++) {
                 PersonalEntity actual = data.getPersonal().get(i);
                 if (actual.getId().equals(idPersonal)) {
-                    // Actualizar la entidad con la nueva clave
                     data.getPersonal().set(i, PersonalMapper.toXML(personal));
                     store.save(data);
                     System.out.println("Clave actualizada exitosamente para: " + personal.getNombre());

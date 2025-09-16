@@ -39,20 +39,18 @@ public class TabMedicamentosEnAdminController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-        // Configurar columnas de la tabla
         colCodigoMedicamento.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombreMedicamento.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colPresentacionMedicamento.setCellValueFactory(new PropertyValueFactory<>("presentacion"));
         tbvResultadoBusquedaMedicamento.setItems(listaMedicamentos);
 
-        // Listener para selección en tabla
         tbvResultadoBusquedaMedicamento.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
-                        configurarCampoCodigo(false); // Bloquear código al seleccionar
+                        configurarCampoCodigo(false);
                         llenarCamposConMedicamento(newValue);
                     } else {
-                        configurarCampoCodigo(true); // Habilitar código al no seleccionar
+                        configurarCampoCodigo(true);
                     }
                 }
         );
@@ -100,7 +98,6 @@ public class TabMedicamentosEnAdminController implements Initializable{
         String presentacion = txtPresentacionMedicamento.getText().trim();
         String codigo = txtCodigoMedicamento.getText().trim();
 
-        // Validar que el código no haya sido cambiado (debería estar bloqueado)
         if (!codigo.equals(seleccionado.getCodigo())) {
             mostrarAlerta("Error", "No se puede modificar el código del medicamento");
             return;
@@ -112,7 +109,6 @@ public class TabMedicamentosEnAdminController implements Initializable{
         }
 
         try {
-            // Actualizar solo nombre y presentación (código permanece igual)
             seleccionado.setNombre(nombre);
             seleccionado.setPresentacion(presentacion);
 

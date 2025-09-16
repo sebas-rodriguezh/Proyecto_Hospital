@@ -42,8 +42,8 @@ public class TabFarmaceutasEnAdminController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colNombreFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colIDFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tbvResultadoBusquedaFarmaceuta.setItems(listaFarmaceuta); //tbv que ve lo que hace la listaObservable.
-        mostrarTodosLosFarmaceutas(); //Acá esa lista se carga.
+        tbvResultadoBusquedaFarmaceuta.setItems(listaFarmaceuta);
+        mostrarTodosLosFarmaceutas();
     }
 
 
@@ -82,8 +82,6 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                 seleccionado.setNombre(nombre);
                 seleccionado.setClave(id);
 
-
-                //Acá se deben de validar las modificaciones.
                 if (gestor.existePersonalConEseID(id) || gestorPacientes.existeAlguienConEseID(id)) {
                     mostrarAlerta("Error", "El ID nuevo, ya está registrado en el sistema.");
                     return;
@@ -143,7 +141,7 @@ public class TabFarmaceutasEnAdminController implements Initializable {
         {
             boolean eliminado = gestor.eliminar(seleccionado.getId());
             if (eliminado) {
-                mostrarTodosLosFarmaceutas(); //Se muestra nuevamente todo menos el farmaceuta borrado.
+                mostrarTodosLosFarmaceutas(); 
                 mostrarAlerta("Éxito", "Medicamento eliminado correctamente");
             } else {
                 mostrarAlerta("Error", "No se pudo eliminar el farmaceuta");

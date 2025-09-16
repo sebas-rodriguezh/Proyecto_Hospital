@@ -9,10 +9,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RecetaEntity {
     private String id;
-
-    // CAMBIO: En lugar de solo IDs, guardamos las entidades completas
-    private PersonalEntity personal; // Entidad completa del personal (médico)
-    private PacienteEntity paciente; // Entidad completa del paciente
+    private PersonalEntity personal;
+    private PacienteEntity paciente;
 
     private int estado;
 

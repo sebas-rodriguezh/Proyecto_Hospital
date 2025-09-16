@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "pacientesData")
-@XmlAccessorType(XmlAccessType.FIELD) //Convertir lo que venga del XML para que Java lo pueda entender.
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PacienteConector {
     @XmlElementWrapper (name = "pacientes")
     @XmlElement(name = "Paciente")

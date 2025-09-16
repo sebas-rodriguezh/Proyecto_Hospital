@@ -7,14 +7,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GestorRecetas {
-    // ÚNICO atributo - referencia a la fuente de datos
     private final RecetaDatos store;
 
     public GestorRecetas(String rutaArchivo) {
         this.store = new RecetaDatos(rutaArchivo);
     }
-
-    // === MÉTODOS DE LECTURA ===
 
     public List<Receta> findAll() {
         RecetaConector data = store.load();
@@ -94,8 +91,6 @@ public class GestorRecetas {
                 .collect(Collectors.toList());
     }
 
-    // === MÉTODOS DE ESCRITURA ===
-
     public Receta create(Receta nueva) {
         try {
             if (nueva == null) {
@@ -108,12 +103,10 @@ public class GestorRecetas {
 
             RecetaConector data = store.load();
 
-            // Validación usando método existente
             if (existeRecetaConEseID(nueva.getId())) {
                 throw new IllegalArgumentException("Ya existe una receta con ese ID");
             }
 
-            // Agregar al XML
             RecetaEntity recetaEntity = RecetaMapper.toXML(nueva);
             data.getRecetas().add(recetaEntity);
             store.save(data);
@@ -135,7 +128,6 @@ public class GestorRecetas {
             for (int i = 0; i < data.getRecetas().size(); i++) {
                 RecetaEntity actual = data.getRecetas().get(i);
                 if (actual.getId().equals(actualizada.getId())) {
-                    // Encontramos la receta a modificar y aplicamos los cambios
                     data.getRecetas().set(i, RecetaMapper.toXML(actualizada));
                     store.save(data);
                     return actualizada;
@@ -166,8 +158,6 @@ public class GestorRecetas {
             throw new RuntimeException("Error eliminando receta: " + e.getMessage());
         }
     }
-
-    // === MÉTODOS ORIGINALES ADAPTADOS ===
 
     public boolean insertarReceta(Receta receta) {
         try {
@@ -217,14 +207,11 @@ public class GestorRecetas {
         }
     }
 
-    // === MÉTODOS SOBRE DETALLES DE MEDICAMENTOS ===
-
     public boolean agregarDetalle(String idReceta, DetalleMedicamento detalle) {
         try {
             Receta receta = getRecetaPorID(idReceta);
             if (receta == null) return false;
 
-            // Verificar si ya existe el medicamento
             for (DetalleMedicamento d : receta.getDetalleMedicamentos()) {
                 if (d.getMedicamento().getCodigo().equals(detalle.getMedicamento().getCodigo())) {
                     return false;
@@ -302,11 +289,10 @@ public class GestorRecetas {
             Receta receta = getRecetaPorID(idReceta);
             if (receta == null) return false;
 
-            // Buscar el detalle específico dentro de la receta
             for (DetalleMedicamento detalle : receta.getDetalleMedicamentos()) {
                 if (detalle.getMedicamento().getCodigo().equals(codigoMedicamento)) {
                     detalle.setIndicacion(nuevaIndicacion);
-                    update(receta);  // ✅ Ahora actualizamos la receta correcta
+                    update(receta);
                     return true;
                 }
             }
@@ -354,7 +340,6 @@ public class GestorRecetas {
 
     public void setRecetas(List<Receta> recetas) {
         try {
-            // Reemplazar todo el contenido del XML
             RecetaConector data = store.load();
             List<RecetaEntity> entities = recetas.stream()
                     .map(RecetaMapper::toXML)
@@ -397,9 +382,8 @@ public class GestorRecetas {
 
     public void guardarCambios() {
         try {
-            // Ya tienes el store que maneja la persistencia
-            RecetaConector data = store.load(); // Carga los datos actuales
-            store.save(data); // Los guarda nuevamente, aplicando cualquier cambio en memoria
+            RecetaConector data = store.load();
+            store.save(data);
 
             System.out.println("Cambios guardados en recetas.xml");
         } catch (Exception e) {

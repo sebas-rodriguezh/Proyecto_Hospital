@@ -38,7 +38,7 @@ public class TabPacientesEnAdminController implements Initializable {
 
 
     private final GestorPacientes gestor = Hospital.getInstance().getPacientes();
-    private  final GestorPersonal gestorPersonal = Hospital.getInstance().getPersonal(); //Se usa para la respuesta Booleana.
+    private  final GestorPersonal gestorPersonal = Hospital.getInstance().getPersonal();
     private ObservableList<Paciente> listaPacientes = FXCollections.observableArrayList();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {

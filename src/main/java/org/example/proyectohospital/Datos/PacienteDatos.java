@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class PacienteDatos {
     private final Path xmlPath;
-    private JAXBContext ctx; //Contexto del archivo.
+    private JAXBContext ctx;
     private PacienteConector cache;
     
     public PacienteDatos(String filePath) {
@@ -24,7 +24,7 @@ public class PacienteDatos {
         }
     }
 
-    public synchronized PacienteConector load() { //Cada vez que haya un upd, lo pueda sync y llevarlo a presentación.
+    public synchronized PacienteConector load() {
         try {
             if (cache != null) {
                 return cache;
@@ -32,24 +32,17 @@ public class PacienteDatos {
 
             if (!Files.exists(xmlPath)) {
                 cache = new PacienteConector();
-                save(cache); //Crea un archivo vacío.
+                save(cache);
                 return cache;
             }
 
-            //Convierte XML a Java.
-            Unmarshaller u = ctx.createUnmarshaller(); //Convertidor.
+            Unmarshaller u = ctx.createUnmarshaller();
 
-            //Gestiona la información convertida del archivo XML.
-            cache = (PacienteConector) u.unmarshal(xmlPath.toFile()); //Tiene que convertir.
+            cache = (PacienteConector) u.unmarshal(xmlPath.toFile());
 
-            //Esto es si el archivo está vacío.
             if (cache.getPacientes() == null)
             {
-                //Aquí creamos una primera instancia de clientes dentro del archivo.
-                //Esto se aplicaría la primera vez que se corre el sistema.
-                //o cuando se limpia la información de BD.
                 cache.setPacientes(new java.util.ArrayList<>());
-
             }
             return cache;
         }
@@ -61,17 +54,17 @@ public class PacienteDatos {
     public synchronized void save(PacienteConector data) {
         try {
             Marshaller m = ctx.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE); //Convertimos todas las propiedas sí o sí.
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
             m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
-            File out = xmlPath.toFile(); //Tome el XML path y hagalo archivo.
+            File out = xmlPath.toFile();
             File parent = out.getParentFile();
 
             if (parent != null) parent.mkdirs();
 
             java.io.StringWriter sw = new java.io.StringWriter();
-            m.marshal(data, sw); //Pasa los datos a escritura.
-            m.marshal(data, out); //Escribe los datos en el archivo.
+            m.marshal(data, sw);
+            m.marshal(data, out);
 
             cache = data;
         }

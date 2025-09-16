@@ -73,9 +73,9 @@ public class TabAlistadoFarmaceutaController implements Initializable {
             return;
         }
 
-        if (gestorRecetas.actualizarEstadoReceta(seleccionada.getId(), 3)) { // cambia a Lista
+        if (gestorRecetas.actualizarEstadoReceta(seleccionada.getId(), 3)) {
             mostrarAlerta("Éxito", "Receta alistada correctamente");
-            buscarReceta(null); // refrescar tabla
+            buscarReceta(null);
         }
     }
 

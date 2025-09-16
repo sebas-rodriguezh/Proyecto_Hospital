@@ -25,5 +25,11 @@
             <telefono>56436543</telefono>
             <fechaNacimiento>2014-10-04</fechaNacimiento>
         </Paciente>
+        <Paciente>
+            <id>P006</id>
+            <nombre>Marvin Loria</nombre>
+            <telefono>65467508</telefono>
+            <fechaNacimiento>1999-12-29</fechaNacimiento>
+        </Paciente>
     </pacientes>
 </pacientesData>

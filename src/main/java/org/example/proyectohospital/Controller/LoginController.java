@@ -15,7 +15,6 @@ import org.example.proyectohospital.Logica.GestorPersonal;
 import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Medico;
 import org.example.proyectohospital.Modelo.Personal;
-import org.example.proyectohospital.Logica.InicializadorDatos;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,21 +31,6 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Inicializando LoginController...");
-
-        // Inicializar datos si es necesario
-//        try {
-//            InicializadorDatos.inicializarSiEsNecesario();
-//
-//            // Verificar que tenemos datos
-//            System.out.println("Personal registrado: " + gestorPersonal.getPersonal().size());
-//            InicializadorDatos.mostrarPersonalExistente();
-//
-//        } catch (Exception e) {
-//            System.err.println("Error durante la inicialización: " + e.getMessage());
-//            e.printStackTrace();
-//            mostrarAlerta("Error de Inicialización", "Hubo un problema al cargar los datos: " + e.getMessage());
-//        }
     }
 
     @FXML
@@ -64,18 +48,6 @@ public class LoginController implements Initializable {
         }
 
         try {
-            // DEBUG: Buscar específicamente el usuario
-//            Personal personalPorID = gestorPersonal.getPersonalPorID(id);
-//            System.out.println("Personal encontrado por ID: " + personalPorID);
-//
-//            if (personalPorID != null) {
-//                System.out.println("- Nombre: " + personalPorID.getNombre());
-//                System.out.println("- Clave almacenada: '" + personalPorID.getClave() + "'");
-//                System.out.println("- Tipo: " + personalPorID.tipo());
-//                System.out.println("- ¿Claves coinciden?: " + personalPorID.getClave().equals(password));
-//            }
-
-            // Intentar verificar credenciales
             Personal personal = gestorPersonal.verificarCredenciales(id, password);
             System.out.println("Resultado verificarCredenciales: " + personal);
 
@@ -85,13 +57,6 @@ public class LoginController implements Initializable {
                 cerrarVentanaLogin();
             } else {
                 mostrarAlerta("Error", "Usuario o contraseña incorrectos.");
-
-                // DEBUG: Mostrar usuarios disponibles
-//                System.out.println("\n=== USUARIOS DISPONIBLES ===");
-//                for (Personal p : gestorPersonal.getPersonal()) {
-//                    System.out.println("ID: '" + p.getId() + "' | Clave: '" + p.getClave() + "' | Nombre: " + p.getNombre());
-//                }
-
                 pwdPassword.clear();
                 txtIdUsuario.requestFocus();
             }

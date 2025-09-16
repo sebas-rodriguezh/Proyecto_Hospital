@@ -22,7 +22,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class TabHistoricoRecetasController implements Initializable {
-    // Tabla principal de recetas
     @FXML private TableView<Receta> tblViewRecetasHistoricoRecetas;
     @FXML private TableColumn<Receta, String> colIdHistorico;
     @FXML private TableColumn<Receta, String> colPacienteHistorico;
@@ -30,16 +29,12 @@ public class TabHistoricoRecetasController implements Initializable {
     @FXML private TableColumn<Receta, LocalDate> colFechaConfeccionHistorico;
     @FXML private TableColumn<Receta, LocalDate> colFechaRetiroHistorico;
     @FXML private TableColumn<Receta, String> colEstadoHistorico;
-
-    // Tabla de detalles de la receta seleccionada
     @FXML private TableView<DetalleMedicamento> tableDetallesHistorico;
     @FXML private TableColumn<DetalleMedicamento, String> colMedicamento;
     @FXML private TableColumn<DetalleMedicamento, String> colPresentacion;
     @FXML private TableColumn<DetalleMedicamento, Integer> colCantidad;
     @FXML private TableColumn<DetalleMedicamento, String> colIndicaciones;
     @FXML private TableColumn<DetalleMedicamento, Integer> colDuracion;
-
-    // Campos de búsqueda y filtro
     @FXML private TextField txtBuscarPacienteIdHistoricoRecetas;
     @FXML private ComboBox<String> comboEstadoHistorico;
     @FXML private Button btnBuscarHistorico;

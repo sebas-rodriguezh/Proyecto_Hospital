@@ -18,19 +18,15 @@ public class RecetaDatos {
         try {
             this.xmlPath = Path.of(Objects.requireNonNull(filePath));
 
-            // CAMBIO: Incluir todas las entidades necesarias en el contexto JAXB
             this.ctx = JAXBContext.newInstance(
                     RecetaConector.class,
                     RecetaEntity.class,
                     DetalleMedicamentoEntity.class,
-                    // Entidades de Personal
                     PersonalEntity.class,
                     MedicoEntity.class,
                     AdministradorEntity.class,
                     FarmaceutaEntity.class,
-                    // Entidades de Paciente
                     PacienteEntity.class,
-                    // Entidades de Medicamento
                     MedicamentoEntity.class
             );
         } catch (Exception e) {

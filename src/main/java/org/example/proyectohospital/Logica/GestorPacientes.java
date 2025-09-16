@@ -14,8 +14,6 @@ public class GestorPacientes {
         this.store = new PacienteDatos(rutaArchivo);
     }
 
-    // === MÉTODOS DE LECTURA ===
-
     public List<Paciente> findAll() {
         PacienteConector data = store.load();
         return data.getPacientes().stream()
@@ -54,7 +52,6 @@ public class GestorPacientes {
                 .anyMatch(p -> p.getId().equals(idPaciente));
     }
 
-    // === MÉTODOS DE ESCRITURA ===
 
     public Paciente create(Paciente nuevo) {
         try {
@@ -64,12 +61,10 @@ public class GestorPacientes {
 
             PacienteConector data = store.load();
 
-            // Solo validación local - sin referencias a Hospital
             if (existeAlguienConEseID(nuevo.getId())) {
                 throw new IllegalArgumentException("Ya existe un paciente con ese ID");
             }
 
-            // Agregar al XML
             PacienteEntity pacienteEntity = PacienteMapper.toXML(nuevo);
             data.getPacientes().add(pacienteEntity);
             store.save(data);
@@ -87,17 +82,14 @@ public class GestorPacientes {
             }
 
             PacienteConector data = store.load();
-            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas(); // 🔥 NUEVO
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
 
             for (int i = 0; i < data.getPacientes().size(); i++) {
                 PacienteEntity actual = data.getPacientes().get(i);
                 if (actual.getId().equals(actualizado.getId())) {
                     data.getPacientes().set(i, PacienteMapper.toXML(actualizado));
                     store.save(data);
-
-                    // 🔥 ACTUALIZAR RECETAS que usan este paciente
                     actualizarRecetasConPaciente(actualizado, gestorRecetas);
-
                     return actualizado;
                 }
             }
@@ -108,13 +100,11 @@ public class GestorPacientes {
         }
     }
 
-    // 🔥 MÉTODO NUEVO para actualizar recetas con paciente modificado
     private void actualizarRecetasConPaciente(Paciente pacienteActualizado, GestorRecetas gestorRecetas) {
         try {
             List<Receta> recetasDelPaciente = gestorRecetas.obtenerRecetasPorPaciente(pacienteActualizado.getId());
 
             for (Receta receta : recetasDelPaciente) {
-                // Reemplazar el objeto paciente viejo con el actualizado
                 receta.setPaciente(pacienteActualizado);
                 gestorRecetas.update(receta);
             }
@@ -132,7 +122,6 @@ public class GestorPacientes {
                 throw new IllegalArgumentException("ID no puede ser nulo o vacío");
             }
 
-            // 🔥 NUEVO: Eliminar recetas asociadas en cascada
             GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
             List<Receta> recetasAsociadas = gestorRecetas.obtenerRecetasPorPaciente(idPaciente);
 
@@ -157,7 +146,6 @@ public class GestorPacientes {
         }
     }
 
-    // === MÉTODOS ORIGINALES ADAPTADOS ===
 
     public Boolean insertarPaciente(Paciente paciente, Boolean respuestaListaPersonal) {
         try {
@@ -165,7 +153,6 @@ public class GestorPacientes {
                 throw new IllegalArgumentException("El paciente no puede ser nulo");
             }
 
-            // CAMBIO: Validación simplificada sin Hospital
             if (existeAlguienConEseID(paciente.getId()) || (Boolean.TRUE.equals(respuestaListaPersonal))) {
                 throw new IllegalArgumentException("Existe una persona con ese ID en el sistema.");
             }

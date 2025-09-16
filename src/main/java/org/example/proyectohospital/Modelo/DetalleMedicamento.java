@@ -21,7 +21,7 @@ public class DetalleMedicamento {
         this.cantidad = cantidad;
         this.duracion = duracion;
         this.indicacion = indicacion;
-        this.medicamento = new Medicamento(); //Acá es donde se llama al hospital.getMedicamentoPorCodigo(). Ya que para la vista se trabaja así.
+        this.medicamento = new Medicamento();
     }
 
     public DetalleMedicamento() {

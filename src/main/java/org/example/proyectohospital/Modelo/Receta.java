@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Receta {
-    private Personal personal; //Una receta tiene un único médico que la prescribe.
-    private Paciente paciente; //Una receta tiene un único paciente a quién se le receta.
+    private Personal personal;
+    private Paciente paciente;
     private LocalDate fechaPrescripcion;
     private LocalDate fechaRetiro;
     private int estado;// 1: Procesada - 2: Confeccionada - 3: Lista - 4: Entregada
@@ -38,13 +38,12 @@ public class Receta {
         this.fechaPrescripcion = fechaPrescripcion;
         this.fechaRetiro = fechaRetiro;
         this.estado = estado;
-        personal = new Medico(); //Acá se referenciaría con el hotel el medico con el idMedico.
-        paciente = new Paciente(); //Acá se referenciaría con el hotel el medico con el idPaciente.
+        personal = new Medico();
+        paciente = new Paciente();
         detalleMedicamentos = new ArrayList<>();
     }
 
     public Receta() {
-        //Inicializar referencias.
         personal = new Medico();
         paciente = new Paciente();
         detalleMedicamentos = new ArrayList<>();
@@ -120,7 +119,7 @@ public class Receta {
         return detalleMedicamentos != null ? detalleMedicamentos : new ArrayList<>();
     }
     public LocalDate getFechaConfeccion() {
-        return this.fechaPrescripcion; // Usamos fechaPrescripcion como fecha de confección
+        return this.fechaPrescripcion;
     }
 
     public String getFechaNacimiento() {

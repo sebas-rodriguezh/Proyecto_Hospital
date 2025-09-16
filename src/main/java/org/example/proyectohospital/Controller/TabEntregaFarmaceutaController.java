@@ -57,9 +57,9 @@ public class TabEntregaFarmaceutaController implements Initializable {
             return;
         }
 
-        if (gestorRecetas.actualizarEstadoReceta(seleccionada.getId(), 4)) { // cambia a Entregada
+        if (gestorRecetas.actualizarEstadoReceta(seleccionada.getId(), 4)) {
             mostrarAlerta("Éxito", "Receta entregada correctamente");
-            buscarRecetaParaEntrega(null); // refrescar tabla
+            buscarRecetaParaEntrega(null);
         }
     }
 

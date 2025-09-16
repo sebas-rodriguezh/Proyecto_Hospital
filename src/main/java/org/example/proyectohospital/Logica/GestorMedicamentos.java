@@ -64,8 +64,6 @@ public class GestorMedicamentos {
                 .anyMatch(m -> m.getCodigo().equals(codigoMedicamento));
     }
 
-    //ESCRITURA
-
     public Medicamento create(Medicamento nuevo) {
         try {
             if (nuevo == null) {
@@ -78,12 +76,10 @@ public class GestorMedicamentos {
 
             MedicamentoConector data = store.load();
 
-            // Validación usando método existente
             if (existeMedicamentoConEseCodigo(nuevo.getCodigo())) {
                 throw new IllegalArgumentException("Ya existe un medicamento con ese código");
             }
 
-            // Agregar al XML
             MedicamentoEntity medicamentoEntity = MedicamentoMapper.toXML(nuevo);
             data.getMedicamentos().add(medicamentoEntity);
             store.save(data);
@@ -101,12 +97,11 @@ public class GestorMedicamentos {
             }
 
             MedicamentoConector data = store.load();
-            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas(); // 🔥 NUEVO
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
 
             for (int i = 0; i < data.getMedicamentos().size(); i++) {
                 MedicamentoEntity actual = data.getMedicamentos().get(i);
                 if (actual.getCodigo().equals(actualizado.getCodigo())) {
-                    // Encontramos el medicamento a modificar y aplicamos los cambios
                     data.getMedicamentos().set(i, MedicamentoMapper.toXML(actualizado));
                     store.save(data);
                     actualizarRecetasConMedicamento(actualizado, gestorRecetas);
@@ -125,7 +120,6 @@ public class GestorMedicamentos {
             List<Receta> recetasConMedicamento = gestorRecetas.obtenerRecetasPorMedicamento(medicamentoActualizado.getCodigo());
 
             for (Receta receta : recetasConMedicamento) {
-                // Buscar y actualizar el detalle que contiene este medicamento
                 for (DetalleMedicamento detalle : receta.getDetallesMedicamentos()) {
                     if (detalle.getMedicamento().getCodigo().equals(medicamentoActualizado.getCodigo())) {
                         detalle.setMedicamento(medicamentoActualizado);
@@ -155,7 +149,6 @@ public class GestorMedicamentos {
                 MedicamentoEntity actual = data.getMedicamentos().get(i);
 
                 if (actual.getCodigo().equals(codigoOriginal)) {
-                    // Encontramos el medicamento a modificar
                     data.getMedicamentos().set(i, MedicamentoMapper.toXML(actualizado));
                     store.save(data);
                     return actualizado;
@@ -221,7 +214,6 @@ public class GestorMedicamentos {
 
     public void setMedicamentos(List<Medicamento> medicamentos) {
         try {
-            // Reemplazar todo el contenido del XML
             MedicamentoConector data = store.load();
             List<MedicamentoEntity> entities = medicamentos.stream()
                     .map(MedicamentoMapper::toXML)

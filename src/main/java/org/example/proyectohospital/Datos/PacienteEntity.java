@@ -1,6 +1,6 @@
 package org.example.proyectohospital.Datos;
 import jakarta.xml.bind.annotation.*;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter; //Convertidor.
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 @XmlAccessorType(XmlAccessType.FIELD)

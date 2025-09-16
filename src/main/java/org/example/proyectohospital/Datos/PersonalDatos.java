@@ -58,17 +58,17 @@ public class PersonalDatos {
     public synchronized void save(PersonalConector data) {
         try {
             Marshaller m = ctx.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE); //Convertimos todas las propiedas sí o sí.
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
             m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
-            File out = xmlPath.toFile(); //Tome el XML path y hagalo archivo.
+            File out = xmlPath.toFile();
             File parent = out.getParentFile();
 
             if (parent != null) parent.mkdirs();
 
             java.io.StringWriter sw = new java.io.StringWriter();
-            m.marshal(data, sw); //Pasa los datos a escritura.
-            m.marshal(data, out); //Escribe los datos en el archivo.
+            m.marshal(data, sw);
+            m.marshal(data, out);
 
             cache = data;
         }

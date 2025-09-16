@@ -35,32 +35,26 @@ public class BuscarPacienteController implements Initializable {
     public BuscarPacienteController() {
     }
 
-    // Método para establecer la referencia al controller padre
     public void setControllerPadre(TabPrescibirController controller) {
         this.controllerPadre = controller;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Configurar las columnas de la tabla
         colIDPaciente.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombrePaciente.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colFechaNacimientoPaciente.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
         colTelefonoPaciente.setCellValueFactory(new PropertyValueFactory<>("telefono"));
 
-        // Configurar ComboBox de filtros
         comboBoxFiltro.setItems(FXCollections.observableArrayList("ID", "Nombre", "Teléfono"));
-        comboBoxFiltro.setValue("Nombre"); // Valor por defecto
+        comboBoxFiltro.setValue("Nombre");
 
-        // Cargar todos los pacientes al inicializar
         cargarTodosLosPacientes();
 
-        // Agregar listener para búsqueda en tiempo real
         txtValorBuscado.textProperty().addListener((obs, oldVal, newVal) -> {
             filtrarPacientes(newVal);
         });
 
-        // Listener para selección de paciente
         tbvResultadoBPaciente.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     pacienteSeleccionado = newValue;
@@ -68,7 +62,7 @@ public class BuscarPacienteController implements Initializable {
                 }
         );
 
-        btnSeleccionar.setDisable(true); // Inicialmente deshabilitado
+        btnSeleccionar.setDisable(true);
     }
 
     private void cargarTodosLosPacientes() {
@@ -127,7 +121,6 @@ public class BuscarPacienteController implements Initializable {
         }
 
         try {
-            // Pasar el paciente seleccionado al controller padre
             if (controllerPadre != null) {
                 controllerPadre.setPacienteSeleccionado(pacienteSeleccionado);
             }

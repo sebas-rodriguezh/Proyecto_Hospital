@@ -34,16 +34,12 @@ public class TabDashboardController implements Initializable {
     @FXML private PieChart pieChartRecetas;
     @FXML private CategoryAxis rangoXAxis;
     @FXML private NumberAxis rangoYAxis;
-
     private final GestorRecetas gestorRecetas = Hospital.getInstance().getGestorRecetas();
     private final GestorMedicamentos gestorMedicamentos = Hospital.getInstance().getGestorMedicamentos();
-
-    // Lista simple de medicamentos seleccionados
     private List<Medicamento> medicamentosSeleccionados = new ArrayList<>();
 
     @FXML
     public void seleccionMedicamento(ActionEvent actionEvent) {
-        // Método simple para manejar selección
     }
 
     @FXML
@@ -58,7 +54,6 @@ public class TabDashboardController implements Initializable {
             return;
         }
 
-        // Revisar si ya existe
         boolean yaExiste = false;
         for (Medicamento m : medicamentosSeleccionados) {
             if (m.getCodigo().equals(medicamento.getCodigo())) {
@@ -96,14 +91,12 @@ public class TabDashboardController implements Initializable {
             return;
         }
 
-        // Hacer los gráficos
         hacerGraficoLineas(desde, hasta);
         hacerGraficoPastel(desde, hasta);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configurar tabla simple
         colIMedicamento.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getNombre()));
         colIMeses.setCellValueFactory(cellData -> {
@@ -115,11 +108,8 @@ public class TabDashboardController implements Initializable {
             return new SimpleStringProperty("No definido");
         });
 
-        // Cargar medicamentos al ComboBox
         List<Medicamento> medicamentos = gestorMedicamentos.getMedicamentos();
         comboBoxMedicamentos.getItems().addAll(medicamentos);
-
-        // Mostrar nombres en ComboBox
         comboBoxMedicamentos.setCellFactory(listView -> new ListCell<Medicamento>() {
             @Override
             protected void updateItem(Medicamento med, boolean empty) {
@@ -143,67 +133,43 @@ public class TabDashboardController implements Initializable {
                 }
             }
         });
-
-        // Fechas por defecto
         LocalDate hoy = LocalDate.now();
         dtpHasta.setValue(hoy);
         dtpDesde.setValue(hoy.minusMonths(3));
     }
 
     private void hacerGraficoLineas(LocalDate desde, LocalDate hasta) {
-        // Limpiar gráfico
         lineChartMedicamentos.getData().clear();
-
-        // Crear meses base como en el código refinado
         Map<String, Integer> mesesBase = crearMesesBase(desde, hasta);
-
-        // Por cada medicamento seleccionado
         for (Medicamento medicamento : medicamentosSeleccionados) {
-
-            // Crear una serie (línea) para este medicamento
             XYChart.Series<String, Number> serie = new XYChart.Series<>();
             serie.setName(medicamento.getNombre());
-
-            // Copiar meses base (todos iniciando en 0)
             Map<String, Integer> cantidadPorMes = new LinkedHashMap<>(mesesBase);
-
-            // Contar medicamentos por mes
             List<Receta> todasLasRecetas = gestorRecetas.getRecetas();
             for (Receta receta : todasLasRecetas) {
                 LocalDate fechaReceta = receta.getFechaPrescripcion();
-
-                // Verificar si está en el rango
                 if (fechaReceta.isBefore(desde) || fechaReceta.isAfter(hasta)) {
                     continue;
                 }
-
-                // Formato igual al del mapa
                 String mesKey = String.format("%02d-%02d", fechaReceta.getMonthValue(), fechaReceta.getYear() % 100);
 
-                // Buscar medicamento en esta receta
                 for (DetalleMedicamento detalle : receta.getDetalleMedicamentos()) {
                     if (detalle.getMedicamento().getCodigo().equals(medicamento.getCodigo())) {
                         cantidadPorMes.put(mesKey, cantidadPorMes.get(mesKey) + detalle.getCantidad());
                     }
                 }
             }
-
-            // Agregar todos los puntos en orden (como el código refinado)
             for (Map.Entry<String, Integer> entry : cantidadPorMes.entrySet()) {
                 serie.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
             }
 
             lineChartMedicamentos.getData().add(serie);
         }
-
-        // Configurar ejes como el código refinado
         rangoXAxis.setLabel("Mes");
         rangoXAxis.setAnimated(false);
 
         rangoYAxis.setLabel("Cantidad");
         rangoYAxis.setAnimated(false);
-
-        // Calcular límite del eje Y
         int maximo = 0;
         for (Medicamento medicamento : medicamentosSeleccionados) {
             Map<String, Integer> cantidadPorMes = new LinkedHashMap<>(mesesBase);
@@ -241,7 +207,7 @@ public class TabDashboardController implements Initializable {
 
         while (!actual.isAfter(fin)) {
             String mesKey = String.format("%02d-%02d", actual.getMonthValue(), actual.getYear() % 100);
-            meses.put(mesKey, 0); // Inicializar con 0
+            meses.put(mesKey, 0);
             actual = actual.plusMonths(1);
         }
 
@@ -265,9 +231,9 @@ public class TabDashboardController implements Initializable {
 
             int estado = receta.getEstado();
             if (estado == 1) {
-                procesadas++;
-            } else if (estado == 2) {
                 confeccionadas++;
+            } else if (estado == 2) {
+                procesadas++;
             } else if (estado == 3) {
                 listas++;
             } else if (estado == 4) {
@@ -275,7 +241,6 @@ public class TabDashboardController implements Initializable {
             }
         }
 
-        // Agregar datos al gráfico
         if (procesadas > 0) {
             pieChartRecetas.getData().add(new PieChart.Data("Procesada (" + procesadas + ")", procesadas));
         }
@@ -289,7 +254,6 @@ public class TabDashboardController implements Initializable {
             pieChartRecetas.getData().add(new PieChart.Data("Entregada (" + entregadas + ")", entregadas));
         }
 
-        // Si no hay datos
         if (pieChartRecetas.getData().isEmpty()) {
             pieChartRecetas.getData().add(new PieChart.Data("Sin datos", 1));
         }

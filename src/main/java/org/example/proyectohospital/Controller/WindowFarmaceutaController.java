@@ -22,7 +22,6 @@ public class WindowFarmaceutaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configurar el listener para cuando se cambia de pestaña
         tabPaneFarmaceuta.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldTab, newTab) -> {
                     if (newTab == tabAlistadoFarmaceuta && tabAlistadoContentController != null) {

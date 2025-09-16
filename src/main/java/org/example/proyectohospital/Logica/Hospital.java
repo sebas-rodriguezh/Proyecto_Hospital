@@ -18,7 +18,6 @@ public class Hospital {
     private static final String RUTA_MEDICAMENTOS_DEFAULT = Paths.get(RUTA_BASE, "medicamentos.xml").toString();
     private static final String RUTA_RECETAS_DEFAULT = Paths.get(RUTA_BASE, "recetas.xml").toString();
 
-    // Constructor privado con rutas personalizadas
     private Hospital(String rutaPacientes, String rutaPersonal, String rutaMedicamentos, String rutaRecetas) {
         this.gestorPacientes = new GestorPacientes(rutaPacientes);
         this.gestorPersonal = new GestorPersonal(rutaPersonal);
@@ -28,7 +27,6 @@ public class Hospital {
         System.out.println("Hospital inicializado con rutas personalizadas");
     }
 
-    // Constructor privado con gestores ya instanciados
     private Hospital(GestorPersonal personal, GestorPacientes pacientes,
                      GestorMedicamentos medicamentos, GestorRecetas recetas) {
         this.gestorPersonal = personal;
@@ -39,13 +37,6 @@ public class Hospital {
         System.out.println("Hospital inicializado con gestores existentes");
     }
 
-    // Constructor privado por defecto
-//    private Hospital() {
-//        this(RUTA_PACIENTES_DEFAULT, RUTA_PERSONAL_DEFAULT,
-//                RUTA_MEDICAMENTOS_DEFAULT, RUTA_RECETAS_DEFAULT);
-//
-//    }
-
     private Hospital () {
         this.gestorPacientes = new GestorPacientes(RUTA_PACIENTES_DEFAULT);
         this.gestorPersonal = new GestorPersonal(RUTA_PERSONAL_DEFAULT);
@@ -53,7 +44,6 @@ public class Hospital {
         this.gestorRecetas = new GestorRecetas(RUTA_RECETAS_DEFAULT);
     }
 
-    // Método para obtener la instancia (con inicialización automática)
     public static Hospital getInstance() {
         if (instance == null) {
             instance = new Hospital();
@@ -61,7 +51,6 @@ public class Hospital {
         return instance;
     }
 
-    // Método para inicializar con rutas personalizadas (opcional)
     public static void initialize(String rutaPacientes, String rutaPersonal,
                                   String rutaMedicamentos, String rutaRecetas) {
         if (instance == null) {
@@ -71,7 +60,6 @@ public class Hospital {
         }
     }
 
-    // Método para inicializar con gestores existentes (opcional)
     public static void initialize(GestorPersonal personal, GestorPacientes pacientes,
                                   GestorMedicamentos medicamentos, GestorRecetas recetas) {
         if (instance == null) {
@@ -81,9 +69,6 @@ public class Hospital {
         }
     }
 
-    // ======== GETTERS CON NOMBRES QUE COINCIDEN CON TU NECESIDAD ========
-
-    // Método que buscas para usar en controladores
     public GestorPacientes getGestorPacientes() {
         return gestorPacientes;
     }
@@ -99,8 +84,6 @@ public class Hospital {
     public GestorRecetas getGestorRecetas() {
         return gestorRecetas;
     }
-
-    // ======== GETTERS COMPATIBLES CON CÓDIGO EXISTENTE ========
 
     public GestorPersonal getPersonal() {
         return gestorPersonal;
@@ -118,8 +101,6 @@ public class Hospital {
         return gestorMedicamentos;
     }
 
-    // ======== SETTERS (para casos especiales) ========
-
     public void setGestorPersonal(GestorPersonal gestorPersonal) {
         this.gestorPersonal = gestorPersonal;
     }
@@ -136,7 +117,6 @@ public class Hospital {
         this.gestorMedicamentos = gestorMedicamentos;
     }
 
-    // Setters compatibles con código existente
     public void setPersonal(GestorPersonal personal) {
         this.gestorPersonal = personal;
     }
@@ -163,33 +143,6 @@ public class Hospital {
         return medicoLogueado;
     }
 
-    public boolean hayMedicoLogueado() {
-        return medicoLogueado != null;
-    }
-
-
-    // ======== MÉTODOS UTILITARIOS ========
-
-    public static void reset() {
-        instance = null;
-        System.out.println("Hospital reseteado - se creará nueva instancia en próximo getInstance()");
-    }
-
-    // Verificar si el hospital está inicializado
-    public static boolean isInitialized() {
-        return instance != null;
-    }
-
-    // Información del estado del hospital
-    public void mostrarEstado() {
-        System.out.println("=== ESTADO DEL HOSPITAL ===");
-        System.out.println("Gestor de Pacientes: " + (gestorPacientes != null ? "✓ Inicializado" : "✗ No inicializado"));
-        System.out.println("Gestor de Personal: " + (gestorPersonal != null ? "✓ Inicializado" : "✗ No inicializado"));
-        System.out.println("Gestor de Medicamentos: " + (gestorMedicamentos != null ? "✓ Inicializado" : "✗ No inicializado"));
-        System.out.println("Gestor de Recetas: " + (gestorRecetas != null ? "✓ Inicializado" : "✗ No inicializado"));
-    }
-
-    // ======== GETTERS DE RUTAS (para información) ========
 
     public static String getRutaPacientesDefault() { return RUTA_PACIENTES_DEFAULT; }
     public static String getRutaPersonalDefault() { return RUTA_PERSONAL_DEFAULT; }

@@ -133,33 +133,6 @@ public class TabPrescibirController implements Initializable {
         tbvResultadoBusquedaPaciente.setItems(listaPaciente);
     }
 
-    public void agregarDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
-        //Edición
-        if (detalleEnEdicion != null) {
-            for (int i = 0; i < detallesMedicamentos.size(); i++) {
-                if (detallesMedicamentos.get(i).getIdDetalle().equals(detalleEnEdicion.getIdDetalle())) {
-                    detallesMedicamentos.set(i, detalleMedicamento);
-                    detalleEnEdicion = null;
-                    tbvResultadoBusquedaMedicamento.refresh();
-                    return;
-                }
-            }
-        }
-        //No edición
-        else {
-            boolean existe = detallesMedicamentos.stream()
-                    .anyMatch(detalle -> detalle.getMedicamento().getCodigo().equals(
-                            detalleMedicamento.getMedicamento().getCodigo()));
-
-            if (existe) {
-                mostrarAlerta("Medicamento duplicado", "Este medicamento ya está en la receta.");
-                return;
-            }
-            detallesMedicamentos.add(detalleMedicamento);
-        }
-    }
-
-
     @FXML
     public void limpiarCamposReceta(ActionEvent actionEvent) {
         pacienteSeleccionado = null;
@@ -225,13 +198,6 @@ public class TabPrescibirController implements Initializable {
         return true;
     }
 
-    private String generarIdReceta() {
-        LocalDate fecha = LocalDate.now();
-        long timestamp = System.currentTimeMillis() % 1000000;
-        String idReceta = String.format("REC%02d%02d%06d", fecha.getMonthValue(), fecha.getDayOfMonth(), timestamp);
-        return idReceta;
-    }
-
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -269,6 +235,37 @@ public class TabPrescibirController implements Initializable {
         } catch (Exception e) {
             mostrarAlerta("Error", "No se pudo abrir la ventana: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private String generarIdReceta() {
+        LocalDate fecha = LocalDate.now();
+        long timestamp = System.currentTimeMillis() % 1000000;
+        String idReceta = String.format("REC%02d%02d%06d", fecha.getMonthValue(), fecha.getDayOfMonth(), timestamp);
+        return idReceta;
+    }
+
+    public void agregarDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
+        if (detalleEnEdicion != null) {
+            for (int i = 0; i < detallesMedicamentos.size(); i++) {
+                if (detallesMedicamentos.get(i).getIdDetalle().equals(detalleEnEdicion.getIdDetalle())) {
+                    detallesMedicamentos.set(i, detalleMedicamento);
+                    detalleEnEdicion = null;
+                    tbvResultadoBusquedaMedicamento.refresh();
+                    return;
+                }
+            }
+        }
+        else {
+            boolean existe = detallesMedicamentos.stream()
+                    .anyMatch(detalle -> detalle.getMedicamento().getCodigo().equals(
+                            detalleMedicamento.getMedicamento().getCodigo()));
+
+            if (existe) {
+                mostrarAlerta("Medicamento duplicado", "Este medicamento ya está en la receta.");
+                return;
+            }
+            detallesMedicamentos.add(detalleMedicamento);
         }
     }
 
