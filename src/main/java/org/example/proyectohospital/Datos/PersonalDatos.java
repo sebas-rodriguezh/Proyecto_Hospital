@@ -1,88 +1,170 @@
 package org.example.proyectohospital.Datos;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Objects;
+import org.example.proyectohospital.Modelo.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PersonalDatos {
-    private final Path xmlPath;
-    private JAXBContext ctx;
-    private PersonalConector cache;
 
+    public List<Personal> findAll() throws SQLException {
+        String sql = "SELECT id, nombre, clave, tipo, especialidad FROM personal ORDER BY id";
 
-    public PersonalDatos(String filePath) {
-        try {
-            this.xmlPath = Path.of(Objects.requireNonNull(filePath));
-            this.ctx = JAXBContext.newInstance(
-                    PersonalConector.class,
-                    PersonalEntity.class,
-                    MedicoEntity.class,
-                    AdministradorEntity.class,
-                    FarmaceutaEntity.class
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("Error inicializando PersonalDatos: " + e.getMessage());
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            List<Personal> list = new ArrayList<>();
+            while (rs.next()) {
+                Personal personal = crearPersonalDesdeResultSet(rs);
+                if (personal != null) {
+                    list.add(personal);
+                }
+            }
+            return list;
         }
     }
 
-    public synchronized PersonalConector load() {
-        try {
-            if (cache != null) {
-                return cache;
+    public Personal findById(String id) throws SQLException {
+        String sql = "SELECT id, nombre, clave, tipo, especialidad FROM personal WHERE id = ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return crearPersonalDesdeResultSet(rs);
+            }
+            return null;
+        }
+    }
+
+    public Personal verificarCredenciales(String id, String clave) throws SQLException {
+        String sql = "SELECT id, nombre, clave, tipo, especialidad FROM personal WHERE id = ? AND clave = ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, id);
+            ps.setString(2, clave);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return crearPersonalDesdeResultSet(rs);
+            }
+            return null;
+        }
+    }
+
+    private Personal crearPersonalDesdeResultSet(ResultSet rs) throws SQLException {
+        String tipo = rs.getString("tipo");
+        String id = rs.getString("id");
+        String nombre = rs.getString("nombre");
+        String clave = rs.getString("clave");
+
+        switch (tipo) {
+            case "Medico":
+                Medico medico = new Medico(nombre, id, clave, rs.getString("especialidad"));
+                return medico;
+            case "Administrador":
+                return new Administrador(nombre, id, clave);
+            case "Farmaceuta":
+                return new Farmaceuta(nombre, id, clave);
+            default:
+                return null;
+        }
+    }
+
+    public Personal insert(Personal personal) throws SQLException {
+        String sql = "INSERT INTO personal (id, nombre, clave, tipo, especialidad) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, personal.getId());
+            ps.setString(2, personal.getNombre());
+            ps.setString(3, personal.getClave());
+            ps.setString(4, personal.tipo());
+
+            if (personal instanceof Medico) {
+                ps.setString(5, ((Medico) personal).getEspecialidad());
+            } else {
+                ps.setNull(5, Types.VARCHAR);
             }
 
-            if (!Files.exists(xmlPath)) {
-                cache = new PersonalConector();
-                save(cache);
-                return cache;
+            ps.executeUpdate();
+            return personal;
+        }
+    }
+
+    public Personal update(Personal personal) throws SQLException {
+        String sql = "UPDATE personal SET nombre = ?, clave = ?, tipo = ?, especialidad = ? WHERE id = ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, personal.getNombre());
+            ps.setString(2, personal.getClave());
+            ps.setString(3, personal.tipo());
+
+            if (personal instanceof Medico) {
+                ps.setString(4, ((Medico) personal).getEspecialidad());
+            } else {
+                ps.setNull(4, Types.VARCHAR);
             }
 
-            Unmarshaller u = ctx.createUnmarshaller();
-            cache = (PersonalConector) u.unmarshal(xmlPath.toFile());
+            ps.setString(5, personal.getId());
 
-            if (cache.getPersonal() == null) {
-                cache.setPersonal(new java.util.ArrayList<>());
+            int affected = ps.executeUpdate();
+            return affected > 0 ? personal : null;
+        }
+    }
+
+    public boolean delete(String id) throws SQLException {
+        String sql = "DELETE FROM personal WHERE id = ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public List<Personal> findByText(String texto) throws SQLException {
+        String sql = "SELECT id, nombre, clave, tipo, especialidad FROM personal WHERE nombre LIKE ? OR id LIKE ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            String searchText = "%" + texto + "%";
+            ps.setString(1, searchText);
+            ps.setString(2, searchText);
+
+            ResultSet rs = ps.executeQuery();
+            List<Personal> list = new ArrayList<>();
+            while (rs.next()) {
+                Personal personal = crearPersonalDesdeResultSet(rs);
+                if (personal != null) {
+                    list.add(personal);
+                }
             }
-
-            return cache;
-        } catch (Exception e) {
-            throw new RuntimeException("Error cargando personal: " + e.getMessage());
+            return list;
         }
     }
 
-    public synchronized void save(PersonalConector data) {
-        try {
-            Marshaller m = ctx.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
-            m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+    public boolean cambiarClave(String id, String nuevaClave) throws SQLException {
+        String sql = "UPDATE personal SET clave = ? WHERE id = ?";
 
-            File out = xmlPath.toFile();
-            File parent = out.getParentFile();
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
 
-            if (parent != null) parent.mkdirs();
+            ps.setString(1, nuevaClave);
+            ps.setString(2, id);
 
-            java.io.StringWriter sw = new java.io.StringWriter();
-            m.marshal(data, sw);
-            m.marshal(data, out);
-
-            cache = data;
-        }
-
-        catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            return ps.executeUpdate() > 0;
         }
     }
-
-
-    public Path getXmlPath() {
-        return xmlPath;
-    }
-
-
-
 }

@@ -1,81 +1,117 @@
 package org.example.proyectohospital.Datos;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Objects;
+import org.example.proyectohospital.Modelo.Paciente;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PacienteDatos {
-    private final Path xmlPath;
-    private JAXBContext ctx;
-    private PacienteConector cache;
-    
-    public PacienteDatos(String filePath) {
-        try {
-            this.xmlPath = Path.of(Objects.requireNonNull(filePath));
-            this.ctx = JAXBContext.newInstance(PacienteConector.class, PacienteEntity.class);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
 
-    public synchronized PacienteConector load() {
-        try {
-            if (cache != null) {
-                return cache;
+    public List<Paciente> findAll() throws SQLException {
+        String sql = "SELECT id, nombre, telefono, fecha_nacimiento FROM pacientes ORDER BY id";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            List<Paciente> list = new ArrayList<>();
+            while (rs.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setId(rs.getString("id"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setTelefono(rs.getInt("telefono"));
+                paciente.setFechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                list.add(paciente);
             }
+            return list;
+        }
+    }
 
-            if (!Files.exists(xmlPath)) {
-                cache = new PacienteConector();
-                save(cache);
-                return cache;
+    public Paciente findById(String id) throws SQLException {
+        String sql = "SELECT id, nombre, telefono, fecha_nacimiento FROM pacientes WHERE id = ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setId(rs.getString("id"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setTelefono(rs.getInt("telefono"));
+                paciente.setFechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                return paciente;
             }
+            return null;
+        }
+    }
 
-            Unmarshaller u = ctx.createUnmarshaller();
+    public Paciente insert(Paciente paciente) throws SQLException {
+        String sql = "INSERT INTO pacientes (id, nombre, telefono, fecha_nacimiento) VALUES (?, ?, ?, ?)";
 
-            cache = (PacienteConector) u.unmarshal(xmlPath.toFile());
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
 
-            if (cache.getPacientes() == null)
-            {
-                cache.setPacientes(new java.util.ArrayList<>());
+            ps.setString(1, paciente.getId());
+            ps.setString(2, paciente.getNombre());
+            ps.setInt(3, paciente.getTelefono());
+            ps.setDate(4, Date.valueOf(paciente.getFechaNacimiento()));
+
+            ps.executeUpdate();
+            return paciente;
+        }
+    }
+
+    public Paciente update(Paciente paciente) throws SQLException {
+        String sql = "UPDATE pacientes SET nombre = ?, telefono = ?, fecha_nacimiento = ? WHERE id = ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, paciente.getNombre());
+            ps.setInt(2, paciente.getTelefono());
+            ps.setDate(3, Date.valueOf(paciente.getFechaNacimiento()));
+            ps.setString(4, paciente.getId());
+
+            int affected = ps.executeUpdate();
+            return affected > 0 ? paciente : null;
+        }
+    }
+
+    public boolean delete(String id) throws SQLException {
+        String sql = "DELETE FROM pacientes WHERE id = ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public List<Paciente> findByText(String texto) throws SQLException {
+        String sql = "SELECT id, nombre, telefono, fecha_nacimiento FROM pacientes WHERE nombre LIKE ? OR id LIKE ?";
+
+        try (Connection cn = DB.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            String searchText = "%" + texto + "%";
+            ps.setString(1, searchText);
+            ps.setString(2, searchText);
+
+            ResultSet rs = ps.executeQuery();
+            List<Paciente> list = new ArrayList<>();
+            while (rs.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setId(rs.getString("id"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setTelefono(rs.getInt("telefono"));
+                paciente.setFechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                list.add(paciente);
             }
-            return cache;
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            return list;
         }
     }
-
-    public synchronized void save(PacienteConector data) {
-        try {
-            Marshaller m = ctx.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
-            m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-
-            File out = xmlPath.toFile();
-            File parent = out.getParentFile();
-
-            if (parent != null) parent.mkdirs();
-
-            java.io.StringWriter sw = new java.io.StringWriter();
-            m.marshal(data, sw);
-            m.marshal(data, out);
-
-            cache = data;
-        }
-
-        catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    public  Path getXmlPath() {
-        return xmlPath;
-    }
-
 }

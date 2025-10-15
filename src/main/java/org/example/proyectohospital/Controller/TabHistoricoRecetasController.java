@@ -12,11 +12,9 @@ import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.DetalleMedicamento;
 import org.example.proyectohospital.Modelo.Receta;
 import org.example.proyectohospital.Logica.GestorRecetas;
-import org.example.proyectohospital.Datos.RecetaEntity;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;

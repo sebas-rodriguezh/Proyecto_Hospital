@@ -1,76 +1,64 @@
 package org.example.proyectohospital.Logica;
 
-import org.example.proyectohospital.Datos.*;
+import org.example.proyectohospital.Datos.PacienteDatos;
 import org.example.proyectohospital.Modelo.Paciente;
 import org.example.proyectohospital.Modelo.Receta;
 
+import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GestorPacientes {
     private final PacienteDatos store;
 
-    public GestorPacientes(String rutaArchivo) {
-        this.store = new PacienteDatos(rutaArchivo);
+    public GestorPacientes() {
+        this.store = new PacienteDatos();
     }
 
     public List<Paciente> findAll() {
-        PacienteConector data = store.load();
-        return data.getPacientes().stream()
-                .map(PacienteMapper::toModel)
-                .collect(Collectors.toList());
+        try {
+            return store.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error cargando pacientes: " + e.getMessage());
+        }
     }
 
     public List<Paciente> findByText(String texto) {
-        PacienteConector data = store.load();
-        if (texto == null || texto.trim().isEmpty()) {
-            return data.getPacientes().stream()
-                    .map(PacienteMapper::toModel)
-                    .collect(Collectors.toList());
+        try {
+            if (texto == null || texto.trim().isEmpty()) {
+                return store.findAll();
+            }
+            return store.findByText(texto);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error buscando pacientes: " + e.getMessage());
         }
-
-        String textoBusqueda = texto.toLowerCase().trim();
-        return data.getPacientes().stream()
-                .filter(p -> p.getNombre().toLowerCase().contains(textoBusqueda) ||
-                        p.getId().toLowerCase().contains(textoBusqueda))
-                .map(PacienteMapper::toModel)
-                .collect(Collectors.toList());
     }
 
     public Paciente getPaciente(String idPaciente) {
-        PacienteConector data = store.load();
-        return data.getPacientes().stream()
-                .filter(p -> p.getId().equals(idPaciente))
-                .map(PacienteMapper::toModel)
-                .findFirst()
-                .orElse(null);
+        try {
+            return store.findById(idPaciente);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo paciente: " + e.getMessage());
+        }
     }
 
     public Boolean existeAlguienConEseID(String idPaciente) {
-        PacienteConector data = store.load();
-        return data.getPacientes().stream()
-                .anyMatch(p -> p.getId().equals(idPaciente));
+        try {
+            return store.findById(idPaciente) != null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error verificando existencia: " + e.getMessage());
+        }
     }
-
 
     public Paciente create(Paciente nuevo) {
         try {
             if (nuevo == null) {
                 throw new IllegalArgumentException("El paciente no puede ser nulo");
             }
-
-            PacienteConector data = store.load();
-
             if (existeAlguienConEseID(nuevo.getId())) {
                 throw new IllegalArgumentException("Ya existe un paciente con ese ID");
             }
-
-            PacienteEntity pacienteEntity = PacienteMapper.toXML(nuevo);
-            data.getPacientes().add(pacienteEntity);
-            store.save(data);
-
-            return nuevo;
-        } catch (Exception e) {
+            return store.insert(nuevo);
+        } catch (SQLException e) {
             throw new RuntimeException("Error creando paciente: " + e.getMessage());
         }
     }
@@ -81,27 +69,19 @@ public class GestorPacientes {
                 throw new IllegalArgumentException("El paciente no puede ser nulo");
             }
 
-            PacienteConector data = store.load();
-            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
-
-            for (int i = 0; i < data.getPacientes().size(); i++) {
-                PacienteEntity actual = data.getPacientes().get(i);
-                if (actual.getId().equals(actualizado.getId())) {
-                    data.getPacientes().set(i, PacienteMapper.toXML(actualizado));
-                    store.save(data);
-                    actualizarRecetasConPaciente(actualizado, gestorRecetas);
-                    return actualizado;
-                }
+            Paciente result = store.update(actualizado);
+            if (result != null) {
+                actualizarRecetasConPaciente(actualizado);
             }
-
-            throw new IllegalArgumentException("Paciente no encontrado con ID: " + actualizado.getId());
-        } catch (Exception e) {
+            return result;
+        } catch (SQLException e) {
             throw new RuntimeException("Error actualizando paciente: " + e.getMessage());
         }
     }
 
-    private void actualizarRecetasConPaciente(Paciente pacienteActualizado, GestorRecetas gestorRecetas) {
+    private void actualizarRecetasConPaciente(Paciente pacienteActualizado) {
         try {
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
             List<Receta> recetasDelPaciente = gestorRecetas.obtenerRecetasPorPaciente(pacienteActualizado.getId());
 
             for (Receta receta : recetasDelPaciente) {
@@ -110,7 +90,6 @@ public class GestorPacientes {
             }
 
             System.out.println("Actualizadas " + recetasDelPaciente.size() + " recetas del paciente: " + pacienteActualizado.getNombre());
-
         } catch (Exception e) {
             System.err.println("Error actualizando recetas del paciente: " + e.getMessage());
         }
@@ -132,34 +111,26 @@ public class GestorPacientes {
                 }
             }
 
-            PacienteConector data = store.load();
-            boolean eliminado = data.getPacientes().removeIf(paciente -> paciente.getId().equals(idPaciente));
-
+            boolean eliminado = store.delete(idPaciente);
             if (eliminado) {
-                store.save(data);
                 System.out.println("Paciente eliminado correctamente: " + idPaciente);
             }
-
             return eliminado;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Error eliminando paciente: " + e.getMessage());
         }
     }
-
 
     public Boolean insertarPaciente(Paciente paciente, Boolean respuestaListaPersonal) {
         try {
             if (paciente == null) {
                 throw new IllegalArgumentException("El paciente no puede ser nulo");
             }
-
             if (existeAlguienConEseID(paciente.getId()) || (Boolean.TRUE.equals(respuestaListaPersonal))) {
                 throw new IllegalArgumentException("Existe una persona con ese ID en el sistema.");
             }
-
             create(paciente);
             return true;
-
         } catch (IllegalArgumentException e) {
             System.err.println("Error al insertar paciente: " + e.getMessage());
             return false;
@@ -179,14 +150,17 @@ public class GestorPacientes {
 
     public void setPacientes(List<Paciente> pacientes) {
         try {
-            PacienteConector data = store.load();
-            List<PacienteEntity> entities = pacientes.stream()
-                    .map(PacienteMapper::toXML)
-                    .collect(Collectors.toList());
+            // Eliminar todos los pacientes existentes
+            List<Paciente> existentes = store.findAll();
+            for (Paciente pac : existentes) {
+                store.delete(pac.getId());
+            }
 
-            data.setPacientes(entities);
-            store.save(data);
-        } catch (Exception e) {
+            // Insertar los nuevos
+            for (Paciente pac : pacientes) {
+                store.insert(pac);
+            }
+        } catch (SQLException e) {
             throw new RuntimeException("Error estableciendo pacientes: " + e.getMessage());
         }
     }

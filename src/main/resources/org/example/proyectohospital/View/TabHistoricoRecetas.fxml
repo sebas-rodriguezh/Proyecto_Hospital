@@ -60,8 +60,8 @@
                         <TableColumn fx:id="colMedicamento" prefWidth="113.33333969116211" text="Medicamento" />
                         <TableColumn fx:id="colPresentacion" prefWidth="114.66667175292969" text="Presentación" />
                         <TableColumn fx:id="colCantidad" prefWidth="124.0" text="Cantidad" />
-                        <TableColumn fx:id="colIndicaciones" prefWidth="126.66671752929688" text="Indicaciones" />
-                        <TableColumn fx:id="colDuracion" prefWidth="252.00006103515625" text="Duración (días)" />
+                        <TableColumn fx:id="colIndicaciones" prefWidth="228.0" text="Indicaciones" />
+                        <TableColumn fx:id="colDuracion" prefWidth="117.0" text="Duración (días)" />
                      </columns>
                   </TableView>
                </children>

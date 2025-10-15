@@ -4,6 +4,11 @@ module org.example.proyectohospital {
     requires java.xml;
     requires jakarta.xml.bind;
     requires java.desktop;
+    requires java.sql; //Nueva para SQL.
+    requires com.zaxxer.hikari; //Nueva para zaxxer.
+    //requires com.mysql.cj;
+    requires mysql.connector.j;
+    //requires mysql.connector.j;
 
     opens org.example.proyectohospital.Datos to jakarta.xml.bind;
     exports org.example.proyectohospital.Datos;

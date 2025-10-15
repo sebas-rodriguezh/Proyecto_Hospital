@@ -1,7 +1,9 @@
 package org.example.proyectohospital.Logica;
 
-import org.example.proyectohospital.Datos.*;
+import org.example.proyectohospital.Datos.RecetaDatos;
 import org.example.proyectohospital.Modelo.*;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,86 +11,82 @@ import java.util.stream.Collectors;
 public class GestorRecetas {
     private final RecetaDatos store;
 
-    public GestorRecetas(String rutaArchivo) {
-        this.store = new RecetaDatos(rutaArchivo);
+    public GestorRecetas() {
+        this.store = new RecetaDatos();
     }
 
     public List<Receta> findAll() {
-        RecetaConector data = store.load();
-        return data.getRecetas().stream()
-                .map(RecetaMapper::toModel)
-                .collect(Collectors.toList());
+        try {
+            return store.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error cargando recetas: " + e.getMessage());
+        }
     }
 
     public List<Receta> findByText(String texto) {
-        RecetaConector data = store.load();
-        if (texto == null || texto.trim().isEmpty()) {
-            return data.getRecetas().stream()
-                    .map(RecetaMapper::toModel)
-                    .collect(Collectors.toList());
+        try {
+            if (texto == null || texto.trim().isEmpty()) {
+                return store.findAll();
+            }
+            return store.findByText(texto);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error buscando recetas: " + e.getMessage());
         }
-
-        String textoBusqueda = texto.toLowerCase().trim();
-        return data.getRecetas().stream()
-                .filter(r -> r.getId().toLowerCase().contains(textoBusqueda) ||
-                        r.getPaciente().getId().toLowerCase().contains(textoBusqueda) ||
-                        r.getPersonal().getId().toLowerCase().contains(textoBusqueda))
-                .map(RecetaMapper::toModel)
-                .collect(Collectors.toList());
     }
 
     public Receta getRecetaPorID(String idReceta) {
-        RecetaConector data = store.load();
-        return data.getRecetas().stream()
-                .filter(r -> r.getId().equals(idReceta))
-                .map(RecetaMapper::toModel)
-                .findFirst()
-                .orElse(null);
+        try {
+            return store.findById(idReceta);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo receta: " + e.getMessage());
+        }
     }
 
     public boolean existeRecetaConEseID(String idReceta) {
-        RecetaConector data = store.load();
-        return data.getRecetas().stream()
-                .anyMatch(r -> r.getId().equals(idReceta));
+        try {
+            return store.findById(idReceta) != null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error verificando existencia: " + e.getMessage());
+        }
     }
 
     public List<Receta> obtenerRecetasPorPaciente(String idPaciente) {
-        if (idPaciente == null || idPaciente.trim().isEmpty()) {
-            return getRecetas();
+        try {
+            if (idPaciente == null || idPaciente.trim().isEmpty()) {
+                return store.findAll();
+            }
+            return store.findByPaciente(idPaciente);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo recetas por paciente: " + e.getMessage());
         }
-
-        RecetaConector data = store.load();
-        return data.getRecetas().stream()
-                .filter(r -> r.getPaciente().getId().contains(idPaciente.toLowerCase()) ||
-                        r.getPaciente().getNombre().contains(idPaciente.toLowerCase()))
-                .map(RecetaMapper::toModel)
-                .collect(Collectors.toList());
     }
 
-
     public List<Receta> obtenerRecetasPorMedico(String idMedico) {
-        RecetaConector data = store.load();
-        return data.getRecetas().stream()
-                .filter(r -> r.getPersonal().getId().equals(idMedico))
-                .map(RecetaMapper::toModel)
-                .collect(Collectors.toList());
+        try {
+            return store.findByMedico(idMedico);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo recetas por médico: " + e.getMessage());
+        }
     }
 
     public List<Receta> obtenerRecetasPorEstado(int estado) {
-        RecetaConector data = store.load();
-        return data.getRecetas().stream()
-                .filter(r -> r.getEstado() == estado)
-                .map(RecetaMapper::toModel)
-                .collect(Collectors.toList());
+        try {
+            return store.findByEstado(estado);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo recetas por estado: " + e.getMessage());
+        }
     }
 
     public List<Receta> obtenerRecetasPorRangoFechas(LocalDate inicio, LocalDate fin) {
-        RecetaConector data = store.load();
-        return data.getRecetas().stream()
-                .filter(r -> !r.getFechaPrescripcion().isBefore(inicio) &&
-                        !r.getFechaPrescripcion().isAfter(fin))
-                .map(RecetaMapper::toModel)
-                .collect(Collectors.toList());
+        try {
+            List<Receta> todas = store.findAll();
+            return todas.stream()
+                    .filter(r -> !r.getFechaPrescripcion().isBefore(inicio) &&
+                            !r.getFechaPrescripcion().isAfter(fin))
+                    .collect(Collectors.toList());
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo recetas por rango de fechas: " + e.getMessage());
+        }
     }
 
     public Receta create(Receta nueva) {
@@ -96,23 +94,16 @@ public class GestorRecetas {
             if (nueva == null) {
                 throw new IllegalArgumentException("La receta no puede ser nula");
             }
-
             if (nueva.getId() == null || nueva.getId().trim().isEmpty()) {
                 throw new IllegalArgumentException("El ID de la receta no puede estar vacío");
             }
-
-            RecetaConector data = store.load();
-
             if (existeRecetaConEseID(nueva.getId())) {
                 throw new IllegalArgumentException("Ya existe una receta con ese ID");
             }
 
-            RecetaEntity recetaEntity = RecetaMapper.toXML(nueva);
-            data.getRecetas().add(recetaEntity);
-            store.save(data);
-
-            return nueva;
-        } catch (Exception e) {
+            boolean insertada = store.insert(nueva);
+            return insertada ? nueva : null;
+        } catch (SQLException e) {
             throw new RuntimeException("Error creando receta: " + e.getMessage());
         }
     }
@@ -123,19 +114,9 @@ public class GestorRecetas {
                 throw new IllegalArgumentException("Receta o ID no pueden ser nulos");
             }
 
-            RecetaConector data = store.load();
-
-            for (int i = 0; i < data.getRecetas().size(); i++) {
-                RecetaEntity actual = data.getRecetas().get(i);
-                if (actual.getId().equals(actualizada.getId())) {
-                    data.getRecetas().set(i, RecetaMapper.toXML(actualizada));
-                    store.save(data);
-                    return actualizada;
-                }
-            }
-
-            throw new IllegalArgumentException("Receta no encontrada con ID: " + actualizada.getId());
-        } catch (Exception e) {
+            boolean actualizadaOk = store.update(actualizada);
+            return actualizadaOk ? actualizada : null;
+        } catch (SQLException e) {
             throw new RuntimeException("Error actualizando receta: " + e.getMessage());
         }
     }
@@ -145,16 +126,8 @@ public class GestorRecetas {
             if (idReceta == null || idReceta.trim().isEmpty()) {
                 throw new IllegalArgumentException("ID no puede ser nulo o vacío");
             }
-
-            RecetaConector data = store.load();
-            boolean eliminado = data.getRecetas().removeIf(receta -> receta.getId().equals(idReceta));
-
-            if (eliminado) {
-                store.save(data);
-            }
-
-            return eliminado;
-        } catch (Exception e) {
+            return store.delete(idReceta);
+        } catch (SQLException e) {
             throw new RuntimeException("Error eliminando receta: " + e.getMessage());
         }
     }
@@ -164,7 +137,6 @@ public class GestorRecetas {
             if (receta == null || existeRecetaConEseID(receta.getId())) {
                 return false;
             }
-
             create(receta);
             return true;
         } catch (Exception e) {
@@ -340,14 +312,17 @@ public class GestorRecetas {
 
     public void setRecetas(List<Receta> recetas) {
         try {
-            RecetaConector data = store.load();
-            List<RecetaEntity> entities = recetas.stream()
-                    .map(RecetaMapper::toXML)
-                    .collect(Collectors.toList());
+            // Eliminar todas las recetas existentes
+            List<Receta> existentes = store.findAll();
+            for (Receta receta : existentes) {
+                store.delete(receta.getId());
+            }
 
-            data.setRecetas(entities);
-            store.save(data);
-        } catch (Exception e) {
+            // Insertar las nuevas
+            for (Receta receta : recetas) {
+                store.insert(receta);
+            }
+        } catch (SQLException e) {
             throw new RuntimeException("Error estableciendo recetas: " + e.getMessage());
         }
     }
@@ -381,15 +356,8 @@ public class GestorRecetas {
     }
 
     public void guardarCambios() {
-        try {
-            RecetaConector data = store.load();
-            store.save(data);
-
-            System.out.println("Cambios guardados en recetas.xml");
-        } catch (Exception e) {
-            System.err.println("Error al guardar cambios en recetas: " + e.getMessage());
-            throw new RuntimeException("No se pudieron guardar los cambios", e);
-        }
+        // En SQL no necesitamos guardar cambios manualmente, las transacciones son automáticas
+        System.out.println("Cambios guardados automáticamente en la base de datos");
     }
 
     public static String estadoToString(int estado){
@@ -403,10 +371,10 @@ public class GestorRecetas {
     }
 
     public List<Receta> obtenerRecetasPorMedicamento(String codigoMedicamento) {
-        List<Receta> recetas = findAll();
-        return recetas.stream()
-                .filter(receta -> receta.getDetallesMedicamentos().stream()
-                        .anyMatch(detalle -> detalle.getMedicamento().getCodigo().equals(codigoMedicamento)))
-                .collect(Collectors.toList());
+        try {
+            return store.findByMedicamento(codigoMedicamento);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo recetas por medicamento: " + e.getMessage());
+        }
     }
 }

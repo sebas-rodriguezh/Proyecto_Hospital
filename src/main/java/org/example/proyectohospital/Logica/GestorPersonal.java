@@ -1,80 +1,83 @@
 package org.example.proyectohospital.Logica;
 
-import org.example.proyectohospital.Datos.*;
+import org.example.proyectohospital.Datos.PersonalDatos;
 import org.example.proyectohospital.Modelo.*;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GestorPersonal {
     private final PersonalDatos store;
 
-    public GestorPersonal(String rutaArchivo) {
-        this.store = new PersonalDatos(rutaArchivo);
+    public GestorPersonal() {
+        this.store = new PersonalDatos();
     }
 
     public List<Personal> findAll() {
-        PersonalConector data = store.load();
-        return data.getPersonal().stream()
-                .map(PersonalMapper::toModel)
-                .collect(Collectors.toList());
+        try {
+            return store.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error cargando personal: " + e.getMessage());
+        }
     }
 
     public List<Personal> findByText(String texto) {
-        PersonalConector data = store.load();
-        if (texto == null || texto.trim().isEmpty()) {
-            return data.getPersonal().stream()
-                    .map(PersonalMapper::toModel)
-                    .collect(Collectors.toList());
+        try {
+            if (texto == null || texto.trim().isEmpty()) {
+                return store.findAll();
+            }
+            return store.findByText(texto);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error buscando personal: " + e.getMessage());
         }
-
-        String textoBusqueda = texto.toLowerCase().trim();
-        return data.getPersonal().stream()
-                .filter(p -> p.getNombre().toLowerCase().contains(textoBusqueda) ||
-                        p.getId().toLowerCase().contains(textoBusqueda) ||
-                        p.getTipo().toLowerCase().contains(textoBusqueda))
-                .map(PersonalMapper::toModel)
-                .collect(Collectors.toList());
     }
 
     public Personal getPersonalPorID(String idPersonal) {
-        PersonalConector data = store.load();
-        return data.getPersonal().stream()
-                .filter(p -> p.getId().equals(idPersonal))
-                .map(PersonalMapper::toModel)
-                .findFirst()
-                .orElse(null);
+        try {
+            return store.findById(idPersonal);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error obteniendo personal: " + e.getMessage());
+        }
     }
 
     public Personal buscarPersonalPorNombre(String nombrePersonal) {
-        PersonalConector data = store.load();
-        return data.getPersonal().stream()
-                .filter(p -> p.getNombre().equalsIgnoreCase(nombrePersonal))
-                .map(PersonalMapper::toModel)
-                .findFirst()
-                .orElse(null);
+        try {
+            List<Personal> personal = store.findAll();
+            return personal.stream()
+                    .filter(p -> p.getNombre().equalsIgnoreCase(nombrePersonal))
+                    .findFirst()
+                    .orElse(null);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error buscando personal por nombre: " + e.getMessage());
+        }
     }
 
     public Boolean existePersonalConEseID(String idPersonal) {
-        PersonalConector data = store.load();
-        return data.getPersonal().stream()
-                .anyMatch(p -> p.getId().equals(idPersonal));
+        try {
+            return store.findById(idPersonal) != null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error verificando existencia: " + e.getMessage());
+        }
     }
 
     public List<Personal> obtenerPersonalPorTipo(String tipo) {
-        PersonalConector data = store.load();
-        return data.getPersonal().stream()
-                .filter(p -> p.getTipo().equalsIgnoreCase(tipo))
-                .map(PersonalMapper::toModel)
-                .collect(Collectors.toList());
+        try {
+            List<Personal> personal = store.findAll();
+            return personal.stream()
+                    .filter(p -> p.tipo().equalsIgnoreCase(tipo))
+                    .collect(Collectors.toList());
+        } catch (SQLException e) {
+            throw new RuntimeException("Error filtrando personal por tipo: " + e.getMessage());
+        }
     }
 
     public Personal verificarCredenciales(String id, String clave) {
-        PersonalConector data = store.load();
-        return data.getPersonal().stream()
-                .filter(p -> p.getId().equals(id) && p.getClave().equals(clave))
-                .map(PersonalMapper::toModel)
-                .findFirst()
-                .orElse(null);
+        try {
+            return store.verificarCredenciales(id, clave);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error verificando credenciales: " + e.getMessage());
+        }
     }
 
     public Personal create(Personal nuevo) {
@@ -82,19 +85,11 @@ public class GestorPersonal {
             if (nuevo == null) {
                 throw new IllegalArgumentException("El personal no puede ser nulo");
             }
-
-            PersonalConector data = store.load();
-
             if (existePersonalConEseID(nuevo.getId())) {
                 throw new IllegalArgumentException("Ya existe personal con ese ID");
             }
-
-            PersonalEntity personalEntity = PersonalMapper.toXML(nuevo);
-            data.getPersonal().add(personalEntity);
-            store.save(data);
-
-            return nuevo;
-        } catch (Exception e) {
+            return store.insert(nuevo);
+        } catch (SQLException e) {
             throw new RuntimeException("Error creando personal: " + e.getMessage());
         }
     }
@@ -105,21 +100,12 @@ public class GestorPersonal {
                 throw new IllegalArgumentException("El personal no puede ser nulo");
             }
 
-            PersonalConector data = store.load();
-            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
-
-            for (int i = 0; i < data.getPersonal().size(); i++) {
-                PersonalEntity actual = data.getPersonal().get(i);
-                if (actual.getId().equals(actualizado.getId())) {
-                    data.getPersonal().set(i, PersonalMapper.toXML(actualizado));
-                    store.save(data);
-                    actualizarRecetasConPersonal(actualizado, gestorRecetas);
-                    return actualizado;
-                }
+            Personal result = store.update(actualizado);
+            if (result != null) {
+                actualizarRecetasConPersonal(actualizado);
             }
-
-            throw new IllegalArgumentException("Personal no encontrado con ID: " + actualizado.getId());
-        } catch (Exception e) {
+            return result;
+        } catch (SQLException e) {
             throw new RuntimeException("Error actualizando personal: " + e.getMessage());
         }
     }
@@ -130,31 +116,16 @@ public class GestorPersonal {
                 throw new IllegalArgumentException("El personal no puede ser nulo");
             }
 
-            PersonalConector data = store.load();
-            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
-
-            for (int i = 0; i < data.getPersonal().size(); i++) {
-                PersonalEntity actual = data.getPersonal().get(i);
-                if (actual.getId().equals(idOriginal)) {
-                    data.getPersonal().set(i, PersonalMapper.toXML(actualizado));
-                    store.save(data);
-                    actualizarRecetasConPersonal(actualizado, gestorRecetas);
-                    return actualizado;
-                }
-            }
-
-            throw new IllegalArgumentException("Personal no encontrado con ID: " + actualizado.getId());
+            // Para SQL, normalmente actualizamos por ID, así que este método es similar al anterior
+            return update(actualizado);
         } catch (Exception e) {
             throw new RuntimeException("Error actualizando personal: " + e.getMessage());
         }
     }
 
-
-
-
-
-    private void actualizarRecetasConPersonal(Personal personalActualizado, GestorRecetas gestorRecetas) {
+    private void actualizarRecetasConPersonal(Personal personalActualizado) {
         try {
+            GestorRecetas gestorRecetas = Hospital.getInstance().getRecetas();
             List<Receta> recetasDelPersonal = gestorRecetas.obtenerRecetasPorMedico(personalActualizado.getId());
 
             for (Receta receta : recetasDelPersonal) {
@@ -163,7 +134,6 @@ public class GestorPersonal {
             }
 
             System.out.println("Actualizadas " + recetasDelPersonal.size() + " recetas del personal: " + personalActualizado.getNombre());
-
         } catch (Exception e) {
             System.err.println("Error actualizando recetas: " + e.getMessage());
         }
@@ -185,16 +155,12 @@ public class GestorPersonal {
                 }
             }
 
-            PersonalConector data = store.load();
-            boolean eliminado = data.getPersonal().removeIf(personal -> personal.getId().equals(idPersonal));
-
+            boolean eliminado = store.delete(idPersonal);
             if (eliminado) {
-                store.save(data);
                 System.out.println("Personal eliminado correctamente: " + idPersonal);
             }
-
             return eliminado;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Error eliminando personal: " + e.getMessage());
         }
     }
@@ -204,14 +170,11 @@ public class GestorPersonal {
             if (persona == null) {
                 throw new IllegalArgumentException("El personal no puede ser nulo");
             }
-
             if (existePersonalConEseID(persona.getId()) || (Boolean.TRUE.equals(respuestaListaPacientes))) {
                 throw new IllegalArgumentException("Existe una persona con ese ID en el sistema.");
             }
-
             create(persona);
             return true;
-
         } catch (IllegalArgumentException e) {
             System.err.println("Error al insertar personal: " + e.getMessage());
             return false;
@@ -222,7 +185,6 @@ public class GestorPersonal {
         if (!existePersonalConEseID(idPersonal)) {
             return false;
         }
-
         return deleteById(idPersonal);
     }
 
@@ -232,14 +194,17 @@ public class GestorPersonal {
 
     public void setPersonal(List<Personal> personal) {
         try {
-            PersonalConector data = store.load();
-            List<PersonalEntity> entities = personal.stream()
-                    .map(PersonalMapper::toXML)
-                    .collect(Collectors.toList());
+            // Eliminar todo el personal existente
+            List<Personal> existentes = store.findAll();
+            for (Personal pers : existentes) {
+                store.delete(pers.getId());
+            }
 
-            data.setPersonal(entities);
-            store.save(data);
-        } catch (Exception e) {
+            // Insertar el nuevo
+            for (Personal pers : personal) {
+                store.insert(pers);
+            }
+        } catch (SQLException e) {
             throw new RuntimeException("Error estableciendo personal: " + e.getMessage());
         }
     }
@@ -321,6 +286,7 @@ public class GestorPersonal {
                 System.err.println("Error: La nueva clave no puede estar vacía");
                 return false;
             }
+
             Personal personal = verificarCredenciales(idPersonal, claveActual);
             if (personal == null) {
                 System.err.println("Error: Credenciales actuales incorrectas");
@@ -328,19 +294,14 @@ public class GestorPersonal {
             }
 
             personal.setClave(nuevaClave);
+            Personal actualizado = store.update(personal);
 
-            PersonalConector data = store.load();
-            for (int i = 0; i < data.getPersonal().size(); i++) {
-                PersonalEntity actual = data.getPersonal().get(i);
-                if (actual.getId().equals(idPersonal)) {
-                    data.getPersonal().set(i, PersonalMapper.toXML(personal));
-                    store.save(data);
-                    System.out.println("Clave actualizada exitosamente para: " + personal.getNombre());
-                    return true;
-                }
+            if (actualizado != null) {
+                System.out.println("Clave actualizada exitosamente para: " + personal.getNombre());
+                return true;
             }
 
-            System.err.println("Error: No se encontró el personal con ID: " + idPersonal);
+            System.err.println("Error: No se pudo actualizar la clave");
             return false;
 
         } catch (Exception e) {
