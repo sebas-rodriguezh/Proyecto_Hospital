@@ -16,7 +16,7 @@ public class PersonalDatos {
 
             List<Personal> list = new ArrayList<>();
             while (rs.next()) {
-                Personal personal = crearPersonalDesdeResultSet(rs);
+                Personal personal = creaPersonalRS(rs);
                 if (personal != null) {
                     list.add(personal);
                 }
@@ -35,7 +35,7 @@ public class PersonalDatos {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return crearPersonalDesdeResultSet(rs);
+                return creaPersonalRS(rs);
             }
             return null;
         }
@@ -52,13 +52,13 @@ public class PersonalDatos {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return crearPersonalDesdeResultSet(rs);
+                return creaPersonalRS(rs);
             }
             return null;
         }
     }
 
-    private Personal crearPersonalDesdeResultSet(ResultSet rs) throws SQLException {
+    private Personal creaPersonalRS(ResultSet rs) throws SQLException {
         String tipo = rs.getString("tipo");
         String id = rs.getString("id");
         String nombre = rs.getString("nombre");
@@ -117,8 +117,8 @@ public class PersonalDatos {
 
             ps.setString(5, personal.getId());
 
-            int affected = ps.executeUpdate();
-            return affected > 0 ? personal : null;
+            int afectados = ps.executeUpdate();
+            return afectados > 0 ? personal : null;
         }
     }
 
@@ -146,7 +146,7 @@ public class PersonalDatos {
             ResultSet rs = ps.executeQuery();
             List<Personal> list = new ArrayList<>();
             while (rs.next()) {
-                Personal personal = crearPersonalDesdeResultSet(rs);
+                Personal personal = creaPersonalRS(rs);
                 if (personal != null) {
                     list.add(personal);
                 }

@@ -72,8 +72,8 @@ public class MedicamentoDatos {
             ps.setString(2, medicamento.getPresentacion());
             ps.setString(3, medicamento.getCodigo());
 
-            int affected = ps.executeUpdate();
-            return affected > 0 ? medicamento : null;
+            int afectados = ps.executeUpdate();
+            return afectados > 0 ? medicamento : null;
         }
     }
 
@@ -94,10 +94,10 @@ public class MedicamentoDatos {
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
 
-            String searchText = "%" + texto + "%";
-            ps.setString(1, searchText);
-            ps.setString(2, searchText);
-            ps.setString(3, searchText);
+            String buscar = "%" + texto + "%";
+            ps.setString(1, buscar);
+            ps.setString(2, buscar);
+            ps.setString(3, buscar);
 
             ResultSet rs = ps.executeQuery();
             List<Medicamento> list = new ArrayList<>();

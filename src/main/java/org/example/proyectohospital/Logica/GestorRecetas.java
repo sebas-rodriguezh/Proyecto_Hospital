@@ -53,7 +53,8 @@ public class GestorRecetas {
     public List<Receta> obtenerRecetasPorPaciente(String idPaciente) {
         try {
             if (idPaciente == null || idPaciente.trim().isEmpty()) {
-                return store.findAll();
+                //return store.findAll();
+                return null;
             }
             return store.findByPaciente(idPaciente);
         } catch (SQLException e) {

@@ -44,7 +44,6 @@ public class RecetaDatos {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Crear receta base
                 Receta receta = new Receta(
                         rs.getString("id"),
                         rs.getDate("fecha_prescripcion").toLocalDate(),
@@ -52,7 +51,6 @@ public class RecetaDatos {
                         Integer.parseInt(rs.getString("estado"))
                 );
 
-                // Crear y asignar paciente
                 Paciente paciente = new Paciente();
                 paciente.setId(rs.getString("paciente_id"));
                 paciente.setNombre(rs.getString("paciente_nombre"));
@@ -60,7 +58,6 @@ public class RecetaDatos {
                 paciente.setFechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
                 receta.setPaciente(paciente);
 
-                // Crear y asignar personal
                 String tipoPersonal = rs.getString("tipo");
                 String personalId = rs.getString("personal_id");
                 String personalNombre = rs.getString("personal_nombre");
@@ -72,14 +69,9 @@ public class RecetaDatos {
                     medico.setEspecialidad(rs.getString("especialidad"));
                     receta.setPersonal(medico);
                 } else {
-                    // Fallback para otros tipos (aunque recetas siempre son de médicos)
-                    Personal personal = new Medico();
-                    personal.setId(personalId);
-                    personal.setNombre(personalNombre);
-                    receta.setPersonal(personal);
+                    throw new RuntimeException("Error: Solo un médico puede crear recetas.");
                 }
 
-                // Cargar detalles de medicamentos
                 List<DetalleMedicamento> detalles = cargarDetallesReceta(id);
                 receta.setDetalleMedicamentos(detalles);
 
@@ -132,7 +124,6 @@ public class RecetaDatos {
             cn = DB.getConnection();
             cn.setAutoCommit(false);
 
-            // 1. Insertar receta principal
             String sqlReceta = "INSERT INTO recetas (id, personal_id, paciente_id, fecha_prescripcion, fecha_retiro, estado) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = cn.prepareStatement(sqlReceta)) {
                 ps.setString(1, receta.getId());
@@ -144,7 +135,6 @@ public class RecetaDatos {
                 ps.executeUpdate();
             }
 
-            // 2. Insertar detalles de medicamentos
             String sqlDetalle = "INSERT INTO detalle_medicamentos (receta_id, medicamento_codigo, id_detalle, cantidad, duracion, indicacion) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = cn.prepareStatement(sqlDetalle)) {
                 for (DetalleMedicamento detalle : receta.getDetalleMedicamentos()) {
@@ -180,7 +170,6 @@ public class RecetaDatos {
             cn = DB.getConnection();
             cn.setAutoCommit(false);
 
-            // 1. Actualizar receta principal
             String sqlReceta = "UPDATE recetas SET personal_id = ?, paciente_id = ?, fecha_prescripcion = ?, fecha_retiro = ?, estado = ? WHERE id = ?";
             try (PreparedStatement ps = cn.prepareStatement(sqlReceta)) {
                 ps.setString(1, receta.getPersonal().getId());
@@ -192,14 +181,12 @@ public class RecetaDatos {
                 ps.executeUpdate();
             }
 
-            // 2. Eliminar detalles existentes
             String sqlDeleteDetalles = "DELETE FROM detalle_medicamentos WHERE receta_id = ?";
             try (PreparedStatement ps = cn.prepareStatement(sqlDeleteDetalles)) {
                 ps.setString(1, receta.getId());
                 ps.executeUpdate();
             }
 
-            // 3. Insertar nuevos detalles
             String sqlDetalle = "INSERT INTO detalle_medicamentos (receta_id, medicamento_codigo, id_detalle, cantidad, duracion, indicacion) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = cn.prepareStatement(sqlDetalle)) {
                 for (DetalleMedicamento detalle : receta.getDetalleMedicamentos()) {
@@ -226,7 +213,6 @@ public class RecetaDatos {
     }
 
     public boolean delete(String id) throws SQLException {
-        // Los detalles se eliminan automáticamente por CASCADE
         String sql = "DELETE FROM recetas WHERE id = ?";
 
         try (Connection cn = DB.getConnection();
@@ -249,11 +235,11 @@ public class RecetaDatos {
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
 
-            String searchText = "%" + texto + "%";
-            ps.setString(1, searchText);
-            ps.setString(2, searchText);
-            ps.setString(3, searchText);
-            ps.setString(4, searchText);
+            String buscar = "%" + texto + "%";
+            ps.setString(1, buscar);
+            ps.setString(2, buscar);
+            ps.setString(3, buscar);
+            ps.setString(4, buscar);
 
             ResultSet rs = ps.executeQuery();
             List<Receta> list = new ArrayList<>();
@@ -287,33 +273,12 @@ public class RecetaDatos {
         }
     }
 
-//    public List<Receta> findByPaciente(String idPaciente) throws SQLException {
-//        String sql = "SELECT id FROM recetas WHERE paciente_id = ?";
-//
-//        try (Connection cn = DB.getConnection();
-//             PreparedStatement ps = cn.prepareStatement(sql)) {
-//
-//            ps.setString(1, idPaciente);
-//            ResultSet rs = ps.executeQuery();
-//
-//            List<Receta> list = new ArrayList<>();
-//            while (rs.next()) {
-//                Receta receta = findById(rs.getString("id"));
-//                if (receta != null) {
-//                    list.add(receta);
-//                }
-//            }
-//            return list;
-//        }
-//    }
-
     public List<Receta> findByPaciente(String busqueda) throws SQLException {
-        // Si busqueda está vacía, trae todas
         if (busqueda == null || busqueda.trim().isEmpty()) {
-            return findAll();
+            //return findAll();
+            return null;
         }
 
-        // Si no, filtra en Java (sencillo y funciona)
         List<Receta> todas = findAll();
         return todas.stream()
                 .filter(r -> r.getPaciente().getId().contains(busqueda) ||

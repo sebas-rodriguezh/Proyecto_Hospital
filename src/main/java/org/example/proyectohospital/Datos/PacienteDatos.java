@@ -75,8 +75,8 @@ public class PacienteDatos {
             ps.setDate(3, Date.valueOf(paciente.getFechaNacimiento()));
             ps.setString(4, paciente.getId());
 
-            int affected = ps.executeUpdate();
-            return affected > 0 ? paciente : null;
+            int afectados = ps.executeUpdate();
+            return afectados > 0 ? paciente : null;
         }
     }
 
@@ -97,9 +97,9 @@ public class PacienteDatos {
         try (Connection cn = DB.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
 
-            String searchText = "%" + texto + "%";
-            ps.setString(1, searchText);
-            ps.setString(2, searchText);
+            String buscar = "%" + texto + "%";
+            ps.setString(1, buscar);
+            ps.setString(2, buscar);
 
             ResultSet rs = ps.executeQuery();
             List<Paciente> list = new ArrayList<>();
