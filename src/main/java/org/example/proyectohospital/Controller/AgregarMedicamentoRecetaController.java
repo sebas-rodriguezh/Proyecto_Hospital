@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AgregarMedicamentoRecetaController implements Initializable {
+    @FXML private ProgressIndicator progressMedicamentos;
     @FXML private Button btnSalir;
     @FXML private Button btnSeleccionar;
     @FXML private TextField txtValorBuscado;
@@ -38,6 +39,8 @@ public class AgregarMedicamentoRecetaController implements Initializable {
 
     private boolean modoEdicion = false;
     private DetalleMedicamento detalleOriginal = null;
+    private boolean operacionEnProgreso = false;
+
 
     public void setModoEdicion(DetalleMedicamento detalleAEditar) {
         this.modoEdicion = true;
@@ -64,8 +67,6 @@ public class AgregarMedicamentoRecetaController implements Initializable {
         comboBoxFiltro.setItems(FXCollections.observableArrayList("Código", "Nombre", "Presentación"));
         comboBoxFiltro.setValue("Nombre");
 
-        cargarMedicamentos();
-
         txtValorBuscado.textProperty().addListener((obs, oldVal, newVal) -> {
             filtrarMedicamentos(newVal);
         });
@@ -78,16 +79,47 @@ public class AgregarMedicamentoRecetaController implements Initializable {
         );
 
         btnSeleccionar.setDisable(true);
+        cargarMedicamentosAsync();
     }
 
-    private void cargarMedicamentos() {
-        try {
-            todosLosMedicamentos = gestorMedicamentos.getMedicamentos();
-            tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(todosLosMedicamentos));
-        } catch (Exception e) {
-            mostrarAlerta("Error", "Error al cargar medicamentos: " + e.getMessage());
-        }
+//    private void cargarMedicamentos() {
+//        try {
+//            todosLosMedicamentos = gestorMedicamentos.getMedicamentos();
+//            tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(todosLosMedicamentos));
+//        } catch (Exception e) {
+//            mostrarAlerta("Error", "Error al cargar medicamentos: " + e.getMessage());
+//        }
+//    }
+
+
+    private void cargarMedicamentosAsync() {
+        if (operacionEnProgreso) return;
+
+        operacionEnProgreso = true;
+        if (progressMedicamentos != null) progressMedicamentos.setVisible(true);
+
+        Async.run(() -> {
+                    try {
+                        return gestorMedicamentos.getMedicamentos();
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al cargar medicamentos: " + e.getMessage());
+                    }
+                },
+                medicamentos -> {
+                    operacionEnProgreso = false;
+                    if (progressMedicamentos != null) progressMedicamentos.setVisible(false);
+                    todosLosMedicamentos = medicamentos;
+                    tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(medicamentos));
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    if (progressMedicamentos != null) progressMedicamentos.setVisible(false);
+                    mostrarAlerta("Error", "No se pudieron cargar los medicamentos: " + error.getMessage());
+                }
+        );
     }
+
+
 
     private void filtrarMedicamentos(String texto) {
         if (texto == null || texto.isBlank()) {

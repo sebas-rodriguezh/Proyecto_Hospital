@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class BuscarPacienteController implements Initializable {
+    @FXML private ProgressIndicator progressBusqueda;
     @FXML private Button btnSalir;
     @FXML private Button btnSeleccionar;
     @FXML private TextField txtValorBuscado;
@@ -31,6 +32,9 @@ public class BuscarPacienteController implements Initializable {
     private final GestorPacientes gestorPacientes = Hospital.getInstance().getGestorPacientes();
     private Paciente pacienteSeleccionado;
     private TabPrescibirController controllerPadre;
+
+    //Hilos.
+    private boolean operacionEnProgreso = false;
 
     public BuscarPacienteController() {
     }
@@ -49,7 +53,6 @@ public class BuscarPacienteController implements Initializable {
         comboBoxFiltro.setItems(FXCollections.observableArrayList("ID", "Nombre", "Teléfono"));
         comboBoxFiltro.setValue("Nombre");
 
-        cargarTodosLosPacientes();
 
         txtValorBuscado.textProperty().addListener((obs, oldVal, newVal) -> {
             filtrarPacientes(newVal);
@@ -63,20 +66,22 @@ public class BuscarPacienteController implements Initializable {
         );
 
         btnSeleccionar.setDisable(true);
+        //cargarTodosLosPacientes();
+        cargarPacientesAsync();
     }
 
-    private void cargarTodosLosPacientes() {
-        try {
-            List<Paciente> pacientes = gestorPacientes.getPacientes();
-            tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(pacientes));
-        } catch (Exception e) {
-            mostrarAlerta("Error", "Error al cargar los pacientes: " + e.getMessage());
-        }
-    }
+//    private void cargarTodosLosPacientes() {
+//        try {
+//            List<Paciente> pacientes = gestorPacientes.getPacientes();
+//            tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(pacientes));
+//        } catch (Exception e) {
+//            mostrarAlerta("Error", "Error al cargar los pacientes: " + e.getMessage());
+//        }
+//    }
 
     private void filtrarPacientes(String texto) {
         if (texto == null || texto.isBlank()) {
-            cargarTodosLosPacientes();
+            cargarPacientesAsync();
             return;
         }
 
@@ -142,4 +147,32 @@ public class BuscarPacienteController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    //Métodos para hilos (Async).
+    public void cargarPacientesAsync() {
+        if (operacionEnProgreso) return;
+
+        operacionEnProgreso = true;
+        if (progressBusqueda != null) progressBusqueda.setVisible(true);
+
+        Async.run(() -> {
+                    try {
+                        return gestorPacientes.getPacientes();
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al cargar pacientes: " + e.getMessage());
+                    }
+                },
+                pacientes -> {
+                    operacionEnProgreso = false;
+                    if (progressBusqueda != null) progressBusqueda.setVisible(false);
+                    tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(pacientes));
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    if (progressBusqueda != null) progressBusqueda.setVisible(false);
+                    mostrarAlerta("Error", "No se pudieron cargar los pacientes: " + error.getMessage());
+                }
+        );
+    }
+
 }

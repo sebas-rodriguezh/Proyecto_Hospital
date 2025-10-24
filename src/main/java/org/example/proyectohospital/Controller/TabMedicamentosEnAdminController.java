@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.proyectohospital.Logica.GestorMedicamentos;
 import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Medicamento;
+import org.example.proyectohospital.Modelo.Paciente;
 
 import java.net.URL;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 public class TabMedicamentosEnAdminController implements Initializable{
 
+    @FXML private ProgressIndicator progressMedicamentos;
     @FXML private Button btnGuardarMedicamento;
     @FXML private Button btnLimpiarCampos;
     @FXML private Button btnBorrarMedicamento;
@@ -36,6 +38,9 @@ public class TabMedicamentosEnAdminController implements Initializable{
 
     private final GestorMedicamentos gestor = Hospital.getInstance().getGestorMedicamentos();
     private final ObservableList<Medicamento> listaMedicamentos = FXCollections.observableArrayList();
+
+    //Hilos.
+    private boolean operacionEnProgreso = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -61,82 +66,87 @@ public class TabMedicamentosEnAdminController implements Initializable{
 
     @FXML
     private void guardarMedicamento() {
-        String codigo = txtCodigoMedicamento.getText().trim();
-        String nombre = txtNombreMedicamento.getText().trim();
-        String presentacion = txtPresentacionMedicamento.getText().trim();
-
-        if(codigo.isEmpty() || nombre.isEmpty() || presentacion.isEmpty()) {
-            mostrarAlerta("Error","Debe llenar todos los campos obligatorios");
+        if (operacionEnProgreso)
+        {
             return;
         }
+        try
+        {
+            String codigo = txtCodigoMedicamento.getText().trim();
+            String nombre = txtNombreMedicamento.getText().trim();
+            String presentacion = txtPresentacionMedicamento.getText().trim();
 
-        try {
-            Medicamento nuevo = new Medicamento(nombre, presentacion, codigo);
-            boolean insertado = gestor.insertarMedicamento(nuevo);
-
-            if (insertado) {
-                mostrarTodosLosMedicamentos();
-                limpiarCamposMedicamentos();
-                mostrarAlerta("Éxito", "Medicamento guardado correctamente");
-            } else {
-                mostrarAlerta("Error", "Ya existe un medicamento con ese código");
+            if(codigo.isEmpty() || nombre.isEmpty() || presentacion.isEmpty()) {
+                mostrarAlerta("Error","Debe llenar todos los campos obligatorios");
+                return;
             }
+
+            Medicamento nuevo = new Medicamento(nombre, presentacion, codigo);
+            guardarMedicamentoAsync(nuevo);
         } catch (Exception e) {
-            mostrarAlerta("Error", "Error al guardar medicamento: " + e.getMessage());
+            mostrarAlerta("Error","No se pudo guardar el medicamento.");
+            return;
         }
     }
 
     @FXML
     private void modificarMedicamento() {
-        Medicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
-        if(seleccionado == null) {
-            mostrarAlerta("Error", "Debe seleccionar un medicamento para modificar");
+        if (operacionEnProgreso) {
             return;
         }
+        try
+        {
+            Medicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
+            if(seleccionado == null)
+            {
+                mostrarAlerta("Error", "Debe seleccionar un medicamento para modificar");
+                return;
+            }
 
-        String nombre = txtNombreMedicamento.getText().trim();
-        String presentacion = txtPresentacionMedicamento.getText().trim();
-        String codigo = txtCodigoMedicamento.getText().trim();
+            String nombre = txtNombreMedicamento.getText().trim();
+            String presentacion = txtPresentacionMedicamento.getText().trim();
+            String codigo = txtCodigoMedicamento.getText().trim();
 
-        if (!codigo.equals(seleccionado.getCodigo())) {
-            mostrarAlerta("Error", "No se puede modificar el código del medicamento");
-            return;
+            if (!codigo.equals(seleccionado.getCodigo())) {
+                mostrarAlerta("Error", "No se puede modificar el código del medicamento");
+                return;
+            }
+
+            if (nombre.isEmpty() || presentacion.isEmpty()) {
+                mostrarAlerta("Error", "Complete los campos de nombre y presentación");
+                return;
+            }
+            try {
+                seleccionado.setNombre(nombre);
+                seleccionado.setPresentacion(presentacion);
+                modificarMedicamentoAsync(seleccionado);
+
+            } catch (Exception e) {
+                mostrarAlerta("Error", "Error al modificar medicamento: " + e.getMessage());
+            }
+
         }
-
-        if (nombre.isEmpty() || presentacion.isEmpty()) {
-            mostrarAlerta("Error", "Complete los campos de nombre y presentación");
-            return;
-        }
-
-        try {
-            seleccionado.setNombre(nombre);
-            seleccionado.setPresentacion(presentacion);
-
-            gestor.update(seleccionado);
-            mostrarTodosLosMedicamentos();
-            limpiarCamposMedicamentos();
-            mostrarAlerta("Éxito", "Medicamento modificado correctamente");
-        } catch (Exception e) {
+        catch (Exception e)
+        {
             mostrarAlerta("Error", "Error al modificar medicamento: " + e.getMessage());
         }
     }
 
     @FXML
     private void borrarMedicamento() {
-        Medicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
-        if(seleccionado == null){
-            mostrarAlerta("Error", "Debe seleccionar un medicamento para borrar.");
+        if (operacionEnProgreso)
+        {
             return;
         }
-
-        try {
-            boolean eliminado = gestor.eliminar(seleccionado.getCodigo());
-            if (eliminado) {
-                mostrarTodosLosMedicamentos();
-                mostrarAlerta("Éxito", "Medicamento eliminado correctamente");
-            } else {
-                mostrarAlerta("Error", "No se pudo eliminar el medicamento");
+        try
+        {
+            Medicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
+            if(seleccionado == null) {
+                mostrarAlerta("Error", "Debe seleccionar un medicamento para borrar.");
+                return;
             }
+            eliminarMedicamentoAsync(seleccionado);
+
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al borrar medicamento: " + e.getMessage());
         }
@@ -166,7 +176,8 @@ public class TabMedicamentosEnAdminController implements Initializable{
     @FXML
     private void mostrarTodosLosMedicamentos() {
         try {
-            listaMedicamentos.setAll(gestor.getMedicamentos());
+            //listaMedicamentos.setAll(gestor.getMedicamentos());
+            cargarMedicamentosAsync();
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al cargar medicamentos: " + e.getMessage());
         }
@@ -206,4 +217,177 @@ public class TabMedicamentosEnAdminController implements Initializable{
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    //Métodos para hilos (Async).
+
+    public void cargarMedicamentosAsync() {
+        if (operacionEnProgreso) {
+            return;
+        }
+
+        operacionEnProgreso = true;
+        progressMedicamentos.setVisible(true);
+
+        if (btnMostrarTodosLosMedicamentos != null) {
+            btnMostrarTodosLosMedicamentos.setDisable(true);
+        }
+
+        Async.run(
+                () -> {
+                    try {
+                        List<Medicamento> medicamentos = gestor.getMedicamentos();
+                        return medicamentos;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al cargar pacientes: " + e.getMessage());
+                    }
+                },
+                listaMedicamentosCargados -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+
+                    if (btnMostrarTodosLosMedicamentos != null) {
+                        btnMostrarTodosLosMedicamentos.setDisable(false);
+                    }
+                    listaMedicamentos.setAll(listaMedicamentosCargados);
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+
+                    if (btnMostrarTodosLosMedicamentos != null) {
+                        btnMostrarTodosLosMedicamentos.setDisable(false);
+                    }
+                }
+        );
+    }
+
+    public void guardarMedicamentoAsync(Medicamento nuevo)
+    {
+        operacionEnProgreso = true;
+        progressMedicamentos.setVisible(true);
+        btnGuardarMedicamento.setDisable(true);
+
+        Async.run(() -> {
+                    try
+                    {
+                        boolean insertado = gestor.insertarMedicamento(nuevo);
+                        return insertado;
+                    }
+
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException("Error al guardar paciente: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+                    btnGuardarMedicamento.setDisable(false);
+
+                    if (resultado)
+                    {
+                        cargarMedicamentosAsync(); //RECARGO LA TABLA.
+                        limpiarCamposMedicamentos();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Exito al guardar");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Se pudo insertar al medicamento correctamente.");
+                        alert.showAndWait();
+
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Ya existe un medicamento con ese código").showAndWait();
+                    }
+                },
+
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+                    btnGuardarMedicamento.setDisable(false);
+                    new Alert(Alert.AlertType.ERROR, "No se pudo guardar: " + error.getMessage()).showAndWait();
+                }
+        );
+    }
+
+    public void modificarMedicamentoAsync(Medicamento medicamento)
+    {
+        operacionEnProgreso = true;
+        progressMedicamentos.setVisible(true);
+        btnModificarMedicamento.setDisable(true);
+
+        Async.run(()-> {
+                    try
+                    {
+                        gestor.update(medicamento);
+                        return medicamento;
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException("Error al modificar medicamento: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+                    btnModificarMedicamento.setDisable(false);
+                    cargarMedicamentosAsync();
+                    limpiarCamposMedicamentos();
+
+                    //Se puede borrar luego, si no se quiere decir nada.
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Exito al modificar");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Se pudo modificar al medicamento correctamente.");
+                    alert.showAndWait();
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+                    btnModificarMedicamento.setDisable(false);
+                    new Alert(Alert.AlertType.ERROR, "No se pudo modificar al medicamento: " + error.getMessage()).showAndWait();
+                }
+        );
+    }
+
+    public void eliminarMedicamentoAsync (Medicamento medicamento)
+    {
+        operacionEnProgreso = true;
+        progressMedicamentos.setVisible(true);
+        btnBorrarMedicamento.setDisable(true);
+
+        Async.run(() -> {
+                    try {
+                        boolean eliminado = gestor.eliminar(medicamento.getCodigo());
+                        return eliminado;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al eliminar paciente: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+                    btnBorrarMedicamento.setDisable(false);
+
+                    if (resultado) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Exito al eliminar");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Se pudo eliminar al medicamento correctamente.");
+                        alert.showAndWait();
+                        cargarMedicamentosAsync(); // Recargar tabla
+                        limpiarCamposMedicamentos();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al paciente: ").showAndWait();
+                    }
+
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicamentos.setVisible(false);
+                    btnBorrarMedicamento.setDisable(false);
+                    new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al paciente: ").showAndWait();
+                }
+        );
+    }
+
 }

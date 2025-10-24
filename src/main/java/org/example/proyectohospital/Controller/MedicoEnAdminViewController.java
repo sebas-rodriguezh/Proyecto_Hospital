@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import org.example.proyectohospital.Logica.GestorPacientes;
 import org.example.proyectohospital.Logica.GestorPersonal;
 import org.example.proyectohospital.Logica.Hospital;
+import org.example.proyectohospital.Modelo.Farmaceuta;
 import org.example.proyectohospital.Modelo.Medico;
 import org.example.proyectohospital.Modelo.Personal;
 
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class MedicoEnAdminViewController implements Initializable {
+    @FXML private ProgressIndicator progressMedicos;
     @FXML private Button btnMostrarTodosLosMedicos;
     @FXML private Button btnModificarMedico;
     @FXML private Button btnBuscarMedico;
@@ -38,6 +40,9 @@ public class MedicoEnAdminViewController implements Initializable {
     private final GestorPacientes gestorPacientes = Hospital.getInstance().getGestorPacientes();
     private final ObservableList<Medico> listaMedicos = FXCollections.observableArrayList();
 
+    //Hilos.
+    private boolean operacionEnProgreso = false;
+
     public MedicoEnAdminViewController() {
 
     }
@@ -45,8 +50,9 @@ public class MedicoEnAdminViewController implements Initializable {
     @FXML
     public void mostrarTodosLosMedicos() {
         try {
-            List<Medico> medicos = gestor.obtenerPersonalPorTipo("Medico").stream().map(p-> (Medico)p).toList();
-            listaMedicos.setAll(medicos);
+//            List<Medico> medicos = gestor.obtenerPersonalPorTipo("Medico").stream().map(p-> (Medico)p).toList();
+//            listaMedicos.setAll(medicos);
+            cargarMedicosAsync();
         }
         catch (Exception e) {
             mostrarAlerta("Error","Error al cargar medicos." + e.getMessage());
@@ -55,14 +61,18 @@ public class MedicoEnAdminViewController implements Initializable {
 
     @FXML
     private void modificarMedico(ActionEvent actionEvent) {
-        Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
-
-        if (seleccionado == null) {
-            mostrarAlerta("Error", "Seleccione un medico");
+        if (operacionEnProgreso) {
             return;
         }
+        try
+        {
+            Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
 
-        try {
+            if (seleccionado == null) {
+                mostrarAlerta("Error", "Seleccione un medico");
+                return;
+            }
+
             String nombre = txtNombreMedico.getText().trim();
             String especialidad = txtEspecialidadMedico.getText().trim();
 
@@ -73,21 +83,11 @@ public class MedicoEnAdminViewController implements Initializable {
 
             seleccionado.setNombre(nombre);
             seleccionado.setEspecialidad(especialidad);
+            modificarMedicoAsync(seleccionado);
 
-            gestor.update(seleccionado);
-
-            Medico medicoLogueado = Hospital.getInstance().getMedicoLogueado();
-            if (medicoLogueado != null && medicoLogueado.getId().equals(seleccionado.getId())) {
-                Hospital.getInstance().setMedicoLogueado(seleccionado);
-            }
-
-            mostrarTodosLosMedicos();
-            limpiarCamposMedicos();
-            mostrarAlerta("Éxito", "Médico modificado correctamente");
 
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al modificar medico: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -117,24 +117,20 @@ public class MedicoEnAdminViewController implements Initializable {
 
     @FXML
     private void borrarMedico(ActionEvent actionEvent) {
-        Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
-        if (seleccionado == null) {
-            mostrarAlerta("Error", "Debe seleccionar un medico para borrar");
+        if (operacionEnProgreso) {
             return;
         }
-        try {
-            boolean eliminado = gestor.eliminar(seleccionado.getId());
-            if (eliminado) {
-                mostrarTodosLosMedicos();
-                limpiarCamposMedicos();
-                mostrarAlerta("Éxito", "Medico eliminado correctamente");
-
-            } else {
-                mostrarAlerta("Error", "No se pudo eliminar el medico");
+        try
+        {
+            Medico seleccionado = tbvResultadoBusquedaMedico.getSelectionModel().getSelectedItem();
+            if (seleccionado == null) {
+                mostrarAlerta("Error", "Debe seleccionar un medico para borrar");
+                return;
             }
+            eliminarMedicoAsync(seleccionado);
+
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al borrar medico: " + e.getMessage());
-
         }
     }
 
@@ -150,6 +146,10 @@ public class MedicoEnAdminViewController implements Initializable {
 
     @FXML
     private void guardarMedico(ActionEvent actionEvent) {
+        if (operacionEnProgreso) {
+            return;
+        }
+
         try {
             String idMedico = txtIdMedico.getText();
             String nombreMedico = txtNombreMedico.getText();
@@ -160,20 +160,7 @@ public class MedicoEnAdminViewController implements Initializable {
                 return;
             }
             Personal nuevo = new Medico(nombreMedico, idMedico, idMedico, especialidadMedico);
-            boolean respuestaPacientes = gestorPacientes.existeAlguienConEseID(nuevo.getId());
-            boolean insertado = gestor.insertarPersonal(nuevo,respuestaPacientes);
-
-            if(insertado) {
-                mostrarTodosLosMedicos();
-                limpiarCamposMedicos();
-                mostrarAlerta(" Éxito","Médico guardado correctamente.");
-            }
-
-            else
-            {
-                mostrarAlerta("Error", "Ya existe un usuario con ese ID");
-            }
-
+            guardarMedicoAsync(nuevo);
         }
         catch (Exception e) {
             mostrarAlerta("Error","No se logro insertar el medico");
@@ -232,4 +219,184 @@ public class MedicoEnAdminViewController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    //Métodos para hilos (Async).
+
+    public void cargarMedicosAsync() {
+        if (operacionEnProgreso) {
+            return;
+        }
+
+        operacionEnProgreso = true;
+        progressMedicos.setVisible(true);
+
+        if (btnMostrarTodosLosMedicos != null) {
+            btnMostrarTodosLosMedicos.setDisable(true);
+        }
+
+        Async.run(
+                () -> {
+                    try {
+                        List<Medico> medicos = gestor.obtenerPersonalPorTipo("Medico").stream()
+                                .map(p -> (Medico) p)
+                                .collect(Collectors.toList());
+                        return medicos;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al cargar médicos: " + e.getMessage());
+                    }
+                },
+                listaMedicosCargados -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+
+                    if (btnMostrarTodosLosMedicos != null) {
+                        btnMostrarTodosLosMedicos.setDisable(false);
+                    }
+                    listaMedicos.setAll(listaMedicosCargados);
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+
+                    if (btnMostrarTodosLosMedicos != null) {
+                        btnMostrarTodosLosMedicos.setDisable(false);
+                    }
+                    mostrarAlerta("Error", "No se pudieron cargar los médicos: " + error.getMessage());
+                }
+        );
+    }
+
+    public void guardarMedicoAsync(Personal medico)
+    {
+        operacionEnProgreso = true;
+        progressMedicos.setVisible(true);
+        btnGuardarMedico.setDisable(true);
+
+        Async.run(() -> {
+                    try
+                    {
+                        boolean respuestaPacientes = gestorPacientes.existeAlguienConEseID(medico.getId());
+                        boolean insertado = gestor.insertarPersonal(medico, respuestaPacientes);
+                        return insertado;
+                    }
+
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException("Error al guardar médico: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+                    btnGuardarMedico.setDisable(false);
+
+                    if (resultado)
+                    {
+                        cargarMedicosAsync(); //RECARGO LA TABLA.
+                        limpiarCamposMedicos();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Exito al guardar");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Se pudo insertar el medico correctamente.");
+                        alert.showAndWait();
+
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Ya existe un usuario con ese ID").showAndWait();
+                    }
+                },
+
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+                    btnGuardarMedico.setDisable(false);
+                    new Alert(Alert.AlertType.ERROR, "Ya existe un usuario con ese ID: " + error.getMessage()).showAndWait();
+                }
+        );
+    }
+
+    public void modificarMedicoAsync(Medico medico) {
+        operacionEnProgreso = true;
+        progressMedicos.setVisible(true);
+        btnModificarMedico.setDisable(true);
+
+        Async.run(() -> {
+                    try {
+                        gestor.update(medico);
+
+                        Medico medicoLogueado = Hospital.getInstance().getMedicoLogueado();
+                        if (medicoLogueado != null && medicoLogueado.getId().equals(medico.getId())) {
+                            Hospital.getInstance().setMedicoLogueado(medico);
+                        }
+
+                        return medico;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al modificar médico: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+                    btnModificarMedico.setDisable(false);
+
+                    cargarMedicosAsync();
+                    limpiarCamposMedicos();
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Exito al modificar");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Se pudo modificar al médico correctamente.");
+                    alert.showAndWait();
+
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+                    btnModificarMedico.setDisable(false);
+                    new Alert(Alert.AlertType.ERROR, "No se pudo modificar al médico: " + error.getMessage()).showAndWait();
+                }
+        );
+    }
+
+    public void eliminarMedicoAsync (Medico medico)
+    {
+        operacionEnProgreso = true;
+        progressMedicos.setVisible(true);
+        btnBorrarMedico.setDisable(true);
+
+        Async.run(() -> {
+                    try {
+                        boolean eliminado = gestor.eliminar(medico.getId());
+                        return eliminado;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al eliminar médico: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+                    btnBorrarMedico.setDisable(false);
+
+                    if (resultado) {
+                        cargarMedicosAsync();
+                        limpiarCamposMedicos();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Exito al eliminar");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Se pudo eliminar el médico correctamente.");
+                        alert.showAndWait();
+
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al médico: ").showAndWait();
+                    }
+
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressMedicos.setVisible(false);
+                    btnBorrarMedico.setDisable(false);
+                    new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al médico: ").showAndWait();
+                }
+        );
+    }
+
 }

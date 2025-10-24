@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TabPrescibirController implements Initializable {
+    @FXML private ProgressIndicator progressRecetas;
     @FXML private Button btnDetallesReceta;
     @FXML private Button btnLimpiarCampos;
     @FXML private Button btnDescartarMedicamento;
@@ -51,6 +52,10 @@ public class TabPrescibirController implements Initializable {
     private ObservableList<DetalleMedicamento> detallesMedicamentos;
     private DetalleMedicamento detalleEnEdicion = null;
 
+    //Hilos.
+    private boolean operacionEnProgreso = false;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,6 +71,9 @@ public class TabPrescibirController implements Initializable {
         colCantidadMedicamento.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colDuracionMedicamento.setCellValueFactory(new PropertyValueFactory<>("duracion"));
         colIndicacionesMedicamento.setCellValueFactory(new PropertyValueFactory<>("indicacion"));
+
+        if (progressRecetas != null) progressRecetas.setVisible(false);
+
 
         detallesMedicamentos = FXCollections.observableArrayList();
         tbvResultadoBusquedaMedicamento.setItems(detallesMedicamentos);
@@ -154,6 +162,11 @@ public class TabPrescibirController implements Initializable {
 
     @FXML
     public void guardarReceta(ActionEvent actionEvent) {
+
+        if (operacionEnProgreso) {
+            return;
+        }
+
         if (!validarTodoCompleto()) return;
 
         try {
@@ -165,16 +178,18 @@ public class TabPrescibirController implements Initializable {
                 nuevaReceta.agregarDetalleMedicamento(detalle);
             }
 
-            boolean guardada = gestorRecetas.insertarReceta(nuevaReceta);
+            // === LLAMAR ASYNC ===
+            guardarRecetaAsync(nuevaReceta);
 
-            if (guardada) {
-                mostrarAlerta("Éxito", "Receta guardada con " + detallesMedicamentos.size() + " medicamentos");
-                limpiarCamposReceta(null);
-            }
+//            boolean guardada = gestorRecetas.insertarReceta(nuevaReceta);
+//
+//            if (guardada) {
+//                mostrarAlerta("Éxito", "Receta guardada con " + detallesMedicamentos.size() + " medicamentos");
+//                limpiarCamposReceta(null);
+//            }
 
         } catch (Exception e) {
             mostrarAlerta("Error", "Problemas al ingresar los " + detallesMedicamentos.size() + " de medicamentos");
-            e.printStackTrace();
         }
     }
 
@@ -268,5 +283,44 @@ public class TabPrescibirController implements Initializable {
             detallesMedicamentos.add(detalleMedicamento);
         }
     }
+
+    //Métodos para hilos (Async).
+
+    public void guardarRecetaAsync(Receta receta) {
+        operacionEnProgreso = true;
+        progressRecetas.setVisible(true);
+        btnGuardarReceta.setDisable(true);
+
+        Async.run(() -> {
+                    try {
+                        boolean guardada = gestorRecetas.insertarReceta(receta);
+                        return guardada;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al guardar receta: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressRecetas.setVisible(false);
+                    btnGuardarReceta.setDisable(false);
+
+                    if (resultado) {
+                        mostrarAlerta("Éxito", "Receta guardada con " + receta.getDetallesMedicamentos().size() + " medicamentos. (PRUEBA PRINT)");
+                        limpiarCamposReceta(null);
+                    } else {
+                        mostrarAlerta("Error", "No se pudo guardar la receta");
+                    }
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressRecetas.setVisible(false);
+                    btnGuardarReceta.setDisable(false);
+                    mostrarAlerta("Error", "Error al guardar: " + error.getMessage());
+                }
+        );
+    }
+
+
+
 
 }

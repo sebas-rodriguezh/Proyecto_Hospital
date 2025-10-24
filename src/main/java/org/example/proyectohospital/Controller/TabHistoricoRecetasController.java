@@ -37,17 +37,26 @@ public class TabHistoricoRecetasController implements Initializable {
     @FXML private ComboBox<String> comboEstadoHistorico;
     @FXML private Button btnBuscarHistorico;
     @FXML private Button btnVerDetallesHistorico;
+    @FXML private ProgressIndicator progressRecetasHistorico;
+    @FXML private ProgressIndicator progressDetallesHistorico;
 
     private final GestorRecetas gestorRecetas = Hospital.getInstance().getGestorRecetas();
     private final ObservableList<Receta> listaReceta = FXCollections.observableArrayList();
+    private boolean operacionEnProgreso = false;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (progressRecetasHistorico != null) {
+            progressRecetasHistorico.setVisible(false);
+        }
+        if (progressDetallesHistorico != null) {
+            progressDetallesHistorico.setVisible(false);
+        }
         inicializarTabla();
     }
 
-    private void inicializarTabla()
-    {
+    private void inicializarTabla() {
         comboEstadoHistorico.getItems().addAll("Todas", "Confeccionada", "Procesada", "Lista", "Entregada");
         comboEstadoHistorico.setValue("Todas");
         colIdHistorico.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -56,12 +65,13 @@ public class TabHistoricoRecetasController implements Initializable {
         colFechaConfeccionHistorico.setCellValueFactory(new PropertyValueFactory<>("fechaPrescripcion"));
         colFechaRetiroHistorico.setCellValueFactory(new PropertyValueFactory<>("fechaRetiro"));
         colEstadoHistorico.setCellValueFactory(new PropertyValueFactory<>("nombreEstado"));
-        colMedicamento.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getMedicamento().getNombre()));
-        colPresentacion.setCellValueFactory(d->new SimpleStringProperty(d.getValue().getMedicamento().getPresentacion()));
+        colMedicamento.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getMedicamento().getNombre()));
+        colPresentacion.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getMedicamento().getPresentacion()));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colIndicaciones.setCellValueFactory(new PropertyValueFactory<>("indicacion"));
         colDuracion.setCellValueFactory(new PropertyValueFactory<>("duracion"));
-        cargarTodasLasRecetas();
+
+        cargarTodasLasRecetasAsync();
     }
 
     private void cargarTodasLasRecetas()
@@ -72,31 +82,13 @@ public class TabHistoricoRecetasController implements Initializable {
 
     @FXML
     private void buscarHistorico() {
+        if (operacionEnProgreso) {
+            return;
+        }
+
         String filtro = txtBuscarPacienteIdHistoricoRecetas.getText().trim();
         String estadoSeleccionado = comboEstadoHistorico.getValue();
-
-        List<Receta> recetasFiltradas;
-
-        if (filtro.isEmpty()) {
-            recetasFiltradas = gestorRecetas.getRecetas();
-        } else {
-            recetasFiltradas = gestorRecetas.obtenerRecetasPorPaciente(filtro);
-        }
-
-        if (!"Todas".equals(estadoSeleccionado))
-        {
-            int estadoNum = convertirEstadoANumero(estadoSeleccionado);
-            recetasFiltradas = recetasFiltradas.stream()
-                    .filter(r -> {
-                        return r.getEstado() == estadoNum;
-                    })
-                    .toList();}
-
-        if(recetasFiltradas.isEmpty()) {
-            mostrarAlerta("Sin resultados", "No se encontraron recetas con los criterios indicados");
-        }
-
-        tblViewRecetasHistoricoRecetas.getItems().setAll(recetasFiltradas);
+        buscarRecetasHistoricoAsync(filtro, estadoSeleccionado);
     }
 
 
@@ -111,18 +103,18 @@ public class TabHistoricoRecetasController implements Initializable {
 
     @FXML
     private void verDetallesHistorico(ActionEvent event) {
+        if (operacionEnProgreso) {
+            return;
+        }
+
         Receta seleccionada = tblViewRecetasHistoricoRecetas.getSelectionModel().getSelectedItem();
-        if(seleccionada == null) {
+        if (seleccionada == null) {
             mostrarAlerta("Selección requerida", "Debe seleccionar una receta para ver sus detalles.");
             return;
         }
-        List<DetalleMedicamento> detalles = gestorRecetas.obtenerDetalles(seleccionada.getId());
-        if(detalles.isEmpty()){
-            mostrarAlerta("Sin detalles","La receta seleccionada no tiene medicamentos asociados");
-        }
-        tableDetallesHistorico.getItems().setAll(detalles);
-    }
 
+        cargarDetallesRecetaAsync(seleccionada.getId());
+    }
 
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -133,6 +125,116 @@ public class TabHistoricoRecetasController implements Initializable {
     }
 
     public void actualizarTabla() {
-        cargarTodasLasRecetas();
+        cargarTodasLasRecetasAsync();
+    }
+
+    //Métodos para hilos (Async).
+
+    public void cargarTodasLasRecetasAsync() {
+        if (operacionEnProgreso) {
+            return;
+        }
+
+        operacionEnProgreso = true;
+        progressRecetasHistorico.setVisible(true);
+
+        Async.run(
+                () -> {
+                    try {
+                        return gestorRecetas.getRecetas();
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al cargar recetas históricas: " + e.getMessage());
+                    }
+                },
+                recetasCargadas -> {
+                    operacionEnProgreso = false;
+                    progressRecetasHistorico.setVisible(false);
+                    listaReceta.setAll(recetasCargadas);
+                    tblViewRecetasHistoricoRecetas.setItems(listaReceta);
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressRecetasHistorico.setVisible(false);
+                    mostrarAlerta("Error", "No se pudieron cargar las recetas históricas: " + error.getMessage());
+                }
+        );
+    }
+
+    public void buscarRecetasHistoricoAsync(String filtro, String estadoSeleccionado) {
+        operacionEnProgreso = true;
+        progressRecetasHistorico.setVisible(true);
+
+        Async.run(
+                () -> {
+                    try {
+                        List<Receta> recetasFiltradas;
+
+                        if (filtro.isEmpty()) {
+                            recetasFiltradas = gestorRecetas.getRecetas();
+                        } else {
+                            recetasFiltradas = gestorRecetas.obtenerRecetasPorPaciente(filtro);
+                        }
+
+                        if (!"Todas".equals(estadoSeleccionado)) {
+                            int estadoNum = convertirEstadoANumero(estadoSeleccionado);
+                            recetasFiltradas = recetasFiltradas.stream()
+                                    .filter(r -> r.getEstado() == estadoNum)
+                                    .toList();
+                        }
+
+                        return recetasFiltradas;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al buscar recetas históricas: " + e.getMessage());
+                    }
+                },
+                recetasFiltradas -> {
+                    operacionEnProgreso = false;
+                    progressRecetasHistorico.setVisible(false);
+
+                    if (recetasFiltradas.isEmpty()) {
+                        mostrarAlerta("Sin resultados", "No se encontraron recetas con los criterios indicados");
+                    }
+
+                    tblViewRecetasHistoricoRecetas.getItems().setAll(recetasFiltradas);
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressRecetasHistorico.setVisible(false);
+                    mostrarAlerta("Error", "Error en búsqueda: " + error.getMessage());
+                }
+        );
+    }
+
+    public void cargarDetallesRecetaAsync(String idReceta) {
+        operacionEnProgreso = true;
+        progressDetallesHistorico.setVisible(true);
+        btnVerDetallesHistorico.setDisable(true);
+
+        Async.run(
+                () -> {
+                    try {
+                        List<DetalleMedicamento> detalles = gestorRecetas.obtenerDetalles(idReceta);
+                        return detalles;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al cargar detalles de receta: " + e.getMessage());
+                    }
+                },
+                detalles -> {
+                    operacionEnProgreso = false;
+                    progressDetallesHistorico.setVisible(false);
+                    btnVerDetallesHistorico.setDisable(false);
+
+                    if (detalles.isEmpty()) {
+                        mostrarAlerta("Sin detalles", "La receta seleccionada no tiene medicamentos asociados");
+                    }
+                    tableDetallesHistorico.getItems().setAll(detalles);
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressDetallesHistorico.setVisible(false);
+                    btnVerDetallesHistorico.setDisable(false);
+                    mostrarAlerta("Error", "Error al cargar detalles: " + error.getMessage());
+                }
+        );
     }
 }

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -56,6 +57,7 @@
                   <Image url="@../Resources/Assets/Images/pacienteLogoDos.png" />
                </image>
             </ImageView>
+            <ProgressIndicator fx:id="progressRecetas" visible="false" layoutX="169.0" layoutY="486.0" progress="0.0" />
          </children>
       </AnchorPane>
    </children>
