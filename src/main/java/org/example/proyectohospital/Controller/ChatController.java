@@ -24,7 +24,6 @@ public class ChatController {
         usuarioActual = obtenerUsuarioLogueado();
         lblEstado.setText("Usuario: " + usuarioActual);
 
-        // Configurar doble clic en lista de usuarios
         listUsuarios.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 enviarMensajePrivado();
@@ -34,23 +33,19 @@ public class ChatController {
 
     private String obtenerUsuarioLogueado() {
         try {
-            // Obtener el usuario del Hospital
             String usuarioId = Hospital.getInstance().getUsuarioLogueadoId();
-            if (usuarioId != null && !usuarioId.trim().isEmpty()) {
+            if (usuarioId != null && !usuarioId.trim().isEmpty())
+            {
                 return usuarioId;
             }
 
-            // Si por alguna razón no hay usuario, usar uno temporal
-            String usuarioTemporal = "Usuario-" + (System.currentTimeMillis() % 1000);
-            System.out.println("Usando usuario temporal: " + usuarioTemporal);
-            return usuarioTemporal;
-
-        } catch (Exception e) {
-            String usuarioTemporal = "Usuario-" + (System.currentTimeMillis() % 1000);
-            System.out.println("Error obteniendo usuario, usando temporal: " + usuarioTemporal);
-            return usuarioTemporal;
+        } catch (Exception e)
+        {
+            mostrarAlerta("Error", "No se pudo encontrar al usuario. "+ e.getMessage());
         }
+        return "";
     }
+
     @FXML
     private void conectarChat() {
         try {
@@ -62,9 +57,7 @@ public class ChatController {
                 btnConectar.setDisable(true);
                 btnDesconectar.setDisable(false);
                 lblEstado.setText("Conectado como: " + usuarioActual);
-                lblEstado.setStyle("-fx-text-fill: green;");
 
-                // Esperar un poco y solicitar usuarios
                 new Thread(() -> {
                     try {
                         Thread.sleep(1000);
@@ -92,7 +85,6 @@ public class ChatController {
         btnConectar.setDisable(false);
         btnDesconectar.setDisable(true);
         lblEstado.setText("Desconectado");
-        lblEstado.setStyle("-fx-text-fill: red;");
         listUsuarios.getItems().clear();
         mostrarMensaje("[SISTEMA] Desconectado del chat");
     }
@@ -126,18 +118,17 @@ public class ChatController {
             return;
         }
 
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Mensaje Privado");
-        dialog.setHeaderText("Enviar mensaje privado a: " + destinatario);
-        dialog.setContentText("Mensaje:");
+        String mensaje = txtMensaje.getText().trim();
+        if (mensaje.isEmpty()) {
+            mostrarAlerta("Mensaje Vacío", "Escriba un mensaje en el campo de texto antes de enviar");
+            return;
+        }
 
-        dialog.showAndWait().ifPresent(mensaje -> {
-            if (!mensaje.trim().isEmpty()) {
-                chatProxy.enviarMensajePrivado(destinatario, mensaje.trim());
-                mostrarMensaje("[PRIVADO para " + destinatario + "]: " + mensaje.trim());
-            }
-        });
+        chatProxy.enviarMensajePrivado(destinatario, mensaje);
+        mostrarMensaje("[PRIVADO para " + destinatario + "]: " + mensaje);
+        txtMensaje.clear();
     }
+
 
     @FXML
     private void actualizarUsuarios() {
@@ -151,11 +142,7 @@ public class ChatController {
     private void mostrarMensaje(String mensaje) {
         Platform.runLater(() -> {
             txtAreaMensajes.appendText(mensaje + "\n");
-
-            // Auto-scroll al final
             txtAreaMensajes.setScrollTop(Double.MAX_VALUE);
-
-            // Actualizar lista de usuarios si es mensaje del sistema
             if (mensaje.contains("Usuarios conectados:") && chatProxy != null) {
                 actualizarListaUsuarios();
             }

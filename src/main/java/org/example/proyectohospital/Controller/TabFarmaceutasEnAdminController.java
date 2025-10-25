@@ -19,7 +19,6 @@ import org.example.proyectohospital.Modelo.Paciente;
 import org.example.proyectohospital.Modelo.Personal;
 import org.example.proyectohospital.Logica.GestorPersonal;
 
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -48,13 +47,42 @@ public class TabFarmaceutasEnAdminController implements Initializable {
     //Hilos.
     private boolean operacionEnProgreso = false;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colNombreFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colIDFarmaceuta.setCellValueFactory(new PropertyValueFactory<>("id"));
         tbvResultadoBusquedaFarmaceuta.setItems(listaFarmaceuta);
+
+        // Configurar el listener para la selección de la tabla
+        tbvResultadoBusquedaFarmaceuta.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        configurarCampoId(false);
+                        llenarCamposConFarmaceuta(newValue);
+                    } else {
+                        configurarCampoId(true);
+                    }
+                }
+        );
+
+        configurarCampoId(true);
         mostrarTodosLosFarmaceutas();
+    }
+
+    private void configurarCampoId(boolean editable) {
+        txtIdFarmaceuta.setEditable(editable);
+        txtIdFarmaceuta.setFocusTraversable(editable);
+
+        if (editable) {
+            txtIdFarmaceuta.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+        } else {
+            txtIdFarmaceuta.setStyle("-fx-background-color: #f0f0f0; -fx-text-fill: #666;");
+        }
+    }
+
+    private void llenarCamposConFarmaceuta(Farmaceuta farmaceuta) {
+        txtIdFarmaceuta.setText(farmaceuta.getId());
+        txtNombreFarmaceuta.setText(farmaceuta.getNombre());
     }
 
     @FXML
@@ -78,8 +106,6 @@ public class TabFarmaceutasEnAdminController implements Initializable {
     @FXML
     public void mostrarTodosLosFarmaceutas() {
         try {
-//            List<Farmaceuta> farmaceutas = gestor.obtenerPersonalPorTipo("Farmaceuta").stream().map(p->(Farmaceuta)p).collect(Collectors.toList());
-//            listaFarmaceuta.setAll(farmaceutas);
             cargarFarmaceutasAsync();
         } catch (Exception e) {
             mostrarAlerta("Error", "No se pudo cargar la información de los farmaceutas.");
@@ -96,31 +122,29 @@ public class TabFarmaceutasEnAdminController implements Initializable {
         {
             Farmaceuta seleccionado = tbvResultadoBusquedaFarmaceuta.getSelectionModel().getSelectedItem();
             if (seleccionado == null) {
-                mostrarAlerta("Error", "Seleccione un medico ");
+                mostrarAlerta("Error", "Seleccione un farmacéutico ");
                 return;
             }
 
-            String id = txtIdFarmaceuta.getText().trim();
+            // Para modificar, NO usamos el ID del campo de texto porque no es editable
+            // Usamos el ID del objeto seleccionado directamente
             String nombre = txtNombreFarmaceuta.getText().trim();
 
-            if (id.isEmpty() || nombre.isEmpty()) {
-                mostrarAlerta("Error", "Complete TODOS los campos");
+            if (nombre.isEmpty()) {
+                mostrarAlerta("Error", "Complete el campo nombre");
                 return;
             }
 
-            String idOriginal = seleccionado.getId();
-            seleccionado.setId(id);
             seleccionado.setNombre(nombre);
-            seleccionado.setClave(id);
+            seleccionado.setClave(seleccionado.getId()); // Mantener la misma clave que el ID
 
-            modificarFarmaceutaAsync(seleccionado, idOriginal);
+            modificarFarmaceutaAsync(seleccionado, seleccionado.getId());
 
 
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al modificar farmaceuta: " + e.getMessage());
         }
     }
-
 
     @FXML
     public void buscarFarmaceuta(ActionEvent actionEvent) {
@@ -147,7 +171,6 @@ public class TabFarmaceutasEnAdminController implements Initializable {
         }
     }
 
-
     @FXML
     public void borrarFarmaceuta(ActionEvent actionEvent) {
         if (operacionEnProgreso) {
@@ -173,6 +196,8 @@ public class TabFarmaceutasEnAdminController implements Initializable {
         txtNombreFarmaceuta.clear();
         txtIdFarmaceuta.clear();
         txtBuscarFarmaceuta.clear();
+        tbvResultadoBusquedaFarmaceuta.getSelectionModel().clearSelection();
+        configurarCampoId(true);
     }
 
     @FXML
@@ -271,7 +296,7 @@ public class TabFarmaceutasEnAdminController implements Initializable {
 
                     catch (Exception e)
                     {
-                        throw new RuntimeException("Error al guardar paciente: " + e.getMessage());
+                        throw new RuntimeException("Error al guardar farmacéutico: " + e.getMessage());
                     }
                 },
                 resultado -> {
@@ -286,11 +311,11 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Exito al guardar");
                         alert.setHeaderText(null);
-                        alert.setContentText("Se pudo insertar el paciente correctamente.");
+                        alert.setContentText("Se pudo insertar el farmacéutico correctamente.");
                         alert.showAndWait();
 
                     } else {
-                        new Alert(Alert.AlertType.ERROR, "Ya existe un paciente con ese ID").showAndWait();
+                        new Alert(Alert.AlertType.ERROR, "Ya existe un usuario con ese ID").showAndWait();
                     }
                 },
 
@@ -298,7 +323,7 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                     operacionEnProgreso = false;
                     progressFarmaceutas.setVisible(false);
                     btnGuardarFarmaceuta.setDisable(false);
-                    new Alert(Alert.AlertType.ERROR, "Ya existe un paciente con ese ID: " + error.getMessage()).showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "Ya existe un usuario con ese ID: " + error.getMessage()).showAndWait();
                 }
         );
     }
@@ -310,12 +335,10 @@ public class TabFarmaceutasEnAdminController implements Initializable {
 
         Async.run(() -> {
                     try {
-                        if (gestor.existePersonalConEseID(farmaceuta.getId()) || gestorPacientes.existeAlguienConEseID(farmaceuta.getId())) {
-                            return false;
-                        } else {
-                            gestor.update(farmaceuta, idOriginal);
-                            return true;
-                        }
+                        // No necesitamos verificar si existe el ID porque no estamos cambiando el ID
+                        // Solo estamos modificando el nombre
+                        gestor.update(farmaceuta);
+                        return true;
                     } catch (Exception e) {
                         throw new RuntimeException("Error al modificar farmacéutico: " + e.getMessage());
                     }
@@ -335,14 +358,14 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                         alert.showAndWait();
 
                     } else {
-                        new Alert(Alert.AlertType.ERROR, "Ya existe un usuario en el sistema con ese ID").showAndWait();
+                        new Alert(Alert.AlertType.ERROR, "Error al modificar el farmacéutico").showAndWait();
                     }
                 },
                 error -> {
                     operacionEnProgreso = false;
                     progressFarmaceutas.setVisible(false);
                     btnModificarFarmaceuta.setDisable(false);
-                    new Alert(Alert.AlertType.ERROR, "Error al modificar el farmaceuta.").showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "Error al modificar el farmaceuta: " + error.getMessage()).showAndWait();
                 }
         );
     }
@@ -358,7 +381,7 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                         boolean eliminado = gestor.eliminar(farmaceuta.getId());
                         return eliminado;
                     } catch (Exception e) {
-                        throw new RuntimeException("Error al eliminar paciente: " + e.getMessage());
+                        throw new RuntimeException("Error al eliminar farmacéutico: " + e.getMessage());
                     }
                 },
                 resultado -> {
@@ -372,11 +395,11 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Exito al eliminar");
                         alert.setHeaderText(null);
-                        alert.setContentText("Se pudo eliminar el paciente correctamente.");
+                        alert.setContentText("Se pudo eliminar el farmacéutico correctamente.");
                         alert.showAndWait();
 
                     } else {
-                        new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al paciente: ").showAndWait();
+                        new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al farmacéutico: ").showAndWait();
                     }
 
                 },
@@ -384,11 +407,8 @@ public class TabFarmaceutasEnAdminController implements Initializable {
                     operacionEnProgreso = false;
                     progressFarmaceutas.setVisible(false);
                     btnBorrarFarmaceuta.setDisable(false);
-                    new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al paciente: ").showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "No se pudo eliminar al farmacéutico: ").showAndWait();
                 }
         );
     }
-
-
-
 }
