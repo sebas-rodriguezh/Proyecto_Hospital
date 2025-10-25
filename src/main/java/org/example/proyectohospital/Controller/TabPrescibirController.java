@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TabPrescibirController implements Initializable {
+    @FXML private Button btnAbrirChat;
     @FXML private ProgressIndicator progressRecetas;
     @FXML private Button btnDetallesReceta;
     @FXML private Button btnLimpiarCampos;
@@ -140,6 +141,27 @@ public class TabPrescibirController implements Initializable {
         ObservableList<Paciente> listaPaciente = FXCollections.observableArrayList(paciente);
         tbvResultadoBusquedaPaciente.setItems(listaPaciente);
     }
+
+    @FXML
+    private void abrirVentanaChat() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/View/chat-view.fxml"));
+            Parent root = loader.load();
+
+            Stage chatStage = new Stage();
+            chatStage.setTitle("Chat del Hospital - " + Hospital.getInstance().getUsuarioLogueadoNombre());
+            chatStage.setScene(new Scene(root));
+            chatStage.setResizable(true);
+            chatStage.show();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir el chat: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     @FXML
     public void limpiarCamposReceta(ActionEvent actionEvent) {

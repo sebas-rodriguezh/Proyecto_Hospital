@@ -3,9 +3,13 @@ package org.example.proyectohospital.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.example.proyectohospital.Logica.GestorPacientes;
 import org.example.proyectohospital.Logica.GestorPersonal;
 import org.example.proyectohospital.Logica.Hospital;
@@ -21,6 +25,7 @@ import javafx.application.Platform;
 import org.example.proyectohospital.Controller.Async;
 
 public class TabPacientesEnAdminController implements Initializable {
+    @FXML private Button btnAbrirChat;
     @FXML private ProgressIndicator progressPacientes;
     @FXML private TextField txtIdPaciente;
     @FXML private TextField txtNombrePaciente;
@@ -80,6 +85,25 @@ public class TabPacientesEnAdminController implements Initializable {
             mostrarAlerta("Error", "Error al cargar medicamentos: " + e.getMessage());
         }
     }
+
+    @FXML
+    private void abrirVentanaChat() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/View/chat-view.fxml"));
+            Parent root = loader.load();
+
+            Stage chatStage = new Stage();
+            chatStage.setTitle("Chat del Hospital - " + Hospital.getInstance().getUsuarioLogueadoNombre());
+            chatStage.setScene(new Scene(root));
+            chatStage.setResizable(true);
+            chatStage.show();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir el chat: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     private void limpiarCamposPaciente() {

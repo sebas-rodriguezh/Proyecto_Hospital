@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.proyectohospital.Controller.ChatController"
+      spacing="10" style="-fx-padding: 15; -fx-pref-width: 600; -fx-pref-height: 500;">
+
+    <!-- Cabecera -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Chat del Hospital" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+        <Label fx:id="lblEstado" text="Desconectado" style="-fx-text-fill: red;"/>
+    </HBox>
+
+    <SplitPane dividerPositions="0.7">
+        <!-- Área principal de mensajes -->
+        <VBox spacing="10">
+            <Label text="Mensajes:" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="txtAreaMensajes" editable="false" prefHeight="350"
+                      style="-fx-font-family: 'Arial'; -fx-font-size: 12;"/>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="txtMensaje" promptText="Escribe tu mensaje..." HBox.hgrow="ALWAYS"
+                           onAction="#enviarMensaje"/>
+                <Button text="Enviar" onAction="#enviarMensaje" defaultButton="true"/>
+            </HBox>
+        </VBox>
+
+        <!-- Panel lateral de usuarios -->
+        <VBox spacing="10" style="-fx-padding: 0 0 0 10;">
+            <Label text="Usuarios Conectados:" style="-fx-font-weight: bold;"/>
+            <ListView fx:id="listUsuarios" prefWidth="150" prefHeight="350"/>
+
+            <VBox spacing="5">
+                <Button text="Actualizar Lista" onAction="#actualizarUsuarios"
+                        style="-fx-pref-width: 150;"/>
+                <Button text="Enviar Mensaje Privado" onAction="#enviarMensajePrivado"
+                        style="-fx-pref-width: 150;"/>
+            </VBox>
+        </VBox>
+    </SplitPane>
+
+    <!-- Panel de conexión -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="btnConectar" text="Conectar al Chat" onAction="#conectarChat"
+                style="-fx-font-weight: bold;"/>
+        <Button fx:id="btnDesconectar" text="Desconectar" onAction="#desconectarChat"
+                disable="true"/>
+    </HBox>
+</VBox>

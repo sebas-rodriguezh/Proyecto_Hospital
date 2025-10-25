@@ -4,10 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.example.proyectohospital.Logica.Hospital;
 import org.example.proyectohospital.Modelo.Receta;
 import org.example.proyectohospital.Logica.GestorRecetas;
@@ -20,6 +24,7 @@ import java.util.ResourceBundle;
 
 public class TabAlistadoFarmaceutaController implements Initializable {
 
+    @FXML private Button btnAbrirChat;
     @FXML private Button btnPonerEnLista;
     @FXML private Button btnBuscarSolicitud;
     @FXML private TextField txtBuscarPacienteSolicitud;
@@ -101,6 +106,25 @@ public class TabAlistadoFarmaceutaController implements Initializable {
 //        }
 //    }
 //
+
+    @FXML
+    private void abrirVentanaChat() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/View/chat-view.fxml"));
+            Parent root = loader.load();
+
+            Stage chatStage = new Stage();
+            chatStage.setTitle("Chat del Hospital - " + Hospital.getInstance().getUsuarioLogueadoNombre());
+            chatStage.setScene(new Scene(root));
+            chatStage.setResizable(true);
+            chatStage.show();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir el chat: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     public void alistarMedicamentoSeleccionado(ActionEvent actionEvent) {

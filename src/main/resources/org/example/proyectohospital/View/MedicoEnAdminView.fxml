@@ -153,6 +153,11 @@
                     </font>
                 </Button>
          <ProgressIndicator fx:id="progressMedicos" layoutX="677.0" layoutY="320.0" progress="0.0" />
+         <Button id="btnMostrarTodosLosMedicos" fx:id="btnAbrirChat" alignment="CENTER" layoutX="631.0" layoutY="476.0" mnemonicParsing="false" onAction="#abrirVentanaChat" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold;" text="Abrir chat">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Button>
             </children>
         </AnchorPane>
 

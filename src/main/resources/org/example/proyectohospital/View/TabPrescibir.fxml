@@ -18,7 +18,7 @@
                 <children>
                     <Pane layoutX="24.0" layoutY="14.0" prefHeight="272.0" prefWidth="888.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                         <children>
-                            <Pane layoutX="42.0" layoutY="21.0" prefHeight="230.0" prefWidth="350.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                            <Pane layoutX="24.0" layoutY="21.0" prefHeight="230.0" prefWidth="350.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                 <children>
                                     <Pane layoutX="29.0" layoutY="23.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                         <children>
@@ -44,7 +44,7 @@
                                     </Pane>
                                 </children>
                             </Pane>
-                            <Pane layoutX="483.0" layoutY="21.0" prefHeight="230.0" prefWidth="350.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                            <Pane layoutX="495.0" layoutY="21.0" prefHeight="230.0" prefWidth="350.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                 <children>
                                     <Pane layoutX="29.0" layoutY="23.0" prefHeight="55.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
                                         <children>
@@ -76,7 +76,12 @@
                                     </Pane>
                                 </children>
                             </Pane>
-               <ProgressIndicator fx:id="progressRecetas" layoutX="848.0" layoutY="122.0" progress="0.0" />
+               <ProgressIndicator fx:id="progressRecetas" layoutX="856.0" layoutY="122.0" progress="0.0" />
+               <Button id="btnDescartarMedicamento" fx:id="btnAbrirChat" alignment="CENTER" layoutX="386.0" layoutY="136.0" mnemonicParsing="false" onAction="#abrirVentanaChat" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold;" text="Abrir chat">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Button>
                         </children>
                     </Pane>
                     <Pane layoutX="26.0" layoutY="294.0" prefHeight="259.0" prefWidth="658.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">

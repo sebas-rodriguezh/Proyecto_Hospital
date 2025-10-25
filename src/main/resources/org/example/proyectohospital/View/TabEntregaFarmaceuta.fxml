@@ -52,5 +52,10 @@
          </font>
       </Button>
       <ProgressIndicator fx:id="progressRecetasEntrega" layoutX="182.0" layoutY="502.0" progress="0.0" />
+      <Button id="btnEntregarRecetaFarmaceuta" fx:id="btnAbrirChat" layoutX="619.0" layoutY="507.0" onAction="#abrirVentanaChat" prefHeight="27.0" prefWidth="139.0" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold;" text="Abrir chat">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

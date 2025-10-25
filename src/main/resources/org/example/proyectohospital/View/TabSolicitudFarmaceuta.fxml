@@ -57,7 +57,12 @@
                   <Image url="@../Resources/Assets/Images/pacienteLogoDos.png" />
                </image>
             </ImageView>
-            <ProgressIndicator fx:id="progressRecetas" visible="false" layoutX="169.0" layoutY="486.0" progress="0.0" />
+            <ProgressIndicator fx:id="progressRecetas" layoutX="169.0" layoutY="486.0" progress="0.0" visible="false" />
+            <Button fx:id="btnAbrirChat" layoutX="656.0" layoutY="491.0" onAction="#abrirVentanaChat" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold;" text="Abrir chat">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

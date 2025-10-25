@@ -1,6 +1,7 @@
 package org.example.proyectohospital.Logica;
 
 import org.example.proyectohospital.Modelo.Medico;
+import org.example.proyectohospital.Modelo.Personal;
 
 public class Hospital {
     private static Hospital instance;
@@ -9,6 +10,8 @@ public class Hospital {
     private GestorPersonal gestorPersonal;
     private GestorRecetas gestorRecetas;
     private Medico medicoLogueado;
+    private Personal personalLogueado;
+
 
     private Hospital() {
         this.gestorPacientes = new GestorPacientes();
@@ -92,14 +95,45 @@ public class Hospital {
         this.gestorMedicamentos = medicamentos;
     }
 
+//    public void setMedicoLogueado(Medico medico) {
+//        this.medicoLogueado = medico;
+//        System.out.println("Médico establecido en Hospital: " +
+//                (medico != null ? medico.getNombre() : "null"));
+//    }
+
+    public Medico getMedicoLogueado() {
+        return medicoLogueado;
+    }
+
     public void setMedicoLogueado(Medico medico) {
         this.medicoLogueado = medico;
+        this.personalLogueado = medico; // También establecer como personal logueado
         System.out.println("Médico establecido en Hospital: " +
                 (medico != null ? medico.getNombre() : "null"));
     }
 
-    public Medico getMedicoLogueado() {
-        return medicoLogueado;
+    public void setPersonalLogueado(Personal personal) {
+        this.personalLogueado = personal;
+        System.out.println("Personal logueado establecido: " +
+                (personal != null ? personal.getNombre() + " (" + personal.tipo() + ")" : "null"));
+    }
+
+    public Personal getPersonalLogueado() {
+        return personalLogueado;
+    }
+
+    public String getUsuarioLogueadoId() {
+        if (personalLogueado != null) {
+            return personalLogueado.getId();
+        }
+        return null;
+    }
+
+    public String getUsuarioLogueadoNombre() {
+        if (personalLogueado != null) {
+            return personalLogueado.getNombre();
+        }
+        return "Usuario";
     }
 
 }

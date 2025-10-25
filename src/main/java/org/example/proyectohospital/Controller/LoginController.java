@@ -52,6 +52,7 @@ public class LoginController implements Initializable {
             System.out.println("Resultado verificarCredenciales: " + personal);
 
             if (personal != null) {
+                Hospital.getInstance().setPersonalLogueado(personal);
                 mostrarAlerta("Bienvenido", "Bienvenido " + personal.getNombre() + " (" + personal.tipo() + ")");
                 abrirVentanaSegunTipo(personal);
                 cerrarVentanaLogin();

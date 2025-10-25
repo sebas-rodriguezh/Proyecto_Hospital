@@ -158,6 +158,11 @@
                             <Font size="14.0" />
                         </font>
                     </Button>
+         <Button id="btnMostrarTodosLosPacientes" fx:id="btnAbrirChat" alignment="CENTER" layoutX="629.0" layoutY="472.0" mnemonicParsing="false" onAction="#abrirVentanaChat" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold;" text="Abrir chat">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Button>
                 </children>
             </AnchorPane>
 </AnchorPane>
