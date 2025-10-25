@@ -52,3 +52,15 @@ oct 24, 2025 6:24:51 P. M. org.example.proyectohospital.Servicios.ChatServer re
 INFO: Cliente desconectado: 4444
 oct 24, 2025 6:24:57 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
+oct 24, 2025 7:55:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
+oct 24, 2025 7:55:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+INFO: Puerto: 7000
+oct 24, 2025 7:55:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+INFO: Servidor listo para aceptar conexiones...
+oct 24, 2025 7:58:45 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+INFO: Cliente desconectado: 1003
+oct 24, 2025 7:58:46 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+INFO: Cliente desconectado: 2222
+oct 24, 2025 7:59:13 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+INFO: Cliente desconectado: admin

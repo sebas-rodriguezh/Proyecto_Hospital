@@ -55,9 +55,10 @@ public class ChatServer {
     public void broadcastMessage(String message, ClientHandler sender) {
         synchronized (clients) {
             for (ClientHandler client : clients) {
-                if (client != sender) {
-                    client.send(message);
-                }
+//                if (client != sender) {
+//                    client.send(message);
+//                }
+                client.send(message);
             }
         }
     }
