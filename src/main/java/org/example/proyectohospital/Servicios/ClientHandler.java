@@ -34,24 +34,19 @@ public class ClientHandler extends Thread {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
             out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
 
-            out.println("[SISTEMA] Bienvenido al chat del Hospital - Ingrese su ID de usuario:");
+            out.println("[SISTEMA] Bienvenido al chat del Hospital.");
 
-            // Primer mensaje es el ID del usuario
             String userInput = in.readLine();
             if (userInput != null && !userInput.isBlank()) {
                 usuario = userInput.trim();
                 LOGGER.info("Usuario conectado: " + usuario);
-
-                // Notificar a todos
                 server.broadcastMessage("[SISTEMA] " + usuario + " se unió al chat", this);
                 updateUserList();
             }
 
-            // Procesar mensajes del cliente
             String message;
             while ((message = in.readLine()) != null) {
                 if (message.startsWith("/msg ")) {
-                    // Mensaje privado: /msg destinatario mensaje
                     String[] parts = message.substring(5).split(" ", 2);
                     if (parts.length == 2) {
                         server.sendPrivateMessage(parts[0], parts[1], this);
@@ -59,7 +54,6 @@ public class ClientHandler extends Thread {
                 } else if (message.equals("/users")) {
                     updateUserList();
                 } else {
-                    // Mensaje grupal
                     server.broadcastMessage(usuario + ": " + message, this);
                 }
             }

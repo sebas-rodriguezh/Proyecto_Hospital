@@ -19,13 +19,11 @@ public class ChatClient {
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        // Hilo para escuchar mensajes entrantes
         new Thread(this::listenForMessages).start();
     }
 
     private void listenForMessages() {
         try {
-            // Enviar usuario como primer mensaje
             out.println(usuario);
 
             String message;

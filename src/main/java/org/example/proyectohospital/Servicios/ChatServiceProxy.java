@@ -7,12 +7,12 @@ import java.util.function.Consumer;
 public class ChatServiceProxy {
     private ChatClient chatClient;
     private String usuario;
-    private Consumer<String> onMessageReceived;
+    private Consumer<String> accionMensaje;
     private Set<String> usuariosConectados = new HashSet<>();
 
-    public ChatServiceProxy(String usuario, Consumer<String> onMessageReceived) {
+    public ChatServiceProxy(String usuario, Consumer<String> accionMensaje) {
         this.usuario = usuario;
-        this.onMessageReceived = onMessageReceived;
+        this.accionMensaje = accionMensaje;
     }
 
     public boolean conectar(String host, int port) {
@@ -21,19 +21,16 @@ public class ChatServiceProxy {
             chatClient.conectar(host, port, usuario, this::procesarMensaje);
             return true;
         } catch (Exception e) {
-            onMessageReceived.accept("[ERROR] No se pudo conectar: " + e.getMessage());
+            accionMensaje.accept("[ERROR] No se pudo conectar: " + e.getMessage());
             return false;
         }
     }
 
     private void procesarMensaje(String mensaje) {
-        // Actualizar lista de usuarios si viene en mensaje del sistema
         if (mensaje.contains("Usuarios conectados:")) {
             actualizarUsuariosConectados(mensaje);
         }
-
-        // Pasar mensaje al controller
-        onMessageReceived.accept(mensaje);
+        accionMensaje.accept(mensaje);
     }
 
     private void actualizarUsuariosConectados(String mensajeSistema) {
@@ -47,7 +44,8 @@ public class ChatServiceProxy {
                 }
             }
         } catch (Exception e) {
-            // Ignorar errores de parsing
+            // Ignorar errores pero de parseo. no funcionales.
+            e.printStackTrace();
         }
     }
 
