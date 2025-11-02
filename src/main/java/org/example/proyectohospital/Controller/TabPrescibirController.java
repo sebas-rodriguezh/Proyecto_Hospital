@@ -200,15 +200,7 @@ public class TabPrescibirController implements Initializable {
                 nuevaReceta.agregarDetalleMedicamento(detalle);
             }
 
-            // === LLAMAR ASYNC ===
             guardarRecetaAsync(nuevaReceta);
-
-//            boolean guardada = gestorRecetas.insertarReceta(nuevaReceta);
-//
-//            if (guardada) {
-//                mostrarAlerta("Éxito", "Receta guardada con " + detallesMedicamentos.size() + " medicamentos");
-//                limpiarCamposReceta(null);
-//            }
 
         } catch (Exception e) {
             mostrarAlerta("Error", "Problemas al ingresar los " + detallesMedicamentos.size() + " de medicamentos");
@@ -327,7 +319,7 @@ public class TabPrescibirController implements Initializable {
                     btnGuardarReceta.setDisable(false);
 
                     if (resultado) {
-                        mostrarAlerta("Éxito", "Receta guardada con " + receta.getDetallesMedicamentos().size() + " medicamentos. (PRUEBA PRINT)");
+                        mostrarAlerta("Éxito", "Receta guardada con " + receta.getDetallesMedicamentos().size() + " medicamentos.");
                         limpiarCamposReceta(null);
                     } else {
                         mostrarAlerta("Error", "No se pudo guardar la receta");

@@ -82,15 +82,6 @@ public class AgregarMedicamentoRecetaController implements Initializable {
         cargarMedicamentosAsync();
     }
 
-//    private void cargarMedicamentos() {
-//        try {
-//            todosLosMedicamentos = gestorMedicamentos.getMedicamentos();
-//            tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(todosLosMedicamentos));
-//        } catch (Exception e) {
-//            mostrarAlerta("Error", "Error al cargar medicamentos: " + e.getMessage());
-//        }
-//    }
-
 
     private void cargarMedicamentosAsync() {
         if (operacionEnProgreso) return;

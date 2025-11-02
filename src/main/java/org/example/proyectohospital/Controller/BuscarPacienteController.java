@@ -70,14 +70,7 @@ public class BuscarPacienteController implements Initializable {
         cargarPacientesAsync();
     }
 
-//    private void cargarTodosLosPacientes() {
-//        try {
-//            List<Paciente> pacientes = gestorPacientes.getPacientes();
-//            tbvResultadoBPaciente.setItems(FXCollections.observableArrayList(pacientes));
-//        } catch (Exception e) {
-//            mostrarAlerta("Error", "Error al cargar los pacientes: " + e.getMessage());
-//        }
-//    }
+
 
     private void filtrarPacientes(String texto) {
         if (texto == null || texto.isBlank()) {
