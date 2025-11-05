@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="772.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.Controller.TabHistoricoRecetasController">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label id="lblHistoricoDeRecetas" fx:id="lblHistoricoDeRecetas" layoutX="6.0" layoutY="-4.0" prefHeight="35.0" prefWidth="187.0" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Histórico de Recetas" />
+         </children></AnchorPane>
+      <Pane layoutX="14.0" layoutY="35.0" prefHeight="25.0" prefWidth="755.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+         <children>
+<!--            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="626.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/search.png" />-->
+<!--               </image>-->
+<!--            </ImageView>-->
+            <Label id="lblBuscarPorPacienteOIdHistoricoRecetas" fx:id="lblBuscarPorPacienteOIdHistoricoRecetas" alignment="CENTER" layoutX="3.0" layoutY="9.0" prefHeight="19.0" prefWidth="187.0" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Buscar por paciente o ID:" />
+            <TextField id="txtBuscarPacienteIdHistoricoRecetas" fx:id="txtBuscarPacienteIdHistoricoRecetas" layoutX="183.0" layoutY="6.0" prefHeight="10.0" prefWidth="155.0" promptText="Ej. PAC-001 o Juan Pérez" />
+            <Label id="lblFiltrarPorEstadoHistoricoRecetas" fx:id="lblFiltrarPorEstadoHistoricoRecetas" layoutX="348.0" layoutY="9.0" style="-fx-font-size: 13; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Filtrar por estado:" />
+            <ComboBox id="comboEstadoHistorico" fx:id="comboEstadoHistorico" layoutX="465.0" layoutY="6.0" prefHeight="25.0" prefWidth="149.0">
+            </ComboBox>
+            <Button id="btnBuscarHistorico" fx:id="btnBuscarHistorico" layoutX="668.0" layoutY="5.0" onAction="#buscarHistorico" prefHeight="28.0" prefWidth="62.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar" />
+         </children>
+      </Pane>
+      <Pane layoutX="14.0" layoutY="83.0" prefHeight="261.0" prefWidth="745.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+         <children>
+            <Pane layoutX="7.0" layoutY="9.0" prefHeight="245.0" prefWidth="729.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+               <children>
+                  <TableView id="tblViewRecetasHistoricoRecetas" fx:id="tblViewRecetasHistoricoRecetas" layoutX="10.0" layoutY="10.0" prefHeight="224.0" prefWidth="708.0">
+                     <columns>
+                        <TableColumn fx:id="colIdHistorico" prefWidth="73.33331298828125" text="ID Receta" />
+                        <TableColumn fx:id="colPacienteHistorico" prefWidth="100.00003051757812" text="Paciente" />
+                        <TableColumn fx:id="colFechaNacimientoPaciente" prefWidth="179.33331298828125" text="Fecha Nacimiento" />
+                        <TableColumn fx:id="colFechaConfeccionHistorico" prefWidth="135.33331298828125" text="Fecha Confección" />
+                        <TableColumn fx:id="colFechaRetiroHistorico" prefWidth="111.0" style="-fx-ba: #228B22;" text="Fecha Retiro" />
+                        <TableColumn fx:id="colEstadoHistorico" prefWidth="110.0" text="Estado" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Button id="btnVerDetallesHistorico" fx:id="btnVerDetallesHistorico" layoutX="14.0" layoutY="354.0" onAction="#verDetallesHistorico" prefHeight="19.0" prefWidth="88.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Detalles" />
+      <Pane layoutX="14.0" layoutY="408.0" prefHeight="129.0" prefWidth="739.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+         <children>
+            <Pane layoutX="8.0" layoutY="4.0" prefHeight="116.0" prefWidth="723.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+               <children>
+                  <TableView id="tableDetallesHistorico" fx:id="tableDetallesHistorico" layoutX="11.0" layoutY="7.0" prefHeight="103.0" prefWidth="699.0">
+                     <columns>
+                        <TableColumn fx:id="colMedicamento" prefWidth="113.33333969116211" text="Medicamento" />
+                        <TableColumn fx:id="colPresentacion" prefWidth="114.66667175292969" text="Presentación" />
+                        <TableColumn fx:id="colCantidad" prefWidth="124.0" text="Cantidad" />
+                        <TableColumn fx:id="colIndicaciones" prefWidth="228.0" text="Indicaciones" />
+                        <TableColumn fx:id="colDuracion" prefWidth="117.0" text="Duración (días)" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Label id="lblMedicamentosRecetaHistorico" fx:id="lblMedicamentosRecetaHistorico" layoutX="14.0" layoutY="388.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Medicamentos de la receta seleccionada:" />
+      <ProgressIndicator fx:id="progressDetallesHistorico" layoutX="119.0" layoutY="348.0" progress="0.0" />
+      <ProgressIndicator fx:id="progressRecetasHistorico" layoutX="719.0" layoutY="348.0" progress="0.0" />
+   </children>
+</AnchorPane>

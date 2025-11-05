@@ -1,6 +1,9 @@
 package org.example.proyectohospital.Modelo;
+import java.io.Serializable;
 
-public abstract class Personal {
+public abstract class Personal implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     protected String nombre;
     protected String id;
     protected String clave;

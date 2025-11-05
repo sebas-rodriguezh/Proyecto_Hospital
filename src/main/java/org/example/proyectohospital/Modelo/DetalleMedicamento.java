@@ -1,6 +1,10 @@
 package org.example.proyectohospital.Modelo;
 
-public class DetalleMedicamento {
+import java.io.Serializable;
+
+public class DetalleMedicamento implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Medicamento medicamento;
     private String idDetalle;
     private int cantidad;

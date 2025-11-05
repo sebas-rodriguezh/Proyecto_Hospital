@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<!--Para tener su propio controlador y no tenerlo sobrecargado en admin.-->
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.Controller.TabPacientesEnAdminController">
+
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="534.0" prefWidth="757.0" style="-fx-background-color: 16px; -fx-font-weight: bold;">
+                <children>
+                    <Pane layoutX="5.0" layoutY="6.0" prefHeight="236.0" prefWidth="713.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                        <children>
+                            <Pane layoutX="25.0" layoutY="9.0" prefHeight="219.0" prefWidth="413.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                <children>
+                                    <Pane layoutX="8.0" layoutY="11.0" prefHeight="196.0" prefWidth="396.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                        <children>
+                                            <Label alignment="CENTER" layoutX="166.0" layoutY="12.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Paciente" />
+                                            <GridPane layoutX="26.0" layoutY="45.0" prefHeight="130.0" prefWidth="355.0">
+                                                <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="112.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="193.0" />
+                                                </columnConstraints>
+                                                <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                </rowConstraints>
+                                                <children>
+                                                    <Label alignment="CENTER" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="ID" />
+                                                    <Label alignment="CENTER" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Fecha nacimiento" GridPane.rowIndex="2" />
+                                                    <Label alignment="CENTER" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Número telefónico" GridPane.rowIndex="3" />
+                                                    <TextField id="txtIdPaciente" fx:id="txtIdPaciente" GridPane.columnIndex="1" />
+                                                    <TextField id="txtNombrePaciente" fx:id="txtNombrePaciente" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                    <TextField id="txtNumeroTelefonoPaciente" fx:id="txtNumeroTelefonoPaciente" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                    <Label alignment="CENTER" layoutX="10.0" layoutY="47.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Nombre" GridPane.rowIndex="1" />
+                                                    <DatePicker id="dtpFechaNacimientoPaciente" fx:id="dtpFechaNacimientoPaciente" prefHeight="25.0" prefWidth="290.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                </children>
+                                            </GridPane>
+<!--                                            <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="237.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                                                <image>-->
+<!--                                                    <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/pacienteLogoDos.png" />-->
+<!--                                                </image>-->
+<!--                                            </ImageView>-->
+                                        </children>
+                                    </Pane>
+                                </children>
+                            </Pane>
+                            <Pane layoutX="475.0" layoutY="11.0" prefHeight="205.0" prefWidth="224.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                <children>
+                                    <Pane layoutX="16.0" layoutY="11.0" prefHeight="49.0" prefWidth="187.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                        <children>
+                                            <Button id="btnGuardarPaciente" fx:id="btnGuardarPaciente" alignment="CENTER" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#guardarPaciente" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar">
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Button>
+<!--                                            <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                                                <image>-->
+<!--                                                    <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/Icono-guardar.png" />-->
+<!--                                                </image>-->
+<!--                                            </ImageView>-->
+                                        </children>
+                                    </Pane>
+                                    <Pane layoutX="13.0" layoutY="75.0" prefHeight="49.0" prefWidth="191.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                        <children>
+                                            <Button id="btnLimpiarCampos" fx:id="btnLimpiarCampos" alignment="CENTER" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#limpiarCamposPaciente" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Limpiar">
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Button>
+                                            <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+<!--                                                <image>-->
+<!--                                                    <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/limpiarCampos.png" />-->
+<!--                                                </image>-->
+                                            </ImageView>
+                                        </children>
+                                    </Pane>
+                                    <Pane layoutX="12.0" layoutY="139.0" prefHeight="49.0" prefWidth="191.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                        <children>
+                                            <Button id="btnBorrarPaciente" fx:id="btnBorrarPaciente" alignment="CENTER" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#borrarPaciente" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold;" text="Borrar">
+                                                <font>
+                                                    <Font size="14.0" />
+                                                </font>
+                                            </Button>
+<!--                                            <ImageView fitHeight="37.0" fitWidth="39.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                                                <image>-->
+<!--                                                    <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/deleteDos.png" />-->
+<!--                                                </image>-->
+<!--                                            </ImageView>-->
+                                        </children>
+                                    </Pane>
+                     <ProgressIndicator fx:id="progressPacientes" layoutX="243.0" layoutY="17.0" progress="0.0" />
+                                </children>
+                            </Pane>
+                        </children>
+                    </Pane>
+                    <Pane layoutX="21.0" layoutY="320.0" prefHeight="203.0" prefWidth="597.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                        <children>
+                            <Pane layoutX="14.0" layoutY="13.0" prefHeight="177.0" prefWidth="571.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                <children>
+<!--                                    <ImageView fitHeight="61.0" fitWidth="54.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                                        <image>-->
+<!--                                            <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/paciente.png" />-->
+<!--                                        </image>-->
+<!--                                    </ImageView>-->
+                                    <Label layoutX="232.0" layoutY="7.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Listado de Pacientes" />
+                                    <TableView id="tbvResultadoBPaciente" fx:id="tbvResultadoBPaciente" layoutX="54.0" layoutY="38.0" prefHeight="131.0" prefWidth="509.0">
+                                        <columns>
+                                            <TableColumn id="colIDPaciente" fx:id="colIDPaciente" prefWidth="94.0" text="ID" />
+                                            <TableColumn id="colNombrePaciente" fx:id="colNombrePaciente" minWidth="7.0" prefWidth="161.0" text="Nombre" />
+                                            <TableColumn id="colFechaNacimientoPaciente" fx:id="colFechaNacimientoPaciente" prefWidth="138.0" text="Fecha de Nacimeinto" />
+                                            <TableColumn id="colTelefonoPaciente" fx:id="colTelefonoPaciente" minWidth="0.0" prefWidth="115.0" text="Teléfono" />
+                                        </columns>
+                                    </TableView>
+                                </children>
+                            </Pane>
+                        </children>
+                    </Pane>
+                    <Label layoutX="32.0" layoutY="269.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Búsqueda de paciente" />
+                    <Pane layoutX="224.0" layoutY="257.0" prefHeight="49.0" prefWidth="502.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                        <children>
+                            <Button id="btnBuscarPaciente" fx:id="btnBuscarPaciente" alignment="CENTER" layoutX="387.0" layoutY="11.0" mnemonicParsing="false" onAction="#buscarPaciente" prefHeight="30.0" prefWidth="101.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </Button>
+<!--                            <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="333.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                                <image>-->
+<!--                                    <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/search.png" />-->
+<!--                                </image>-->
+<!--                            </ImageView>-->
+                            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Nombre / ID" />
+                            <TextField id="txtBuscarPaciente" fx:id="txtBuscarPaciente" layoutX="121.0" layoutY="14.0" prefHeight="25.0" prefWidth="189.0" />
+                        </children>
+                    </Pane>
+                    <Button id="btnModificarPaciente" fx:id="btnModificarPaciente" alignment="CENTER" layoutX="630.0" layoutY="383.0" mnemonicParsing="false" onAction="#modificarPaciente" prefHeight="30.0" prefWidth="117.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Modificar">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+                    <Button id="btnMostrarTodosLosPacientes" fx:id="btnMostrarTodosLosPacientes" alignment="CENTER" layoutX="629.0" layoutY="430.0" mnemonicParsing="false" onAction="#mostrarTodosLosPacientes" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Mostrar todos">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+         <Button id="btnMostrarTodosLosPacientes" fx:id="btnAbrirChat" alignment="CENTER" layoutX="629.0" layoutY="472.0" mnemonicParsing="false" onAction="#abrirVentanaChat" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold;" text="Abrir chat">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Button>
+                </children>
+            </AnchorPane>
+</AnchorPane>

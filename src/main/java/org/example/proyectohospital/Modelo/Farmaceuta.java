@@ -1,6 +1,10 @@
 package org.example.proyectohospital.Modelo;
 
-public class Farmaceuta extends Personal {
+import java.io.Serializable;
+
+public class Farmaceuta extends Personal implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     public Farmaceuta(String nombre, String id, String clave) {
         super(nombre, id, clave);
     }

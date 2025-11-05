@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="620.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.Controller.WindowAdministradorController">
+    <children>
+        <TabPane prefHeight="620.0" prefWidth="812.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Médicos">
+                    <content>
+                        <fx:include source="MedicoEnAdminView.fxml" />
+                    </content>
+                </Tab>
+
+
+                <Tab style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Farmaceutas">
+
+                    <content>
+                        <fx:include source="TabFarmaceutasEnAdmin.fxml" />
+                    </content>
+                </Tab>
+
+
+                <Tab style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Pacientes">
+
+                    <content>
+                        <fx:include source="TabPacientesEnAdmin.fxml" />
+                    </content>
+                </Tab>
+
+
+                <Tab style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Medicamentos">
+
+                    <content>
+                        <fx:include source="TabMedicamentosEnAdmin.fxml" />
+                    </content>
+                </Tab>
+                <Tab style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Dashboard">
+
+                    <content>
+                        <fx:include source="TabDashboard.fxml" />
+                    </content>
+                </Tab>
+            <Tab style="-fx-font-size: 16; -fx-font-weight: bold;" text="Histórico de recetas">
+              <content>
+                  <fx:include source="TabHistoricoRecetas.fxml" />
+              </content>
+            </Tab>
+                <Tab id="tabAcercaDe" fx:id="tabAcercaDe" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Acerca de...">
+                    <content>
+                        <fx:include source="tabAcercaDe.fxml" />
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

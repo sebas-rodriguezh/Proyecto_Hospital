@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="544.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.Controller.TabSolicitudFarmaceutaController">
+   <children>
+      <AnchorPane layoutX="4.0" layoutY="8.0" prefHeight="520.0" prefWidth="738.0">
+         <children>
+            <Pane layoutX="6.0" layoutY="87.0" prefHeight="393.0" prefWidth="738.0" style="-fx-background-color: #6B8E23; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+               <children>
+                  <Pane layoutX="4.0" layoutY="7.0" prefHeight="377.0" prefWidth="723.0" style="-fx-background-color: #556B2F; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" />
+                  <TableView fx:id="tableRecetasSolicitud" layoutX="12.0" layoutY="16.0" prefHeight="360.0" prefWidth="708.0">
+                     <columns>
+                        <TableColumn fx:id="colIdSolicitud" prefWidth="156.66672325134277" text="ID Receta" />
+                        <TableColumn fx:id="colPacienteSolicitud" prefWidth="175.9999237060547" text="Paciente" />
+                        <TableColumn fx:id="colFechaRetiroSolicitud" prefWidth="189.33334350585938" text="Fecha Retiro" />
+                        <TableColumn fx:id="colEstadoSolicitud" prefWidth="187.33331298828125" text="Estado" />
+                     </columns>
+                  </TableView>
+               </children>
+            </Pane>
+            <HBox layoutX="8.0" layoutY="41.0" prefHeight="29.0" prefWidth="580.0">
+               <children>
+                  <HBox spacing="10">
+                     <children>
+                        <TextField fx:id="txtBuscarPacienteSolicitud" prefHeight="25.0" prefWidth="195.0" promptText="ID o nombre del paciente" />
+                        <DatePicker fx:id="dateRetiroSolicitud" prefHeight="25.0" prefWidth="208.0" promptText="Fecha de retiro" />
+                        <Button fx:id="btnBuscarSolicitud" onAction="#buscarReceta" prefHeight="29.0" prefWidth="117.0" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar receta" textFill="#121212">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <Label layoutX="8.0" layoutY="4.0" prefHeight="27.0" prefWidth="321.0" style="-fx-font-size: 18; -fx-text-fill: #2c3e50; -fx-font-weight: bold;" text="Recepción de paciente en ventanilla" />
+            <Button fx:id="btnPonerEnProceso" layoutX="6.0" layoutY="491.0" onAction="#ponerEnProceso" style="-fx-background-color: #FF8C00; -fx-text-fill: white; -fx-font-weight: bold;" text="Poner en Proceso">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+<!--            <ImageView fitHeight="74.0" fitWidth="107.0" layoutX="670.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="@../../../../../../../../src/main/resources/org/example/proyectohospital/Resources/Assets/Images/pacienteLogoDos.png" />-->
+<!--               </image>-->
+<!--            </ImageView>-->
+            <ProgressIndicator fx:id="progressRecetas" layoutX="169.0" layoutY="486.0" progress="0.0" visible="false" />
+            <Button fx:id="btnAbrirChat" layoutX="656.0" layoutY="491.0" onAction="#abrirVentanaChat" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold;" text="Abrir chat">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

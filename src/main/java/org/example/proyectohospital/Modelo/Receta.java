@@ -1,10 +1,13 @@
 package org.example.proyectohospital.Modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Receta {
+public class Receta implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Personal personal;
     private Paciente paciente;
     private LocalDate fechaPrescripcion;

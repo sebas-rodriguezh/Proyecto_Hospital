@@ -1,6 +1,9 @@
 package org.example.proyectohospital.Modelo;
 
-public class Administrador extends Personal {
+import java.io.Serializable;
+
+public class Administrador extends Personal implements Serializable {
+    private static final long serialVersionUID = 1L;
     public Administrador(String nombre, String id, String clave) {
         super(nombre, id, clave);
     }

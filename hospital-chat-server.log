@@ -1,154 +1,172 @@
-oct 24, 2025 4:27:30 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:27:30 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 4:27:30 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:27:30 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 4:27:30 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:27:30 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 4:27:46 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:27:46 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 4:27:46 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:27:46 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 4:27:46 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:27:46 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 4:30:32 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 4:30:32 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 24, 2025 4:30:40 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 4:30:40 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 24, 2025 4:34:17 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:34:17 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 4:34:17 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:34:17 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 4:34:17 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 4:34:17 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 4:43:11 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 4:43:11 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 24, 2025 4:43:34 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 4:43:34 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 24, 2025 4:44:29 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 4:44:29 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 24, 2025 4:44:31 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 4:44:31 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 24, 2025 6:14:32 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:14:32 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 6:14:32 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:14:32 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 6:14:32 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:14:32 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 6:21:20 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:21:20 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 6:21:20 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:21:20 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 6:21:20 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:21:20 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 6:22:00 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 6:22:00 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 24, 2025 6:23:29 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:23:29 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 6:23:29 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:23:29 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 6:23:29 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 6:23:29 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 6:24:51 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 6:24:51 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 24, 2025 6:24:57 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 6:24:57 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 24, 2025 7:55:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 7:55:33 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 7:55:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 7:55:33 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 7:55:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 7:55:33 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 7:58:45 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 7:58:45 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 1003
-oct 24, 2025 7:58:46 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 7:58:46 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 24, 2025 7:59:13 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 7:59:13 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 24, 2025 8:11:20 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 8:11:20 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 24, 2025 8:11:20 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 8:11:20 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 24, 2025 8:11:20 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 24, 2025 8:11:20 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 24, 2025 8:16:25 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 8:16:25 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 24, 2025 8:16:40 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 8:16:40 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 1003
-oct 24, 2025 8:16:54 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 24, 2025 8:16:54 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 25, 2025 4:03:10 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 25, 2025 4:03:10 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 25, 2025 4:03:10 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 25, 2025 4:03:10 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 25, 2025 4:03:10 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 25, 2025 4:03:10 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 25, 2025 4:08:34 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 25, 2025 4:08:34 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 25, 2025 4:08:57 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 25, 2025 4:08:57 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 25, 2025 4:09:56 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 25, 2025 4:09:56 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 25, 2025 4:09:57 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 25, 2025 4:09:57 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 25, 2025 4:10:02 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 25, 2025 4:10:02 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 27, 2025 9:58:03 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 9:58:03 A. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 27, 2025 9:58:03 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 9:58:03 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 27, 2025 9:58:03 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 9:58:03 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 27, 2025 10:00:41 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 10:00:41 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: Allan Cruz
-oct 27, 2025 10:00:45 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 10:00:45 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: Administrador Principal
-oct 27, 2025 10:10:05 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 10:10:05 A. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 27, 2025 10:10:05 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 10:10:05 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 27, 2025 10:10:05 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 10:10:05 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 27, 2025 10:14:39 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 10:14:39 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 1003
-oct 27, 2025 10:14:44 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 10:14:44 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 2222
-oct 27, 2025 10:14:50 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 10:14:50 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 27, 2025 7:37:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 7:37:33 P. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 27, 2025 7:37:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 7:37:33 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 27, 2025 7:37:33 P. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 27, 2025 7:37:33 P. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 27, 2025 7:45:56 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 7:45:56 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 1003
-oct 27, 2025 7:45:57 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 7:45:57 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 27, 2025 7:46:05 P. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 27, 2025 7:46:05 P. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 30, 2025 10:36:13 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 30, 2025 10:36:13 A. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 30, 2025 10:36:13 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 30, 2025 10:36:13 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 30, 2025 10:36:13 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 30, 2025 10:36:13 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 30, 2025 10:39:57 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 30, 2025 10:39:57 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 30, 2025 10:40:06 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 30, 2025 10:40:06 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 1003
-oct 30, 2025 10:40:26 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 30, 2025 10:40:26 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 30, 2025 10:40:36 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 30, 2025 10:40:36 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 1003
-oct 31, 2025 11:04:31 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 31, 2025 11:04:31 A. M. org.example.backend.Servicios.ChatServer start
 INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
-oct 31, 2025 11:04:31 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 31, 2025 11:04:31 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Puerto: 7000
-oct 31, 2025 11:04:31 A. M. org.example.proyectohospital.Servicios.ChatServer start
+oct 31, 2025 11:04:31 A. M. org.example.backend.Servicios.ChatServer start
 INFO: Servidor listo para aceptar conexiones...
-oct 31, 2025 11:08:50 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 31, 2025 11:08:50 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 4444
-oct 31, 2025 11:09:15 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 31, 2025 11:09:15 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: admin
-oct 31, 2025 11:09:19 A. M. org.example.proyectohospital.Servicios.ChatServer removeClient
+oct 31, 2025 11:09:19 A. M. org.example.backend.Servicios.ChatServer removeClient
 INFO: Cliente desconectado: 1003
+nov 01, 2025 8:14:55 P. M. org.example.backend.Servicios.ChatServer start
+INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
+nov 01, 2025 8:14:55 P. M. org.example.backend.Servicios.ChatServer start
+INFO: Puerto: 7000
+nov 01, 2025 8:14:55 P. M. org.example.backend.Servicios.ChatServer start
+INFO: Servidor listo para aceptar conexiones...
+nov 01, 2025 8:21:54 P. M. org.example.backend.Servicios.ChatServer start
+INFO: === INICIANDO SERVIDOR DE CHAT HOSPITALARIO ===
+nov 01, 2025 8:21:54 P. M. org.example.backend.Servicios.ChatServer start
+INFO: Puerto: 7000
+nov 01, 2025 8:21:54 P. M. org.example.backend.Servicios.ChatServer start
+INFO: Servidor listo para aceptar conexiones...
+nov 01, 2025 8:25:53 P. M. org.example.backend.Servicios.ChatServer removeClient
+INFO: Cliente desconectado: admin
+nov 01, 2025 8:26:16 P. M. org.example.backend.Servicios.ChatServer removeClient
+INFO: Cliente desconectado: 4444
+nov 01, 2025 8:26:21 P. M. org.example.backend.Servicios.ChatServer removeClient
+INFO: Cliente desconectado: 2222

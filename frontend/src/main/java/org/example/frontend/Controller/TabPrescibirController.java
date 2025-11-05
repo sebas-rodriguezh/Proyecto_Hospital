@@ -1,0 +1,349 @@
+package org.example.frontend.Controller;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+
+import org.example.frontend.Modelo.HospitalFrontend;
+import org.example.frontend.Servicios.HospitalServiceProxy;
+import org.example.proyectohospital.shared.RespuestaBackend;
+import org.example.proyectohospital.shared.SolicitudBackend;
+
+import org.example.proyectohospital.Modelo.DetalleMedicamento;
+import org.example.proyectohospital.Modelo.Medico;
+import org.example.proyectohospital.Modelo.Paciente;
+import org.example.proyectohospital.Modelo.Receta;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+
+public class TabPrescibirController implements Initializable {
+    @FXML private Button btnAbrirChat;
+    @FXML private ProgressIndicator progressRecetas;
+    @FXML private Button btnDetallesReceta;
+    @FXML private Button btnLimpiarCampos;
+    @FXML private Button btnDescartarMedicamento;
+    @FXML private Button btnGuardarReceta;
+
+    @FXML private TableColumn<DetalleMedicamento, Integer> colDuracionMedicamento;
+    @FXML private TableColumn<DetalleMedicamento, String> colIndicacionesMedicamento;
+    @FXML private TableColumn<DetalleMedicamento, Integer> colCantidadMedicamento;
+    @FXML private TableColumn<DetalleMedicamento, String> colPresentacionMedicamento;
+    @FXML private TableColumn<DetalleMedicamento, String> colNombreMedicamento;
+    @FXML private TableView<DetalleMedicamento> tbvResultadoBusquedaMedicamento;
+
+    @FXML private TableColumn<Paciente, Integer> colTelefonoPaciente;
+    @FXML private TableColumn<Paciente, LocalDate> colFechaNacimientoPaciente;
+    @FXML private TableColumn<Paciente, String> colNombrePaciente;
+    @FXML private TableColumn<Paciente, String> colIDPaciente;
+    @FXML private TableView<Paciente> tbvResultadoBusquedaPaciente;
+
+    @FXML private Button btnSeleccionarMedicamento;
+    @FXML private Button btnSeleccionarPaciente;
+    @FXML private DatePicker dtpFechaRetiro;
+    @FXML private DatePicker dtpFechaPrescripcion;
+
+    private Medico medicoActual;
+    private Paciente pacienteSeleccionado;
+    private ObservableList<DetalleMedicamento> detallesMedicamentos;
+    private DetalleMedicamento detalleEnEdicion = null;
+
+    private boolean operacionEnProgreso = false;
+
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        this.medicoActual = HospitalFrontend.getInstance().getMedicoLogueado();
+        colIDPaciente.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNombrePaciente.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colFechaNacimientoPaciente.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
+        colTelefonoPaciente.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+
+        colNombreMedicamento.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMedicamento().getNombre()));
+        colPresentacionMedicamento.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMedicamento().getPresentacion()));
+        colCantidadMedicamento.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        colDuracionMedicamento.setCellValueFactory(new PropertyValueFactory<>("duracion"));
+        colIndicacionesMedicamento.setCellValueFactory(new PropertyValueFactory<>("indicacion"));
+
+        if (progressRecetas != null) progressRecetas.setVisible(false);
+
+
+        detallesMedicamentos = FXCollections.observableArrayList();
+        tbvResultadoBusquedaMedicamento.setItems(detallesMedicamentos);
+
+        dtpFechaPrescripcion.setValue(LocalDate.now());
+        dtpFechaRetiro.setValue(LocalDate.now().plusDays(3));
+
+        validarFechas();
+    }
+
+    private void validarFechas() {
+        dtpFechaRetiro.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && dtpFechaPrescripcion.getValue() != null &&
+                    newVal.isBefore(dtpFechaPrescripcion.getValue())) {
+                dtpFechaRetiro.setValue(dtpFechaPrescripcion.getValue().plusDays(1));
+            }
+        });
+    }
+
+    @FXML
+    public void seleccionarPaciente(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/frontend/View/BuscarPaciente.fxml"));
+            Parent root = loader.load();
+
+            BuscarPacienteController buscarController = loader.getController();
+            buscarController.setControllerPadre(this);
+
+            Stage ventana = new Stage();
+            ventana.setTitle("Seleccionar Paciente");
+            ventana.setScene(new Scene(root));
+            ventana.initModality(Modality.WINDOW_MODAL);
+            ventana.initOwner(btnSeleccionarPaciente.getScene().getWindow());
+            ventana.showAndWait();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir la ventana: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void seleccionarMedicamento(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/frontend/View/AgregarMedicamentoReceta.fxml"));
+            Parent root = loader.load();
+
+            AgregarMedicamentoRecetaController medicamentoController = loader.getController();
+            medicamentoController.setControllerPadre(this);
+
+            Stage ventana = new Stage();
+            ventana.setTitle("Seleccionar Medicamento");
+            ventana.setScene(new Scene(root));
+            ventana.initModality(Modality.WINDOW_MODAL);
+            ventana.initOwner(btnSeleccionarMedicamento.getScene().getWindow());
+            ventana.showAndWait();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir la ventana: " + e.getMessage());
+        }
+    }
+
+    public void setPacienteSeleccionado(Paciente paciente) {
+        this.pacienteSeleccionado = paciente;
+        ObservableList<Paciente> listaPaciente = FXCollections.observableArrayList(paciente);
+        tbvResultadoBusquedaPaciente.setItems(listaPaciente);
+    }
+
+    @FXML
+    private void abrirVentanaChat() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/frontend/View/chat-view.fxml"));
+            Parent root = loader.load();
+
+            Stage chatStage = new Stage();
+            chatStage.setTitle("Chat del Hospital - " + HospitalFrontend.getInstance().getUsuarioLogueadoNombre());
+            chatStage.setScene(new Scene(root));
+            chatStage.setResizable(true);
+            chatStage.show();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir el chat: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    @FXML
+    public void limpiarCamposReceta(ActionEvent actionEvent) {
+        pacienteSeleccionado = null;
+        tbvResultadoBusquedaPaciente.getItems().clear();
+        detallesMedicamentos.clear();
+        dtpFechaPrescripcion.setValue(LocalDate.now());
+        dtpFechaRetiro.setValue(LocalDate.now().plusDays(3));
+    }
+
+    @FXML
+    public void descartarMedicamentoDeReceta(ActionEvent actionEvent) {
+        DetalleMedicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            mostrarAlerta("Seleccione medicamento", "Debe seleccionar un medicamento para eliminarlo.");
+            return;
+        }
+        detallesMedicamentos.remove(seleccionado);
+    }
+
+    @FXML
+    public void guardarReceta(ActionEvent actionEvent) {
+
+        if (operacionEnProgreso) {
+            return;
+        }
+
+        if (!validarTodoCompleto()) return;
+
+        try {
+            String idReceta = generarIdReceta();
+            Receta nuevaReceta = new Receta(idReceta, medicoActual, pacienteSeleccionado, dtpFechaPrescripcion.getValue(), dtpFechaRetiro.getValue(), 1);
+
+            for (int i = 0; i < detallesMedicamentos.size(); i++) {
+                DetalleMedicamento detalle = detallesMedicamentos.get(i);
+                nuevaReceta.agregarDetalleMedicamento(detalle);
+            }
+
+            guardarRecetaAsync(nuevaReceta);
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Problemas al ingresar los " + detallesMedicamentos.size() + " de medicamentos");
+        }
+    }
+
+    private boolean validarTodoCompleto() {
+        if (medicoActual == null) {
+            mostrarAlerta("Error", "No se ha establecido el médico.");
+            return false;
+        }
+        if (pacienteSeleccionado == null) {
+            mostrarAlerta("Falta paciente", "Debe seleccionar un paciente.");
+            return false;
+        }
+        if (detallesMedicamentos.isEmpty()) {
+            mostrarAlerta("Faltan medicamentos", "Debe agregar al menos un medicamento.");
+            return false;
+        }
+        if (dtpFechaPrescripcion.getValue() == null || dtpFechaRetiro.getValue() == null) {
+            mostrarAlerta("Faltan fechas", "Debe seleccionar las fechas.");
+            return false;
+        }
+        return true;
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.show();
+    }
+
+    @FXML
+    public void modificarMedicamentoDeReceta(ActionEvent actionEvent) {
+        DetalleMedicamento seleccionado = tbvResultadoBusquedaMedicamento.getSelectionModel().getSelectedItem();
+
+        if (seleccionado == null) {
+            mostrarAlerta("Seleccione medicamento", "Debe seleccionar un medicamento para modificarlo.");
+            return;
+        }
+
+        try {
+            detalleEnEdicion = seleccionado;
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/frontend/View/AgregarMedicamentoReceta.fxml"));
+            Parent root = loader.load();
+
+            AgregarMedicamentoRecetaController medicamentoController = loader.getController();
+            medicamentoController.setControllerPadre(this);
+            medicamentoController.setModoEdicion(seleccionado); 
+
+            Stage ventana = new Stage();
+            ventana.setTitle("Modificar Medicamento de la Receta");
+            ventana.setScene(new Scene(root));
+            ventana.initModality(Modality.WINDOW_MODAL);
+            ventana.initOwner(btnSeleccionarMedicamento.getScene().getWindow());
+            ventana.showAndWait();
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo abrir la ventana: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private String generarIdReceta() {
+        LocalDate fecha = LocalDate.now();
+        long timestamp = System.currentTimeMillis() % 1000000;
+        String idReceta = String.format("REC%02d%02d%06d", fecha.getMonthValue(), fecha.getDayOfMonth(), timestamp);
+        return idReceta;
+    }
+
+    public void agregarDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
+        if (detalleEnEdicion != null) {
+            for (int i = 0; i < detallesMedicamentos.size(); i++) {
+                if (detallesMedicamentos.get(i).getIdDetalle().equals(detalleEnEdicion.getIdDetalle())) {
+                    detallesMedicamentos.set(i, detalleMedicamento);
+                    detalleEnEdicion = null;
+                    tbvResultadoBusquedaMedicamento.refresh();
+                    return;
+                }
+            }
+        }
+        else {
+            boolean existe = detallesMedicamentos.stream()
+                    .anyMatch(detalle -> detalle.getMedicamento().getCodigo().equals(
+                            detalleMedicamento.getMedicamento().getCodigo()));
+
+            if (existe) {
+                mostrarAlerta("Medicamento duplicado", "Este medicamento ya está en la receta.");
+                return;
+            }
+            detallesMedicamentos.add(detalleMedicamento);
+        }
+    }
+
+
+    public void guardarRecetaAsync(Receta receta) {
+        operacionEnProgreso = true;
+        progressRecetas.setVisible(true);
+        btnGuardarReceta.setDisable(true);
+
+        Async.run(() -> {
+                    try {
+                        HospitalServiceProxy proxy = new HospitalServiceProxy();
+                        if (proxy.conectar()) {
+                            SolicitudBackend solicitud = new SolicitudBackend("INSERTAR_RECETA");
+                            solicitud.agregarParametro("receta", receta);
+                            RespuestaBackend respuesta = (RespuestaBackend) proxy.enviarSolicitud(solicitud);
+                            proxy.desconectar();
+                            return respuesta.isExito();
+                        }
+                        return false;
+
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error al guardar receta: " + e.getMessage());
+                    }
+                },
+                resultado -> {
+                    operacionEnProgreso = false;
+                    progressRecetas.setVisible(false);
+                    btnGuardarReceta.setDisable(false);
+
+                    if (resultado) {
+                        mostrarAlerta("Éxito", "Receta guardada con " + receta.getDetallesMedicamentos().size() + " medicamentos.");
+                        limpiarCamposReceta(null);
+                    } else {
+                        mostrarAlerta("Error", "No se pudo guardar la receta");
+                    }
+                },
+                error -> {
+                    operacionEnProgreso = false;
+                    progressRecetas.setVisible(false);
+                    btnGuardarReceta.setDisable(false);
+                    mostrarAlerta("Error", "Error al guardar: " + error.getMessage());
+                }
+        );
+    }
+
+}
