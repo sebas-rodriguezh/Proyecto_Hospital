@@ -1068,3 +1068,27 @@ nov 05, 2025 11:08:12 A. M. org.example.backend.Servicios.HospitalServer startB
 INFO: Backend Hospitalario iniciado en puerto 8080
 nov 05, 2025 11:08:12 A. M. org.example.backend.Servicios.HospitalServer startChatServer
 INFO: Servidor de Chat iniciado en puerto 7000
+nov 05, 2025 11:12:04 A. M. org.example.backend.Servicios.HospitalServer startChatServer
+INFO: Servidor de Chat iniciado en puerto 7000
+nov 05, 2025 11:12:04 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Backend Hospitalario iniciado en puerto 8080
+nov 05, 2025 11:16:16 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Backend Hospitalario iniciado en puerto 8080
+nov 05, 2025 11:16:16 A. M. org.example.backend.Servicios.HospitalServer startChatServer
+INFO: Servidor de Chat iniciado en puerto 7000
+nov 05, 2025 11:16:40 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1
+nov 05, 2025 11:16:45 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1
+nov 05, 2025 11:16:45 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1
+nov 05, 2025 11:16:45 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1
+nov 05, 2025 11:16:45 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1
+nov 05, 2025 11:16:46 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1
+nov 05, 2025 11:16:46 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1
+nov 05, 2025 11:16:46 A. M. org.example.backend.Servicios.HospitalServer startBackendServer
+INFO: Nueva conexión backend desde: /127.0.0.1

@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.*;
 
 public class HospitalServer {
-    private static final int PORT_BACKEND = 8080;
+    private static final int PORT_BACKEND = 8080; // Puerto FIJO donde escucha
     private static final int PORT_CHAT = 7000;
     private static final int MAX_THREADS = 10;
     private final ExecutorService threadPool;
@@ -52,9 +52,15 @@ public class HospitalServer {
             LOGGER.info("Backend Hospitalario iniciado en puerto " + PORT_BACKEND);
 
             while (true) {
+                // === ACEPTAR CONEXIÓN ===
+                // Se BLOQUEA hasta que un frontend se conecte
+                // Cuando llega una conexión, crea un socket específico para ese cliente
                 Socket clientSocket = serverSocket.accept();
                 LOGGER.info("Nueva conexión backend desde: " + clientSocket.getInetAddress());
 
+
+                // === CREAR HILO PARA EL CLIENTE ===
+                // Cada cliente se maneja en su propio hilo
                 BackendServiceHandler handler = new BackendServiceHandler(clientSocket);
                 threadPool.execute(handler);
             }

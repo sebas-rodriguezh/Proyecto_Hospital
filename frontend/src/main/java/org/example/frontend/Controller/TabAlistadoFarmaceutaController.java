@@ -212,13 +212,34 @@ public class TabAlistadoFarmaceutaController implements Initializable {
         Async.run(
                 () -> {
                     try {
+                        // Crear el proxy (objeto que representa al backend localmente)
+
                         HospitalServiceProxy proxy = new HospitalServiceProxy();
+
+                        //   ¡CONEXIÓN! Abrir socket TCP al backend
+                        //    - Se crea una conexión real de red
+                        //    - Puerto: 8080 (fijo en backend)
+                        //    - IP: localhost (misma máquina) o IP remota
                         if (proxy.conectar()) {
+
+                            // Crear la SOLICITUD (objeto que viajará por la red)
                             SolicitudBackend solicitud = new SolicitudBackend("ACTUALIZAR_ESTADO_RECETA");
                             solicitud.agregarParametro("idReceta", idReceta);
                             solicitud.agregarParametro("nuevoEstado", nuevoEstado);
+
+                            // ¡ENVÍO! Serializar objeto y enviarlo por el socket
+                            //    - El objeto se convierte a bytes
+                            //    - Los bytes viajan por TCP al backend
                             RespuestaBackend respuesta = (RespuestaBackend) proxy.enviarSolicitud(solicitud);
+
+                            // ¡RECEPCIÓN! Espera la respuesta del backend
+                            //     - Se bloquea hasta recibir respuesta
+                            //     - Deserializa los bytes a objeto RespuestaBackend
+
+                            // Cerrar conexión (importante para no dejar sockets abiertos)
                             proxy.desconectar();
+
+                            //Devolver resultado al hilo principal de JavaFX
                             return respuesta.isExito();
                         }
                         return false;
@@ -226,6 +247,7 @@ public class TabAlistadoFarmaceutaController implements Initializable {
                         throw new RuntimeException("Error al actualizar estado: " + e.getMessage());
                     }
                 },
+                // RESULTADO: Este código corre en el hilo de UI cuando termina el proceso
                 resultado -> {
                     operacionEnProgreso = false;
                     progressRecetasAlistado.setVisible(false);

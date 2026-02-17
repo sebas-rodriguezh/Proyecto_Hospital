@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.util.List;
 
 public class BackendServiceHandler implements Runnable {
-    private final Socket socket;
+    private final Socket socket; // Socket específico para ESTE cliente
     private final GestorRecetas gestorRecetas;
     private final GestorPersonal gestorPersonal;
     private final GestorPacientes gestorPacientes;
@@ -27,12 +27,22 @@ public class BackendServiceHandler implements Runnable {
 
     @Override
     public void run() {
+        // === PREPARAR CANALES DE COMUNICACIÓN ===
+        // input: para LEER del frontend
+        // output: para ESCRIBIR al frontend
         try (ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
              ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream())) {
 
             while (true) {
+                // === ESPERAR SOLICITUD ===
+                // Se BLOQUEA hasta que llegue un objeto del frontend
+                // Deserializa automáticamente los bytes a objeto
                 SolicitudBackend solicitud = (SolicitudBackend) input.readObject();
+
+                // === PROCESAR SEGÚN EL TIPO ===
                 Object respuesta = procesarSolicitud(solicitud);
+
+                // === ENVIAR RESPUESTA ===
                 output.writeObject(respuesta);
                 output.flush();
             }
@@ -112,9 +122,14 @@ public class BackendServiceHandler implements Runnable {
                             eliminado ? "Personal eliminado" : "Error al eliminar personal");
 
                 case "ACTUALIZAR_ESTADO_RECETA":
+                    // Extraer parámetros del objeto recibido
                     String idReceta = (String) solicitud.getParametros().get("idReceta");
                     int nuevoEstado = (Integer) solicitud.getParametros().get("nuevoEstado");
+
+                    //Llamar a la lógica de negocio
                     boolean estadoActualizado = gestorRecetas.actualizarEstadoReceta(idReceta, nuevoEstado);
+
+                    //Crear y devolver respuesta
                     return new RespuestaBackend(estadoActualizado,
                             estadoActualizado ? "Estado actualizado" : "Error al actualizar estado");
 
